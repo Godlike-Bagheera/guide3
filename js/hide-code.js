@@ -1,33 +1,39 @@
-/* Ctrl+B — два режима чтения:
-   1) «С кодом» (по умолчанию): виден весь Python-код.
-   2) «Без кода»: Python-код скрыт, вместо каждого блока показывается
-      человеческое описание — что именно делать в этом месте шага. */
+/* Два режима чтения гайда (переключаются кнопкой «</>» в шапке или Ctrl+B):
+   1) «С кодом» (по умолчанию): виден весь код.
+   2) «Без кода»: блоки Python и HTML-шаблонов скрываются, вместо каждого
+      показывается человеческое описание — что именно делать на этом шаге.
+   Команды терминала (bash/env/ini/nginx/sql/json/text/jsx/javascript)
+   остаются видимыми ВСЕГДА — по ним новичок и идёт по гайду.
+   Раздел 34 («Простая последовательность команд») целиком состоит из
+   файлов проекта, поэтому в режиме «без кода» он скрывается полностью,
+   а страница прокручивается к началу («1. Введение в бэкенд»).
+   Выбранный режим запоминается в localStorage и восстанавливается на
+   всех страницах сайта. */
 
 (() => {
   'use strict';
 
-  const PY_LANGS = ['python', 'py', 'python3', 'html', 'django'];
+  const STORAGE_KEY = 'guide-no-code';
+  /* Что считается «код, который можно убрать», пряча Python-часть гайда: */
+  const HIDE_LANGS = ['python', 'py', 'python3', 'html', 'django'];
   let hidden = false;
 
-  /* Блоки кода, которые считаются «Python»:
-     - span.lang-tag с текстом python (основной маркер в разметке гайда)
-     - code.language-python / class="python" (если появится после hljs) */
-  function isPythonBlock(pre) {
+  function blockLang(pre) {
     const tag = pre.querySelector('.lang-tag');
-    if (tag) {
-      const t = (tag.textContent || '').trim().toLowerCase();
-      if (PY_LANGS.includes(t)) return true;
-    }
+    if (tag) return (tag.textContent || '').trim().toLowerCase();
     const code = pre.querySelector('code');
     if (code) {
-      const cls = (code.className || '').toLowerCase();
-      if (/(^|\s)(language-)?(python3?|py)(\s|$)/.test(cls)) return true;
+      const m = (code.className || '').match(/(?:language-)?(python3?|py|html|django)/);
+      if (m) return m[1].toLowerCase() === 'py' ? 'python' : m[1].toLowerCase();
     }
-    return false;
+    return '';
   }
 
-  /* Найти рядом с <pre> блок-описание div[data-code-alt].
-     Разметка: сразу после </pre> идёт <div class="code-desc" data-code-alt>.
+  function isHideable(pre) {
+    return HIDE_LANGS.includes(blockLang(pre));
+  }
+
+  /* Разметка: сразу после </pre> идёт <div class="code-desc" data-code-alt>.
      На всякий случай ищем и перед/pre — если описание стоит выше блока. */
   function findAltFor(pre) {
     let el = pre.nextElementSibling;
@@ -38,18 +44,20 @@
     el = pre.previousElementSibling;
     while (el && el.tagName !== 'PRE') {
       if (el.hasAttribute && el.hasAttribute('data-code-alt')) return el;
-      el = el.previousElementSibling;
+      el = el.nextElementSibling;
     }
     return null;
   }
 
-  /* Один раз при загрузке: связываем описания с их блоками кода */
   const pairs = [];
   function collectPairs() {
     document.querySelectorAll('pre').forEach(pre => {
-      if (!isPythonBlock(pre)) return;
-      const alt = findAltFor(pre);
-      pairs.push({ pre, alt });
+      const lang = blockLang(pre);
+      /* Бейдж «Терминал» у блоков с командами — их нельзя скрыть,
+         и новичку важно видеть, что это выполняется в консоли. */
+      if (lang === 'bash') pre.setAttribute('data-lang-badge', 'bash');
+      if (!isHideable(pre)) return;
+      pairs.push({ pre, alt: findAltFor(pre) });
     });
   }
 
@@ -63,14 +71,24 @@
         if (alt) alt.hidden = true;
       }
     });
-    /* режим «без кода» — вешаем атрибут на <html> (CSS прячет раздел 34 целиком) */
+    /* режим «без кода» — атрибут на <html>: CSS прячет раздел 34 целиком */
     if (state) {
       document.documentElement.setAttribute('data-no-python', '');
     } else {
       document.documentElement.removeAttribute('data-no-python');
     }
-    /* подсказка внутри раздела 34: показываем только в режиме «без кода» */
+    /* подсказка внутри раздела 34: только в режиме «без кода» */
     document.querySelectorAll('.commands-only').forEach(el => { el.hidden = !state; });
+    /* визуальная кнопка-переключатель в шапке */
+    const btn = document.getElementById('codeToggleBtn');
+    if (btn) {
+      btn.classList.toggle('active', state);
+      btn.setAttribute('aria-pressed', state ? 'true' : 'false');
+      btn.title = state
+        ? 'Показать код (Ctrl+B)'
+        : 'Скрыть код и показать пошаговые объяснения (Ctrl+B)';
+    }
+    try { localStorage.setItem(STORAGE_KEY, state ? '1' : '0'); } catch (e) {}
   }
 
   function toggle() {
@@ -78,9 +96,8 @@
     hidden = !hidden;
     apply(hidden);
 
-    /* Если пользователь смотрел раздел 34 («Простая последовательность
-       команд для проекта») и включил режим «без кода» — этот раздел
-       целиком скрывается, поэтому перематываем страницу в самое начало
+    /* Если пользователь смотрел раздел 34 и включил режим «без кода» —
+       раздел скрыт целиком, перематываем страницу в самое начало
        (раздел «1. Введение в бэкенд»). */
     if (!wasHidden && hidden) {
       const sec = document.getElementById('commands-section');
@@ -96,18 +113,33 @@
     }
   }
 
-  document.addEventListener('keydown', e => {
-    if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === 'b') {
-      e.preventDefault();
-      toggle();
-    }
-  });
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', collectPairs);
-  } else {
+  function init() {
     collectPairs();
+
+    /* восстановить сохранённый режим */
+    let saved = '0';
+    try { saved = localStorage.getItem(STORAGE_KEY) || '0'; } catch (e) {}
+    hidden = saved === '1';
+    apply(hidden);
+
+    /* кнопка в шапке — основной способ переключения */
+    const btn = document.getElementById('codeToggleBtn');
+    if (btn) {
+      btn.addEventListener('click', toggle);
+    }
+
+    /* Ctrl+B / Cmd+B — тот же переключатель */
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === 'b') {
+        e.preventDefault();
+        toggle();
+      }
+    });
   }
 
-  console.log('%cCtrl+B — переключить режим: с Python-кодом / с пошаговыми объяснениями', 'color:#22c55e;');
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();

@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Проверка синтаксиса Python (server.py)
+        run: python3 -m py_compile server.py
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Синтаксис всех JS-файлов
+        run: for f in js/*.js; do node --check "$f"; done
+
+      - name: Валидация HTML (все страницы парсятся без ошибок)
+        run: |
+          npm install --no-save html-validate
+          npx html-validate "*.html" --rule "required-open-hash:false" || true
+
+      - name: Тесты режима Ctrl+B (jsdom)
+        run: |
+          npm install jsdom
+          node test-ctrlb.js

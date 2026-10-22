@@ -824,15 +824,14 @@
 </ul>
 
 <div class="callout info">
-  <p><strong>Внешний вид сайтов</strong> собран из готовых блоков Bootstrap 5 (навбар, hero, карточки, формы, таблицы) — их можно подсмотреть на <a href="https://getbootstrap.com/docs/5.3/examples/" target="_blank" rel="noopener">Bootstrap Examples</a> и <a href="https://getbootstrap.com/docs/5.3/components/" target="_blank" rel="noopener">Bootstrap Components</a>. По <kbd>Ctrl</kbd>+<kbd>B</kbd> этот раздел целиком скрывается (он состоит из кода файлов проекта) — остаётся только навигация гайда с человеческими объяснениями.</p>
+  <p><strong>Внешний вид сайтов</strong> собран из готовых блоков Bootstrap 5 (навбар, hero, карточки, формы, таблицы) — их можно подсмотреть на <a href="https://getbootstrap.com/docs/5.3/examples/" target="_blank" rel="noopener">Bootstrap Examples</a> и <a href="https://getbootstrap.com/docs/5.3/components/" target="_blank" rel="noopener">Bootstrap Components</a>. По <kbd>Ctrl</kbd>+<kbd>B</kbd> (или кнопке «&lt;/&gt;» в шапке) прячутся только файлы проекта — Python и HTML-шаблоны, а все команды терминала остаются на месте.</p>
 </div>
 
     
 </div>
 
 <div class="callout info commands-only" hidden>
-  <p><strong>Режим без кода включён (<kbd>Ctrl</kbd>+<kbd>B</kbd>).</strong> Шаблон «Простая последовательность команд для проекта» целиком состоит из кода, поэтому он скрыт. Нажмите <kbd>Ctrl</kbd>+<kbd>B</kbd> ещё раз, чтобы вернуть его.</p>
-
+  <p><strong>Включён режим без кода (<kbd>Ctrl</kbd>+<kbd>B</kbd> или кнопка «&lt;/&gt;» в шапке).</strong> В этом разделе скрыты только файлы проекта (Python и HTML-шаблоны) — вместо них лежат карточки с объяснениями. Все команды терминала видны как обычно: просто выполняйте их по порядку и следуйте карточкам.</p>
 </div>
 <div class="commands-variant-block" id="cmdv-a">
 <h3 id="cmd-base" class="commands-variant">Вариант A. Универсальный проект-каркас (регистрация + вход)</h3>
@@ -905,6 +904,7 @@ TEMPLATES = [
 # 3) в самый конец файла добавьте адреса после входа/выхода:
 LOGIN_REDIRECT_URL = '/'     # куда идти после входа
 LOGOUT_REDIRECT_URL = '/'    # куда идти после выхода</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> откройте файл <code>config/settings.py</code> текстовым редактором и внесите три правки из карточки: добавьте <code>django_bootstrap5</code> и <code>accounts</code> в список INSTALLED_APPS, укажите папку шаблонов <code>DIRS</code>, пропишите адрес входа <code>LOGIN_URL</code> и русскую локаль (LANGUAGE_CODE/USE_I18N). Сохраните файл.</p><p class="code-desc-sub">Файл настроек проекта: Django узнаёт из него, какие приложения включены, где искать шаблоны и куда перенаправлять невошедшего пользователя. Правки обычные — текст в кавычках, после каждой строки запятая.</p></div>
 
     <h4>Шаг 4. Формы регистрации и входа</h4>
 
@@ -936,6 +936,7 @@ class LoginForm(AuthenticationForm):
         attrs=&#123;'class': 'form-control', 'placeholder': 'Логин'&#125;))
     password = forms.CharField(widget=forms.PasswordInput(
         attrs=&#123;'class': 'form-control', 'placeholder': 'Пароль'&#125;))</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>accounts/forms.py</code> (папка <code>accounts</code>) и скопируйте в него код формы регистрации целиком. Файл новый — ничего искать и менять внутри не нужно.</p><p class="code-desc-sub">Форма регистрации: Django сам соберёт поля «имя пользователя», «email», «пароль» и «повтор пароля» и проверит, что пароль надёжный и два ввода совпадают.</p></div>
 
     <h4>Шаг 5. Представления (что отдавать на какой адрес)</h4>
 
@@ -988,6 +989,7 @@ def logout_view(request):
     """Выход из аккаунта."""
     logout(request)
     return redirect('home')</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> откройте готовый файл <code>accounts/views.py</code> (создан командой startapp) и полностью замените его содержимое кодом из блока: страницы регистрации, входа через форму, выхода и личного кабинета.</p><p class="code-desc-sub">Обработчики страниц каркаса: регистрация нового пользователя, вход, выход и кабинет со сведениями о вошедшем.</p></div>
 
     <h4>Шаг 6. Адреса сайта</h4>
 
@@ -1002,6 +1004,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('profile/', views.profile, name='profile'),
 ]</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>accounts/urls.py</code> и скопируйте в него целиком — это адреса страниц нашего приложения (регистрация, вход, выход, кабинет).</p><p class="code-desc-sub">Список адресов приложения accounts: какое действие Django выполняет по каждому URL сайта.</p></div>
 
     <div class="code-title">config/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># config/urls.py — заменить содержимое целиком
 from django.contrib import admin
@@ -1011,6 +1014,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),   # все наши адреса
 ]</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте (или дополните) файл <code>config/urls.py</code> кодом из блока — адреса страниц.</p><p class="code-desc-sub">Маршруты: связь адреса с обработчиком.</p></div>
 
     <h4>Шаг 7. Админка (чтобы видеть пользователей)</h4>
 
@@ -1026,6 +1030,7 @@ admin.site.unregister(User)
 class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'date_joined', 'is_staff')
     ordering = ('-date_joined',)</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> файл <code>accounts/admin.py</code> можно оставить пустым — код из блока нужен только если захотите выводить пользователей админки с дополнительными колонками. При желании скопируйте и сохраните.</p><p class="code-desc-sub">Настройка внешнего вида админ-панели для модели пользователя (необязательный шаг).</p></div>
 
     <h4>Шаг 8. HTML-шаблоны из готовых блоков Bootstrap</h4>
 
@@ -1090,7 +1095,7 @@ class CustomUserAdmin(UserAdmin):
   &#123;% bootstrap_javascript %&#125;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/base.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5: Navbar (шапка), Alerts (уведомления), Footer (подвал), container/main (макет страницы).</p></div>
 
     <div class="code-title">templates/home.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- главная: готовый блок Bootstrap Hero + три карточки в ряд --&gt;
 &#123;% extends "base.html" %&#125;
@@ -1122,7 +1127,7 @@ class CustomUserAdmin(UserAdmin):
   &#123;% endfor %&#125;
 &lt;/div&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/home.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
     <div class="code-title">templates/register.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- регистрация: Bootstrap Card + Forms через django_bootstrap5 --&gt;
 &#123;% extends "base.html" %&#125;
@@ -1147,7 +1152,7 @@ class CustomUserAdmin(UserAdmin):
   &lt;/div&gt;
 &lt;/div&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/register.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
     <div class="code-title">templates/login.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- вход --&gt;
 &#123;% extends "base.html" %&#125;
@@ -1172,7 +1177,7 @@ class CustomUserAdmin(UserAdmin):
   &lt;/div&gt;
 &lt;/div&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/login.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
     <div class="code-title">templates/profile.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- личный кабинет: Bootstrap List group --&gt;
 &#123;% extends "base.html" %&#125;
@@ -1193,7 +1198,7 @@ class CustomUserAdmin(UserAdmin):
   &lt;/div&gt;
 &lt;/div&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/profile.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
     <h4>Шаг 9. Запуск и проверка</h4>
 
@@ -1300,6 +1305,7 @@ class OrderItem(models.Model):
     @property
     def line_total(self):
         return self.unit_price * self.quantity</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте приложение <code>python manage.py startapp shop</code>, затем заполните файл <code>shop/models.py</code> кодом из блока — это таблицы базы: товар (название, цена, описание, остаток) и заказ (позиции, сумма, статус). После копирования обязательно выполните две команды миграции из следующего bash-блока.</p><p class="code-desc-sub">Модели магазина: Django по ним сам создаст таблицы товаров и заказов в базе данных.</p></div>
 
     <pre><span class="lang-tag">bash</span><code class="language-bash"># применяем модели к базе
 python manage.py makemigrations shop
@@ -1340,6 +1346,7 @@ def cart_items(request):
 def cart_clear(request):
     request.session[CART_KEY] = &#123;&#125;
     request.session.modified = True</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>shop/cart.py</code> и скопируйте в него код целиком — это «корзина»: она хранится в сессии браузера, поэтому товары не теряются между страницами.</p><p class="code-desc-sub">Логика корзины: добавить товар, посчитать количество позиций и общую сумму заказа.</p></div>
 
     <h4>Шаг 4. Представления витрины, корзины и заказа</h4>
 
@@ -1402,6 +1409,7 @@ def checkout(request):
 def order_done(request, pk):
     order = get_object_or_404(Order, pk=pk, user=request.user)
     return render(request, 'shop/order_done.html', &#123;'order': order&#125;)</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> замените содержимое файла <code>shop/views.py</code> кодом из блока — страницы витрины, товара, корзины и оформления заказа.</p><p class="code-desc-sub">Обработчики страниц магазина: каталог, карточка товара, корзина, оформление заказа.</p></div>
 
     <h4>Шаг 5. Адреса</h4>
 
@@ -1417,6 +1425,7 @@ urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
     path('order/&lt;int:pk&gt;/', views.order_done, name='order_done'),
 ]</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>shop/urls.py</code> и скопируйте целиком — адреса магазина (каталог, корзина, добавление в корзину, заказ).</p><p class="code-desc-sub">Адреса приложения shop: связка «URL страницы → обработчик».</p></div>
 
     <div class="code-title">config/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># config/urls.py — магазин на главной, аккаунты отдельным путём
 from django.contrib import admin
@@ -1427,6 +1436,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),  # вход/регистрация/кабинет
     path('', include('shop.urls')),               # витрина — на главной
 ]</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте (или дополните) файл <code>config/urls.py</code> кодом из блока — адреса страниц.</p><p class="code-desc-sub">Маршруты: связь адреса с обработчиком.</p></div>
 
     <h4>Шаг 6. Админка: добавляем товары и смотрим заказы</h4>
 
@@ -1452,6 +1462,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'status', 'created_at')
     list_filter = ('status',)
     inlines = [OrderItemInline]</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> замените содержимое <code>shop/admin.py</code> кодом из блока — после этого товары и заказы появится редактировать через админку (/admin/). Не забудьте выполнить migrate из bash-блока рядом.</p><p class="code-desc-sub">Регистрация моделей магазина в админке: добавление/правка товаров и просмотр заказов.</p></div>
 
     <h4>Шаг 7. Шаблоны магазина (готовые блоки Bootstrap)</h4>
 
@@ -1497,7 +1508,7 @@ class OrderAdmin(admin.ModelAdmin):
   &#123;% endfor %&#125;
 &lt;/div&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/shop/catalog.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
     <div class="code-title">templates/shop/cart.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- корзина: Bootstrap Table --&gt;
 &#123;% extends "base.html" %&#125;
@@ -1528,7 +1539,7 @@ class OrderAdmin(admin.ModelAdmin):
 &lt;div class="alert alert-warning"&gt;Корзина пуста. &lt;a href="&#123;% url 'catalog' %&#125;"&gt;В каталог&lt;/a&gt;&lt;/div&gt;
 &#123;% endif %&#125;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/shop/cart.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
     <div class="code-title">templates/shop/checkout.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- оформление заказа: список позиций + форма комментария --&gt;
 &#123;% extends "base.html" %&#125;
@@ -1561,7 +1572,7 @@ class OrderAdmin(admin.ModelAdmin):
   &lt;/div&gt;
 &lt;/div&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/shop/checkout.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
     <div class="code-title">templates/shop/product.html + order_done.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- карточка товара --&gt;
 &#123;% extends "base.html" %&#125;
@@ -1587,7 +1598,7 @@ class OrderAdmin(admin.ModelAdmin):
 &lt;/div&gt;
 &lt;a class="btn btn-outline-primary" href="&#123;% url 'catalog' %&#125;"&gt;Продолжить покупки&lt;/a&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/shop/product.html + order_done.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
     <h4>Шаг 8. Демо-товары и запуск</h4>
 
@@ -1707,6 +1718,7 @@ class HrEvent(models.Model):
         verbose_name = 'Кадровое событие'
         verbose_name_plural = 'Кадровые события'
         ordering = ('-happened_at',)</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте приложение <code>python manage.py startapp hr</code> и заполните <code>hr/models.py</code> кодом из блока — таблицы «Отдел», «Сотрудник» и «Кадровое событие». Затем выполните команды миграции из соседнего bash-блока.</p><p class="code-desc-sub">Модели учёта сотрудников: отделы, карточки людей (ФИО, грейд, оклад, дата приёма) и журнал кадровых событий.</p></div>
 
     <pre><span class="lang-tag">bash</span><code class="language-bash">python manage.py makemigrations hr
 python manage.py migrate</code></pre>
@@ -1741,6 +1753,7 @@ class DepartmentForm(forms.ModelForm):
     class Meta:
         model = Department
         fields = ('name', 'manager')</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>hr/forms.py</code> и скопируйте код целиком — формы добавления сотрудника и записи события; поля и проверки Django построит сам по моделям.</p><p class="code-desc-sub">Формы для ввода данных о сотрудниках и событиях.</p></div>
 
     <h4>Шаг 4. Представления: панель, карточка, поиск, добавление</h4>
 
@@ -1809,6 +1822,7 @@ def event_add(request, pk):
         messages.success(request, 'Событие записано в журнал')
         return redirect('employee_detail', pk=pk)
     return render(request, 'hr/event_form.html', &#123;'form': form, 'emp': emp&#125;)</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> полностью замените содержимое <code>hr/views.py</code> кодом из блока — панель учёта со сводкой и поиском, карточка сотрудника, добавление/правка, журнал событий. Все страницы доступны только вошедшим пользователям.</p><p class="code-desc-sub">Обработчики страниц системы учёта: dashboard, карточка и форма сотрудника, добавление события.</p></div>
 
     <h4>Шаг 5. Адреса</h4>
 
@@ -1823,6 +1837,7 @@ urlpatterns = [
     path('employee/&lt;int:pk&gt;/edit/', views.employee_edit, name='employee_edit'),
     path('employee/&lt;int:pk&gt;/event/', views.event_add, name='event_add'),
 ]</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>hr/urls.py</code> и скопируйте целиком — адреса системы учёта.</p><p class="code-desc-sub">Адреса приложения hr.</p></div>
 
     <div class="code-title">config/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># config/urls.py
 from django.contrib import admin
@@ -1833,6 +1848,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('', include('hr.urls')),
 ]</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте (или дополните) файл <code>config/urls.py</code> кодом из блока — адреса страниц.</p><p class="code-desc-sub">Маршруты: связь адреса с обработчиком.</p></div>
 
     <h4>Шаг 6. Админка с фильтрами и поиском</h4>
 
@@ -1859,6 +1875,7 @@ class HrEventAdmin(admin.ModelAdmin):
     list_display = ('employee', 'kind', 'happened_at')
     list_filter = ('kind',)
     date_hierarchy = 'happened_at'</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> замените содержимое <code>hr/admin.py</code> кодом из блока — сотрудники и отделы станут доступны для правки через админку.</p><p class="code-desc-sub">Регистрация моделей учёта в админке.</p></div>
 
     <h4>Шаг 7. Шаблоны (Bootstrap: Stat cards, Table, List group, Form)</h4>
 
@@ -1924,7 +1941,7 @@ class HrEventAdmin(admin.ModelAdmin):
   &lt;/table&gt;
 &lt;/div&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/hr/dashboard.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
     <div class="code-title">templates/hr/employee.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- карточка сотрудника + журнал событий --&gt;
 &#123;% extends "base.html" %&#125;
@@ -1968,7 +1985,7 @@ class HrEventAdmin(admin.ModelAdmin):
   &lt;/div&gt;
 &lt;/div&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/hr/employee.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
     <div class="code-title">templates/hr/employee_form.html + event_form.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- форма сотрудника: django_bootstrap5 рисует поля в стиле Bootstrap --&gt;
 &#123;% extends "base.html" %&#125;
@@ -2000,7 +2017,7 @@ class HrEventAdmin(admin.ModelAdmin):
   &lt;/form&gt;
 &lt;/div&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/hr/employee_form.html + event_form.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
     <h4>Шаг 8. Демо-данные и запуск</h4>
 

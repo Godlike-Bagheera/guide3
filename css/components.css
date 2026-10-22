@@ -1137,10 +1137,9 @@ pre[data-code-hidden] {
 
 [data-code-hidden="true"] .lang-tag { display: none; }
 
-/* Раздел 34 «Простая последовательность команд» целиком состоит из кода —
-   в режиме «без кода» (Ctrl+B) он скрывается полностью, а вместо него
-   показывается подсказка .commands-only */
-html[data-no-python] #commands-section { display: none !important; }
+/* Раздел 34: в режиме «без кода» скрываются только python/html-файлы
+   (обычным правилом pre[data-code-hidden]), команды bash остаются видимыми,
+   а вместо скрытых файлов показываются карточки-подсказки .commands-only */
 html[data-no-python] .commands-only { display: block !important; }
 .commands-only[hidden] { display: none; }
 html:not([data-no-python]) .commands-only { display: none !important; }

@@ -1,12 +1,12 @@
 /* Два режима чтения гайда (переключаются кнопкой «</>» в шапке или Ctrl+B):
    1) «С кодом» (по умолчанию): виден весь код.
-   2) «Без кода»: блоки Python и HTML-шаблонов скрываются, вместо каждого
+   2) «Без кода»: скрывается ТОЛЬКО код файлов проекта — блоки Python и
+      HTML-шаблоны (в том числе python/html-файлы раздела 34). Вместо каждого
       показывается человеческое описание — что именно делать на этом шаге.
-   Команды терминала (bash/env/ini/nginx/sql/json/text/jsx/javascript)
-   остаются видимыми ВСЕГДА — по ним новичок и идёт по гайду.
-   Раздел 34 («Простая последовательность команд») целиком состоит из
-   файлов проекта, поэтому в режиме «без кода» он скрывается полностью,
-   а страница прокручивается к началу («1. Введение в бэкенд»).
+      Команды терминала (bash) и прочие блоки (env/ini/nginx/sql/json/text/
+      jsx/javascript) остаются видимыми ВСЕГДА — по ним новичок и идёт по
+      гайду, включая раздел 34: там в режиме «без кода» видно все команды и
+      карточки-подсказки вместо файлов.
    Выбранный режим запоминается в localStorage и восстанавливается на
    всех страницах сайта. */
 
@@ -14,7 +14,7 @@
   'use strict';
 
   const STORAGE_KEY = 'guide-no-code';
-  /* Что считается «код, который можно убрать», пряча Python-часть гайда: */
+  /* Что считается «код файлов проекта», который можно убрать: */
   const HIDE_LANGS = ['python', 'py', 'python3', 'html', 'django'];
   let hidden = false;
 
@@ -71,7 +71,8 @@
         if (alt) alt.hidden = true;
       }
     });
-    /* режим «без кода» — атрибут на <html>: CSS прячет раздел 34 целиком */
+    /* режим «без кода» — атрибут на <html>: по нему CSS показывает
+       карточки-подсказки .commands-only в разделе 34 */
     if (state) {
       document.documentElement.setAttribute('data-no-python', '');
     } else {
@@ -92,25 +93,8 @@
   }
 
   function toggle() {
-    const wasHidden = hidden;
     hidden = !hidden;
     apply(hidden);
-
-    /* Если пользователь смотрел раздел 34 и включил режим «без кода» —
-       раздел скрыт целиком, перематываем страницу в самое начало
-       (раздел «1. Введение в бэкенд»). */
-    if (!wasHidden && hidden) {
-      const sec = document.getElementById('commands-section');
-      if (sec) {
-        const r = sec.getBoundingClientRect();
-        const inView = r.top < window.innerHeight && r.bottom > 0;
-        const hash = location.hash || '';
-        if (inView || /^#(cmd-|commands)/.test(hash)) {
-          try { history.replaceState(null, '', location.pathname); } catch (e) {}
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      }
-    }
   }
 
   function init() {

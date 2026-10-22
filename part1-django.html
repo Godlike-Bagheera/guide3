@@ -474,6 +474,7 @@ nano api/templates/api/base.html</code><button type="button" class="copy-btn">К
   {% block content %}{% endblock %}
 &lt;/body&gt;
 &lt;/html&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+<div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>api/templates/api/base.html</code> и вставьте в него скрытый код целиком (команды для папки — в соседнем блоке терминала).</p><p class="code-desc-sub">Общий «скелет» всех страниц: подключаются стили Bootstrap 5, сверху готовый блок Navbar (шапка с меню), в середину Django подставляет содержимое каждой страницы. Свой CSS не нужен — весь вид дают готовые блоки с сайта Bootstrap.</p></div>
     <p>Что дают эти теги:</p>
     <div class="table-wrap">
       <table>
@@ -525,6 +526,7 @@ urlpatterns = [
     &lt;/div&gt;
   &lt;/div&gt;
 {% endblock %}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+<div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>api/templates/api/home.html</code> и скопируйте в него скрытый код.</p><p class="code-desc-sub">Главная страница проекта заметок: hero-блок + сетка карточек (готовые компоненты Bootstrap Card) поверх скелета base.html.</p></div>
 <pre><code>python manage.py runserver</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
     <p>Откройте <code>http://127.0.0.1:8000/</code> — увидите аккуратную карточку со стилизованной кнопкой. Ноль собственного CSS!</p>
 
@@ -561,6 +563,7 @@ urlpatterns = [
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/nav&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+<div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> это образец навигационной панели из официальной документации Bootstrap — в отдельный файл его не сохраняют; кусок вставляют внутрь шаблона base.html между тегами body.</p><p class="code-desc-sub">Готовый компонент Navbar со страницы getbootstrap.com/docs/5.3/components/navbar: сворачивается в «бургер» на маленьком экране, ссылки ведут на страницы сайта.</p></div>
     <p>А карусель или сетку карточек из примеров сайта — в вывод данных из базы:</p>
 <pre><code>&lt;div class="row"&gt;
   {% for note in notes %}
@@ -577,6 +580,7 @@ urlpatterns = [
     &lt;/div&gt;
   {% endfor %}
 &lt;/div&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+<div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> вставьте этот фрагмент в шаблон главной страницы вместо статичной карточки — это сетка, которая сама превратит список заметок из базы в ряд карточек.</p><p class="code-desc-sub">Готовый блок Bootstrap Grid + Card (row → col-md-4 → card): цикл Django повторяет карточку для каждой заметки. Так сайт собирается «из кубиков LEGO».</p></div>
     <div class="callout warn">
       <p><strong>Два нюанса при копировании:</strong><br>
       • Не копируйте теги <code>&lt;link&gt;</code>/<code>&lt;script&gt;</code> с CDN из примеров Bootstrap — у нас за это отвечают <code>{% bootstrap_css %}</code> и <code>{% bootstrap_javascript %}</code>, иначе стили загрузятся дважды.<br>
@@ -707,6 +711,7 @@ urlpatterns = [
     {% bootstrap_javascript %}
 &lt;/body&gt;
 &lt;/html&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+<div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>webapp/templates/webapp/base.html</code> и вставьте скрытый код целиком — это каркас всего сайта MiniShop.</p><p class="code-desc-sub">Каркас из готовых блоков Bootstrap 5: тёмная Navbar-шапка, контейнер main для содержимого страниц, подключение локального bootstrap.min.css (работает без интернета).</p></div>
     <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
 
     <h4>Шаг 8. Миграции и запуск локального сервера</h4>
@@ -875,6 +880,7 @@ urlpatterns = [
     &lt;script src="{% static 'webapp/js/bootstrap.bundle.min.js' %}"&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+<div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>webapp/templates/webapp/index.html</code> и скопируйте в него скрытый код.</p><p class="code-desc-sub">Главная страница «всё работает»: приветственный блок (Jumbotron) и карточки статуса — разметка взята из примеров Bootstrap 5, поля рисует Django.</p></div>
     <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
     <p><strong>2. Форма входа (login.html)</strong> — на основе Forms -&gt; Form controls + Card:</p>
 <pre><code>{% load static %}
@@ -924,6 +930,7 @@ urlpatterns = [
     &lt;script src="{% static 'webapp/js/bootstrap.bundle.min.js' %}"&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+<div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>webapp/templates/webapp/login.html</code> и вставьте скрытый код целиком.</p><p class="code-desc-sub">Страница входа: официальный макет формы Bootstrap 5 (container → row justify-content-center → col → card → form-control). Локальный CSS, интернет не нужен.</p></div>
     <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
     <p><strong>3. Форма регистрации (register.html)</strong> — на основе Forms -&gt; Overview:</p>
 <pre><code>{% load static %}
@@ -977,6 +984,7 @@ urlpatterns = [
     &lt;script src="{% static 'webapp/js/bootstrap.bundle.min.js' %}"&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+<div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>webapp/templates/webapp/register.html</code> и вставьте скрытый код целиком.</p><p class="code-desc-sub">Страница регистрации: тот же готовый макет Bootstrap-карточки по центру экрана; цикл Django сам выводит все поля формы с подписями и ошибками.</p></div>
     <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
 
     <h4>Шаг 7. Применение миграций и запуск в РЕД ОС</h4>
@@ -1160,6 +1168,7 @@ LOGIN_URL = 'webapp:login'</code><button type="button" class="copy-btn">Копи
 {% bootstrap_javascript %}
 &lt;/body&gt;
 &lt;/html&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+<div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>webapp/templates/webapp/base.html</code> для магазина MiniShop (если делали автономный вариант) и вставьте скрытый код.</p><p class="code-desc-sub">Каркас MiniShop: Navbar с брендом и ссылкой на корзину, контейнер main, подключение django_bootstrap5. Внешний вид — только стандартные классы Bootstrap.</p></div>
     <p>Главная страница со списком товаров — <code>index.html</code>:</p>
 <pre><code>{% extends 'webapp/base.html' %}
 {% block title %}Товары — MiniShop{% endblock %}
@@ -1182,6 +1191,7 @@ LOGIN_URL = 'webapp:login'</code><button type="button" class="copy-btn">Копи
     {% endfor %}
 &lt;/div&gt;
 {% endblock %}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+<div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>webapp/templates/webapp/product_list.html</code> (витрина товаров) и скопируйте в него скрытый код.</p><p class="code-desc-sub">Список товаров: готовый блок Bootstrap row-cols + Card с картинкой (card-img-top), ценой и кнопкой «Подробнее».</p></div>
     <p>Страница товара со списком отзывов и кнопкой написать отзыв — <code>product.html</code>:</p>
 <pre><code>{% extends 'webapp/base.html' %}
 {% block title %}{{ product.name }} — MiniShop{% endblock %}
@@ -1215,6 +1225,7 @@ LOGIN_URL = 'webapp:login'</code><button type="button" class="copy-btn">Копи
 &lt;p class="text-muted"&gt;Отзывов ещё нет — станьте первым!&lt;/p&gt;
 {% endfor %}
 {% endblock %}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+<div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>webapp/templates/webapp/product_detail.html</code> и вставьте скрытый код.</p><p class="code-desc-sub">Страница товара: описание и цена в hero-блоке, отзывы через List group, ссылка «написать отзыв».</p></div>
     <p>Форма отзыва — <code>review_form.html</code> (доступна только залогиненным благодаря <code>@login_required</code>):</p>
 <pre><code>{% extends 'webapp/base.html' %}
 {% block content %}
@@ -1238,6 +1249,7 @@ LOGIN_URL = 'webapp:login'</code><button type="button" class="copy-btn">Копи
     &lt;button type="submit" class="btn btn-success"&gt;Отправить&lt;/button&gt;
 &lt;/form&gt;
 {% endblock %}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+<div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>webapp/templates/webapp/review_form.html</code> и вставьте скрытый код.</p><p class="code-desc-sub">Форма отзыва из типовых элементов Bootstrap: form-select для оценки, textarea для текста, btn для кнопки.</p></div>
     <p>Формы входа и регистрации — <code>login.html</code> и <code>register.html</code> (библиотека <code>django-bootstrap5</code> сама отрисует поля):</p>
 <pre><code>&lt;!-- webapp/templates/webapp/login.html --&gt;
 {% extends 'webapp/base.html' %}
@@ -1264,6 +1276,7 @@ LOGIN_URL = 'webapp:login'</code><button type="button" class="copy-btn">Копи
     &lt;button type="submit" class="btn btn-success"&gt;Создать аккаунт&lt;/button&gt;
 &lt;/form&gt;
 {% endblock %}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+<div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте ДВА файла — <code>webapp/templates/webapp/login.html</code> и <code>webapp/templates/webapp/register.html</code>; граница между ними помечена комментарием внутри кода.</p><p class="code-desc-sub">Формы входа и регистрации на блоках Bootstrap Card; библиотека django-bootstrap5 превращает поля Django-формы в аккуратные form-control.</p></div>
     <p>Фильтр <code>format_stars</code> для звёздочек рейтинга добавляем в <code>webapp/templatetags/shop_extras.py</code> (файл и пустой <code>__init__.py</code> в папке <code>templatetags</code> создаём вручную):</p>
 <pre><code>from django import template
 

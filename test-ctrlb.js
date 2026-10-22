@@ -68,7 +68,7 @@ function langOf(pre) {
   check('part1: B без Ctrl игнорируется', py.every(p => !p.hasAttribute('data-code-hidden')));
 }
 
-// ─── reference.html: раздел 34 скрывается целиком, автопрокрутка ───
+// ─── reference.html: раздел 34 — скрываются только файлы, bash виден ───
 {
   const { dom, store } = loadPage('reference.html');
   const w = dom.window, d = w.document;
@@ -76,7 +76,6 @@ function langOf(pre) {
   let scrolled = false;
   w.scrollTo = () => { scrolled = true; };
   d.dispatchEvent(new w.Event('DOMContentLoaded'));
-  const pres = [...d.querySelectorAll('pre')];
   const sec = d.getElementById('commands-section');
   const pyIn34 = [...sec.querySelectorAll('pre')].filter(p => ['python','html'].includes(langOf(p)));
   const bashIn34 = [...sec.querySelectorAll('pre')].filter(p => langOf(p) === 'bash');
@@ -88,10 +87,15 @@ function langOf(pre) {
   d.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'b', ctrlKey: true, bubbles: true }));
   check('ref34: атрибут data-no-python на html', d.documentElement.hasAttribute('data-no-python'));
   check('ref34: подсказка commands-only показана', [...d.querySelectorAll('.commands-only')].every(e => !e.hidden));
-  check('ref34: прокрутка в начало вызвана', scrolled);
+  check('ref34: все python/html-файлы раздела 34 скрыты', pyIn34.every(p => p.hasAttribute('data-code-hidden')));
+  check('ref34: bash-команды раздела 34 НЕ скрыты', bashIn34.every(p => !p.hasAttribute('data-code-hidden')));
+  check('ref34: описания файлов раздела 34 показаны', [...sec.querySelectorAll('.code-desc')].every(e => !e.hidden));
+  check('ref34: автопрокрутка УБРАНА (раздел остаётся на месте)', !scrolled);
 
   d.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'b', ctrlKey: true, bubbles: true }));
   check('ref34: режим выключен', !d.documentElement.hasAttribute('data-no-python'));
+  check('ref34: код вернулся', pyIn34.every(p => !p.hasAttribute('data-code-hidden')));
+  check('ref34: подсказка снова скрыта', [...d.querySelectorAll('.commands-only')].every(e => e.hidden));
 }
 
 // ─── восстановление сохранённого режима при загрузке ───

@@ -46,5 +46,6 @@ window.GUIDE_ID_MAP = {
   'faq': 'reference.html',
   'cheatsheet': 'reference.html',
   'summary': 'reference.html',
+  'commands': 'reference.html',
   'export': 'reference.html',
 };

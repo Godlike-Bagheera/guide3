@@ -6,7 +6,7 @@
 (() => {
   'use strict';
 
-  const PY_LANGS = ['python', 'py', 'python3'];
+  const PY_LANGS = ['python', 'py', 'python3', 'html', 'django'];
   let hidden = false;
 
   /* Блоки кода, которые считаются «Python»:
@@ -63,12 +63,37 @@
         if (alt) alt.hidden = true;
       }
     });
-    document.documentElement.toggleAttribute('data-no-python', state);
+    /* режим «без кода» — вешаем атрибут на <html> (CSS прячет раздел 34 целиком) */
+    if (state) {
+      document.documentElement.setAttribute('data-no-python', '');
+    } else {
+      document.documentElement.removeAttribute('data-no-python');
+    }
+    /* подсказка внутри раздела 34: показываем только в режиме «без кода» */
+    document.querySelectorAll('.commands-only').forEach(el => { el.hidden = !state; });
   }
 
   function toggle() {
+    const wasHidden = hidden;
     hidden = !hidden;
     apply(hidden);
+
+    /* Если пользователь смотрел раздел 34 («Простая последовательность
+       команд для проекта») и включил режим «без кода» — этот раздел
+       целиком скрывается, поэтому перематываем страницу в самое начало
+       (раздел «1. Введение в бэкенд»). */
+    if (!wasHidden && hidden) {
+      const sec = document.getElementById('commands-section');
+      if (sec) {
+        const r = sec.getBoundingClientRect();
+        const inView = r.top < window.innerHeight && r.bottom > 0;
+        const hash = location.hash || '';
+        if (inView || /^#(cmd-|commands)/.test(hash)) {
+          try { history.replaceState(null, '', location.pathname); } catch (e) {}
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    }
   }
 
   document.addEventListener('keydown', e => {

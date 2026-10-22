@@ -84,7 +84,8 @@
     'faq': "31. FAQ — частые вопросы",
     'cheatsheet': "32. Cheat sheet — все команды в одном месте",
     'summary': "33. Итог",
-    'export': "34. Экспорт гайда",
+    'commands': "34. Простая последовательность команд для проекта",
+    'export': "35. Экспорт гайда",
   };
 
   /* ─── Оглавление в сайдбаре (как на главной), со звёздочками-закладками ─── */
@@ -98,7 +99,7 @@
     { part: 'Продвинутое' },
     ['git-intro', 'extended-model', 'auth-register', 'tests', 'env-config', 'db-schema', 'auth-compare', 'db-python', 'postgresql', 'deploy', 'cors-deep'],
     { part: 'Справочник' },
-    ['troubleshooting', 'glossary', 'faq', 'cheatsheet', 'summary', 'export'],
+    ['troubleshooting', 'glossary', 'faq', 'cheatsheet', 'summary', 'commands', 'export'],
   ];
 
   function buildToc() {

@@ -1116,3 +1116,30 @@ pre[data-code-hidden] {
 .code-desc b {
   color: var(--accent-2);
 }
+
+
+/* Заголовок-путь файла над блоком кода (раздел 34): остаётся видимым при Ctrl+B */
+.code-title {
+  font-family: var(--font-mono, monospace);
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--text-muted, #666);
+  background: var(--surface-2, rgba(127,127,127,.08));
+  border: 1px solid var(--border, rgba(127,127,127,.2));
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding: .3rem .7rem;
+  margin: 1rem 0 0;
+}
+.code-title + pre { margin-top: 0; }
+[data-code-hidden="true"] + .code-desc { display: block; }
+
+[data-code-hidden="true"] .lang-tag { display: none; }
+
+/* Раздел 34 «Простая последовательность команд» целиком состоит из кода —
+   в режиме «без кода» (Ctrl+B) он скрывается полностью, а вместо него
+   показывается подсказка .commands-only */
+html[data-no-python] #commands-section { display: none !important; }
+html[data-no-python] .commands-only { display: block !important; }
+.commands-only[hidden] { display: none; }
+html:not([data-no-python]) .commands-only { display: none !important; }

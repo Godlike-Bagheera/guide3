@@ -4,9 +4,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Troubleshooting, глоссарий, FAQ, cheat sheet, итог и экспорт гайда.">
+<meta name="description" content="Troubleshooting, глоссарий, FAQ, cheat sheet, готовые последовательности команд (каркас, магазин, учёт сотрудников), итог и экспорт гайда.">
 <meta name="theme-color" content="#fdf2f6" id="metaThemeColor">
-<title>Справочник — Full-Stack гайд Django + DRF + React</title>
+<title>Справочник и готовые последовательности команд — Full-Stack гайд Django + DRF + React</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Manrope:wght@500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -107,7 +107,8 @@
           <li><a href="#faq" data-star>31. FAQ — частые вопросы</a></li>
           <li><a href="#cheatsheet" data-star>32. Cheat sheet — все команды в одном месте</a></li>
           <li><a href="#summary" data-star>33. Итог</a></li>
-          <li><a href="#export" data-star>34. Экспорт гайда</a></li>
+          <li><a href="#commands" data-star>34. Последовательности команд</a></li>
+          <li><a href="#export" data-star>35. Экспорт гайда</a></li>
         </ul>
       </li>
     </ul>
@@ -407,7 +408,6 @@
     </div>
     <button type="button" class="mark-read" data-section="cheatsheet@reference.html">Отметить как изученное</button>
 
-    <!-- section:summary -->
     <h2 id="summary" class="mark-read-anchor">33. Итог</h2>
     <p>Мы прошли путь от нуля до полноценного full-stack приложения <strong>без единой команды sudo</strong>:</p>
     <ul>
@@ -460,8 +460,1238 @@
     </ul>
     <button type="button" class="mark-read" data-section="summary@reference.html">Отметить как изученное</button>
 
-    <!-- section:export -->
-    <h2 id="export" class="mark-read-anchor">34. Экспорт гайда</h2>
+    <div id="commands-section">
+<div class="commands-intro">
+<h2 id="commands" class="mark-read-anchor">34. Простая последовательность команд для проекта</h2>
+<p>Это «шпаргалка-конструктор»: три полностью рабочие последовательности — от пустой папки до запущенного сайта. Каждая разбита на маленькие шаги: серые блоки с командами выполняйте в терминале по порядку, а код из остальных блоков вставляйте в файлы (путь подписан над каждым блоком). Ничего выдумывать не нужно — копируйте шаг за шагом сверху вниз.</p>
+
+<div class="callout warn">
+  <p><strong>Один проект = одна папка.</strong> Не смешивайте проекты: каждый создаётся отдельно (<code>~/myproject</code>, <code>~/shop</code>, <code>~/hrsystem</code>). Перед началом нового проекта выйдите из старого окружения командой <code>deactivate</code>.</p>
+</div>
+
+<h4>Три варианта последовательности</h4>
+<ul>
+  <li><a href="#cmd-base">Вариант A — Универсальный каркас</a>: Django + django_bootstrap5 + регистрация и вход. Основа для любого сайта.</li>
+  <li><a href="#cmd-shop">Вариант B — Интернет-магазин</a>: тот же каркас + товары, корзина, оформление заказа.</li>
+  <li><a href="#cmd-hr">Вариант C — Учёт сотрудников</a>: тот же каркас + сотрудники, отделы, журнал кадровых событий.</li>
+</ul>
+
+<div class="callout info">
+  <p><strong>Внешний вид сайтов</strong> собран из готовых блоков Bootstrap 5 (навбар, hero, карточки, формы, таблицы) — их можно подсмотреть на <a href="https://getbootstrap.com/docs/5.3/examples/" target="_blank" rel="noopener">Bootstrap Examples</a> и <a href="https://getbootstrap.com/docs/5.3/components/" target="_blank" rel="noopener">Bootstrap Components</a>. Python-код здесь тоже прячется по <kbd>Ctrl</kbd>+<kbd>B</kbd> (появятся пояснения), а команды терминала остаются видимыми всегда.</p>
+</div>
+
+    
+</div>
+
+<div class="callout info commands-only" hidden>
+  <p><strong>Режим без кода включён (<kbd>Ctrl</kbd>+<kbd>B</kbd>).</strong> Шаблон «Простая последовательность команд для проекта» целиком состоит из кода, поэтому он скрыт. Нажмите <kbd>Ctrl</kbd>+<kbd>B</kbd> ещё раз, чтобы вернуть его.</p>
+</div>
+<h3 id="cmd-base" class="commands-variant">Вариант A. Универсальный проект-каркас (регистрация + вход)</h3>
+
+    <p>Результат: сайт со страницами «Главная», «Вход», «Регистрация», «Выход», личным кабинетом и админкой. На этом каркасе построены варианты B и C.</p>
+
+    <h4>Шаг 1. Папка и виртуальное окружение</h4>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash"># создаём папку будущего проекта и заходим в неё
+mkdir -p ~/myproject &amp;&amp; cd ~/myproject
+
+# создаём изолированное окружение (python3 в РЕД ОС уже есть)
+python3 -m venv venv
+
+# включаем его (каждый новый терминал — начинать с этой команды)
+source venv/bin/activate
+
+# ставим Django и Bootstrap-библиотеку для шаблонов
+pip install django django-bootstrap5
+
+# проверяем, что всё установилось
+python -m pip list | grep -i -E "django|bootstrap"</code></pre>
+
+    <h4>Шаг 2. Создаём Django-проект и приложение</h4>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash"># стартуем проект (точка в конце = «в текущей папке»)
+django-admin startproject config .
+
+# приложение, где будет логика пользователей
+python manage.py startapp accounts
+
+# наводим порядок в базе и заводим администратора
+python manage.py migrate
+python manage.py createsuperuser</code></pre>
+
+    <h4>Шаг 3. Подключаем приложение и django_bootstrap5</h4>
+
+    <p>Откройте файл <code>config/settings.py</code> и измените в нём три места.</p>
+
+    <div class="code-title">config/settings.py</div><pre><span class="lang-tag">python</span><code class="language-python"># config/settings.py
+# 1) найдите INSTALLED_APPS и добавьте две строки в конец списка:
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django_bootstrap5',   # добавить: Bootstrap 5 в шаблонах
+    'accounts',            # добавить: наше приложение
+]
+
+# 2) найдите секцию TEMPLATES и разрешите читать templates/ из корня проекта:
+TEMPLATES = [
+    &#123;
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],   # вот так изменить DIRS
+        'APP_DIRS': True,
+        'OPTIONS': &#123;
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        &#125;,
+    &#125;,
+]
+
+# 3) в самый конец файла добавьте адреса после входа/выхода:
+LOGIN_REDIRECT_URL = '/'     # куда идти после входа
+LOGOUT_REDIRECT_URL = '/'    # куда идти после выхода</code></pre>
+
+    <h4>Шаг 4. Формы регистрации и входа</h4>
+
+    <div class="code-title">accounts/forms.py</div><pre><span class="lang-tag">python</span><code class="language-python"># accounts/forms.py — новый файл
+from django import forms
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+
+
+class RegisterForm(UserCreationForm):
+    """Регистрация: имя пользователя, e-mail и пароль дважды."""
+    email = forms.EmailField(required=True, label='Электронная почта')
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
+
+
+class LoginForm(AuthenticationForm):
+    """Вход: стандартная проверка Django, поля в стиле Bootstrap."""
+    username = forms.CharField(widget=forms.TextInput(
+        attrs=&#123;'class': 'form-control', 'placeholder': 'Логин'&#125;))
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs=&#123;'class': 'form-control', 'placeholder': 'Пароль'&#125;))</code></pre>
+
+    <h4>Шаг 5. Представления (что отдавать на какой адрес)</h4>
+
+    <div class="code-title">accounts/views.py</div><pre><span class="lang-tag">python</span><code class="language-python"># accounts/views.py — заменить содержимое целиком
+from django.contrib import messages
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
+
+from .forms import LoginForm, RegisterForm
+
+
+def home(request):
+    """Главная страница."""
+    return render(request, 'home.html')
+
+
+def register(request):
+    """Регистрация: показали форму — GET, проверили и сохранили — POST."""
+    if request.user.is_authenticated:
+        return redirect('home')
+    form = RegisterForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        user = form.save()
+        login(request, user)                 # сразу пускаем внутрь
+        messages.success(request, 'Добро пожаловать, ' + user.username + '!')
+        return redirect('home')
+    return render(request, 'register.html', &#123;'form': form&#125;)
+
+
+def login_view(request):
+    """Вход по логину и паролю."""
+    if request.method == 'POST':
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            return redirect(request.GET.get('next', '/'))
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', &#123;'form': form&#125;)
+
+
+@login_required                # без входа сюда не пустят
+def profile(request):
+    """Личный кабинет."""
+    return render(request, 'profile.html', &#123;'user_obj': request.user&#125;)
+
+
+def logout_view(request):
+    """Выход из аккаунта."""
+    logout(request)
+    return redirect('home')</code></pre>
+
+    <h4>Шаг 6. Адреса сайта</h4>
+
+    <div class="code-title">accounts/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># accounts/urls.py — новый файл
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('register/', views.register, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('profile/', views.profile, name='profile'),
+]</code></pre>
+
+    <div class="code-title">config/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># config/urls.py — заменить содержимое целиком
+from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('accounts.urls')),   # все наши адреса
+]</code></pre>
+
+    <h4>Шаг 7. Админка (чтобы видеть пользователей)</h4>
+
+    <div class="code-title">accounts/admin.py</div><pre><span class="lang-tag">python</span><code class="language-python"># accounts/admin.py — заменить содержимое
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
+
+admin.site.unregister(User)
+
+
+@admin.register(User)
+class CustomUserAdmin(UserAdmin):
+    list_display = ('username', 'email', 'date_joined', 'is_staff')
+    ordering = ('-date_joined',)</code></pre>
+
+    <h4>Шаг 8. HTML-шаблоны из готовых блоков Bootstrap</h4>
+
+    <p>Создайте папку <code>templates</code> в корне проекта (<code>mkdir ~/myproject/templates</code>) и положите в неё пять файлов. Каждый собран из готовых компонентов Bootstrap 5: Navbar, Hero, Cards, Forms, Alerts, List group, Footer.</p>
+
+    <div class="code-title">templates/base.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;&#123;% block title %&#125;Мой сайт&#123;% endblock %&#125;&lt;/title&gt;
+  &#123;% load django_bootstrap5 %&#125;
+  &#123;% bootstrap_css %&#125;
+&lt;/head&gt;
+&lt;body class="bg-light d-flex flex-column min-vh-100"&gt;
+
+  &lt;!-- Готовый блок Bootstrap: Navbar --&gt;
+  &lt;nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm"&gt;
+    &lt;div class="container"&gt;
+      &lt;a class="navbar-brand fw-bold" href="&#123;% url 'home' %&#125;"&gt;Мой сайт&lt;/a&gt;
+      &lt;button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#nav"&gt;&lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;&lt;/button&gt;
+      &lt;div class="collapse navbar-collapse" id="nav"&gt;
+        &lt;ul class="navbar-nav ms-auto align-items-lg-center"&gt;
+          &#123;% if user.is_authenticated %&#125;
+            &lt;li class="nav-item"&gt;&lt;a class="nav-link" href="&#123;% url 'profile' %&#125;"&gt;&#123;&#123; user.username &#125;&#125;&lt;/a&gt;&lt;/li&gt;
+            &lt;li class="nav-item"&gt;
+              &lt;form action="&#123;% url 'logout' %&#125;" method="post" class="d-inline"&gt;
+                &#123;% csrf_token %&#125;
+                &lt;button class="btn btn-outline-light btn-sm ms-lg-2" type="submit"&gt;Выйти&lt;/button&gt;
+              &lt;/form&gt;
+            &lt;/li&gt;
+          &#123;% else %&#125;
+            &lt;li class="nav-item"&gt;&lt;a class="nav-link" href="&#123;% url 'login' %&#125;"&gt;Вход&lt;/a&gt;&lt;/li&gt;
+            &lt;li class="nav-item"&gt;
+              &lt;a class="btn btn-light btn-sm ms-lg-2" href="&#123;% url 'register' %&#125;"&gt;Регистрация&lt;/a&gt;
+            &lt;/li&gt;
+          &#123;% endif %&#125;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/nav&gt;
+
+  &lt;main class="container py-5 flex-grow-1"&gt;
+    &lt;!-- Bootstrap Alerts: сообщения об успехе/ошибке --&gt;
+    &#123;% for message in messages %&#125;
+      &lt;div class="alert alert-&#123;% if message.tags == 'error' %&#125;danger&#123;% else %&#125;&#123;&#123; message.tags &#125;&#125;&#123;% endif %&#125; alert-dismissible fade show"&gt;
+        &#123;&#123; message &#125;&#125;
+        &lt;button type="button" class="btn-close" data-bs-dismiss="alert"&gt;&lt;/button&gt;
+      &lt;/div&gt;
+    &#123;% endfor %&#125;
+
+    &#123;% block content %&#125;&#123;% endblock %&#125;
+  &lt;/main&gt;
+
+  &lt;!-- Готовый блок Bootstrap: Footer --&gt;
+  &lt;footer class="bg-white border-top py-4"&gt;
+    &lt;div class="container text-center text-muted small"&gt;
+      сделано на Django + Bootstrap 5
+    &lt;/div&gt;
+  &lt;/footer&gt;
+  &#123;% bootstrap_javascript %&#125;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+
+    <div class="code-title">templates/home.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- главная: готовый блок Bootstrap Hero + три карточки в ряд --&gt;
+&#123;% extends "base.html" %&#125;
+&#123;% block title %&#125;Главная&#123;% endblock %&#125;
+&#123;% block content %&#125;
+&lt;div class="p-5 mb-4 bg-white rounded-3 border shadow-sm"&gt;
+  &lt;div class="container-fluid py-4"&gt;
+    &lt;h1 class="display-5 fw-bold"&gt;Добро пожаловать!&lt;/h1&gt;
+    &lt;p class="col-md-9 fs-4"&gt;Рабочий каркас сайта: регистрация, вход и личный кабинет уже настроены.&lt;/p&gt;
+    &#123;% if user.is_authenticated %&#125;
+      &lt;a class="btn btn-primary btn-lg" href="&#123;% url 'profile' %&#125;"&gt;Перейти в кабинет&lt;/a&gt;
+    &#123;% else %&#125;
+      &lt;a class="btn btn-primary btn-lg me-2" href="&#123;% url 'register' %&#125;"&gt;Создать аккаунт&lt;/a&gt;
+      &lt;a class="btn btn-outline-secondary btn-lg" href="&#123;% url 'login' %&#125;"&gt;Я уже зарегистрирован&lt;/a&gt;
+    &#123;% endif %&#125;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="row g-4"&gt;
+  &#123;% for t in "123" %&#125;
+  &lt;div class="col-md-4"&gt;
+    &lt;div class="card h-100 shadow-sm"&gt;
+      &lt;div class="card-body"&gt;
+        &lt;h5 class="card-title"&gt;Возможность &#123;&#123; forloop.counter &#125;&#125;&lt;/h5&gt;
+        &lt;p class="card-text text-muted"&gt;Короткое описание того, что умеет сайт.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &#123;% endfor %&#125;
+&lt;/div&gt;
+&#123;% endblock %&#125;</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+
+    <div class="code-title">templates/register.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- регистрация: Bootstrap Card + Forms через django_bootstrap5 --&gt;
+&#123;% extends "base.html" %&#125;
+&#123;% load django_bootstrap5 %&#125;
+&#123;% block title %&#125;Регистрация&#123;% endblock %&#125;
+&#123;% block content %&#125;
+&lt;div class="row justify-content-center"&gt;
+  &lt;div class="col-md-6 col-lg-5"&gt;
+    &lt;div class="card shadow-sm"&gt;
+      &lt;div class="card-body p-4"&gt;
+        &lt;h1 class="h4 mb-3"&gt;Регистрация&lt;/h1&gt;
+        &lt;form method="post" novalidate&gt;
+          &#123;% csrf_token %&#125;
+          &#123;% bootstrap_form form %&#125;
+          &#123;% bootstrap_button "Зарегистрироваться" button_type="submit" button_class="btn-primary w-100" %&#125;
+        &lt;/form&gt;
+        &lt;p class="text-center text-muted mt-3 mb-0"&gt;
+          Уже есть аккаунт? &lt;a href="&#123;% url 'login' %&#125;"&gt;Войти&lt;/a&gt;
+        &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&#123;% endblock %&#125;</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+
+    <div class="code-title">templates/login.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- вход --&gt;
+&#123;% extends "base.html" %&#125;
+&#123;% load django_bootstrap5 %&#125;
+&#123;% block title %&#125;Вход&#123;% endblock %&#125;
+&#123;% block content %&#125;
+&lt;div class="row justify-content-center"&gt;
+  &lt;div class="col-md-5 col-lg-4"&gt;
+    &lt;div class="card shadow-sm"&gt;
+      &lt;div class="card-body p-4"&gt;
+        &lt;h1 class="h4 mb-3"&gt;Вход&lt;/h1&gt;
+        &lt;form method="post"&gt;
+          &#123;% csrf_token %&#125;
+          &#123;% bootstrap_form form %&#125;
+          &#123;% bootstrap_button "Войти" button_type="submit" button_class="btn-primary w-100" %&#125;
+        &lt;/form&gt;
+        &lt;p class="text-center text-muted mt-3 mb-0"&gt;
+          Нет аккаунта? &lt;a href="&#123;% url 'register' %&#125;"&gt;Регистрация&lt;/a&gt;
+        &lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&#123;% endblock %&#125;</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+
+    <div class="code-title">templates/profile.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- личный кабинет: Bootstrap List group --&gt;
+&#123;% extends "base.html" %&#125;
+&#123;% block title %&#125;Кабинет&#123;% endblock %&#125;
+&#123;% block content %&#125;
+&lt;div class="card shadow-sm mx-auto" style="max-width: 560px;"&gt;
+  &lt;div class="card-header bg-primary text-white fw-semibold"&gt;Личный кабинет&lt;/div&gt;
+  &lt;ul class="list-group list-group-flush"&gt;
+    &lt;li class="list-group-item d-flex justify-content-between"&gt;&lt;span&gt;Пользователь&lt;/span&gt;&lt;strong&gt;&#123;&#123; user_obj.username &#125;&#125;&lt;/strong&gt;&lt;/li&gt;
+    &lt;li class="list-group-item d-flex justify-content-between"&gt;&lt;span&gt;Почта&lt;/span&gt;&lt;span&gt;&#123;&#123; user_obj.email|default:"не указана" &#125;&#125;&lt;/span&gt;&lt;/li&gt;
+    &lt;li class="list-group-item d-flex justify-content-between"&gt;&lt;span&gt;Дата регистрации&lt;/span&gt;&lt;span&gt;&#123;&#123; user_obj.date_joined|date:"d.m.Y" &#125;&#125;&lt;/span&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;div class="card-body"&gt;
+    &lt;form action="&#123;% url 'logout' %&#125;" method="post"&gt;
+      &#123;% csrf_token %&#125;
+      &lt;button class="btn btn-outline-danger" type="submit"&gt;Выйти&lt;/button&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&#123;% endblock %&#125;</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+
+    <h4>Шаг 9. Запуск и проверка</h4>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash"># запускаем сервер
+python manage.py runserver
+
+# открыть в браузере:
+#   http://127.0.0.1:8000/        — сайт
+#   http://127.0.0.1:8000/admin/  — админка (логин: superuser из шага 2)
+
+# проверить себя: зарегистрироваться → войти → кабинет → выйти</code></pre>
+
+    <h4>Шаг 10. Сохраняем результат в Git</h4>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash">git init
+# не тащим в репозиторий окружение, кэш и локальную базу
+printf "venv/\n__pycache__/\n*.pyc\ndb.sqlite3\n.env\n" &gt; .gitignore
+git add .
+git commit -m "Каркас: Django + django_bootstrap5 + регистрация/вход"</code></pre>
+
+    <h3 id="cmd-shop" class="commands-variant">Вариант B. Интернет-магазин</h3>
+
+    <p>Строится поверх варианта A: те же команды создания проекта, то же подключение django_bootstrap5, та же регистрация/вход (файлы <code>accounts/*</code> и <code>templates/login.html…</code> — без изменений). Отличия — приложение <code>shop</code>: модели товаров и заказов, корзина в сессии, витрина и оформление.</p>
+
+    <h4>Шаг 1. Каркас + приложение магазина</h4>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash">mkdir -p ~/shop &amp;&amp; cd ~/shop
+python3 -m venv venv &amp;&amp; source venv/bin/activate
+pip install django django-bootstrap5
+
+django-admin startproject config .
+python manage.py startapp accounts   # регистрация/вход — как в варианте A
+python manage.py startapp shop       # товары, корзина, заказы
+
+python manage.py migrate
+python manage.py createsuperuser</code></pre>
+
+    <p>В <code>config/settings.py</code> в INSTALLED_APPS добавьте <code>'django_bootstrap5'</code>, <code>'accounts'</code> и <code>'shop'</code>; настройте <code>DIRS</code> и <code>LOGIN_REDIRECT_URL</code> — точь-в-точь как в шаге 3 варианта A (плюс скопируйте файлы accounts из варианта A).</p>
+
+    <h4>Шаг 2. Модели: товар, заказ, позиция корзины</h4>
+
+    <div class="code-title">shop/models.py</div><pre><span class="lang-tag">python</span><code class="language-python"># shop/models.py
+from decimal import Decimal
+from django.conf import settings
+from django.db import models
+
+
+class Product(models.Model):
+    """Товар на витрине."""
+    name = models.CharField('Название', max_length=200)
+    description = models.TextField('Описание', blank=True)
+    price = models.DecimalField('Цена', max_digits=10, decimal_places=2)
+    stock = models.PositiveIntegerField('Остаток, шт.', default=0)
+    is_published = models.BooleanField('В продаже', default=True)
+    created_at = models.DateTimeField('Добавлен', auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def available(self):
+        return self.is_published and self.stock &gt; 0
+
+
+class Order(models.Model):
+    """Заказ покупателя."""
+    class Status(models.TextChoices):
+        NEW = 'NEW', 'Новый'
+        PAID = 'PAID', 'Оплачен'
+        DONE = 'DONE', 'Выдан'
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                             verbose_name='Покупатель')
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField('Статус', max_length=8,
+                              choices=Status.choices, default=Status.NEW)
+    comment = models.TextField('Комментарий', blank=True)
+
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+        ordering = ('-created_at',)
+
+    @property
+    def total(self):
+        return sum(item.line_total for item in self.items.all())
+
+
+class OrderItem(models.Model):
+    """Строка заказа: какой товар, сколько, по какой цене."""
+    order = models.ForeignKey(Order, on_delete=models.CASCADE,
+                              related_name='items', verbose_name='Заказ')
+    product = models.ForeignKey(Product, on_delete=models.PROTECT,
+                                verbose_name='Товар')
+    quantity = models.PositiveIntegerField('Кол-во', default=1)
+    unit_price = models.DecimalField('Цена за штуку', max_digits=10, decimal_places=2)
+
+    @property
+    def line_total(self):
+        return self.unit_price * self.quantity</code></pre>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash"># применяем модели к базе
+python manage.py makemigrations shop
+python manage.py migrate</code></pre>
+
+    <h4>Шаг 3. Корзина в сессии (без лишней таблицы)</h4>
+
+    <div class="code-title">shop/cart.py</div><pre><span class="lang-tag">python</span><code class="language-python"># shop/cart.py — новый файл, помощники корзины
+from decimal import Decimal
+
+from .models import Product
+
+CART_KEY = 'cart'
+
+
+def cart_add(request, product_id, qty=1):
+    """Положить товар в корзину (или увеличить количество)."""
+    cart = request.session.setdefault(CART_KEY, &#123;&#125;)
+    key = str(product_id)
+    cart[key] = cart.get(key, 0) + qty
+    request.session.modified = True
+
+
+def cart_items(request):
+    """Список позиций для шаблона: товар, кол-во, сумма, итог."""
+    cart = request.session.get(CART_KEY, &#123;&#125;)
+    items, total = [], Decimal('0')
+    for pid, qty in list(cart.items()):
+        product = Product.objects.filter(pk=pid).first()
+        if not product:
+            continue
+        line = product.price * qty
+        total += line
+        items.append(&#123;'product': product, 'qty': qty, 'line_total': line&#125;)
+    return items, total
+
+
+def cart_clear(request):
+    request.session[CART_KEY] = &#123;&#125;
+    request.session.modified = True</code></pre>
+
+    <h4>Шаг 4. Представления витрины, корзины и заказа</h4>
+
+    <div class="code-title">shop/views.py</div><pre><span class="lang-tag">python</span><code class="language-python"># shop/views.py — заменить содержимое
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
+
+from .cart import cart_add, cart_clear, cart_items
+from .models import Order, OrderItem, Product
+
+
+def catalog(request):
+    """Витрина: все товары в продаже + счётчик корзины."""
+    products = Product.objects.filter(is_published=True)
+    items, total = cart_items(request)
+    return render(request, 'shop/catalog.html',
+                  &#123;'products': products, 'cart_count': len(items), 'cart_total': total&#125;)
+
+
+def product_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk, is_published=True)
+    return render(request, 'shop/product.html', &#123;'product': product&#125;)
+
+
+@login_required
+def cart_view(request):
+    items, total = cart_items(request)
+    return render(request, 'shop/cart.html', &#123;'items': items, 'total': total&#125;)
+
+
+@login_required
+def cart_add_view(request, pk):
+    cart_add(request, pk)
+    messages.success(request, 'Товар добавлен в корзину')
+    return redirect('cart')
+
+
+@login_required
+def checkout(request):
+    """Оформление: собираем позиции в заказ и чистим корзину."""
+    items, total = cart_items(request)
+    if not items:
+        messages.error(request, 'Корзина пуста')
+        return redirect('catalog')
+    if request.method == 'POST':
+        order = Order.objects.create(user=request.user,
+                                     comment=request.POST.get('comment', ''))
+        for row in items:
+            OrderItem.objects.create(order=order, product=row['product'],
+                                     quantity=row['qty'],
+                                     unit_price=row['product'].price)
+        cart_clear(request)
+        messages.success(request, 'Заказ №%s на сумму %s руб. оформлен' % (order.pk, total))
+        return redirect('order_done', pk=order.pk)
+    return render(request, 'shop/checkout.html', &#123;'items': items, 'total': total&#125;)
+
+
+@login_required
+def order_done(request, pk):
+    order = get_object_or_404(Order, pk=pk, user=request.user)
+    return render(request, 'shop/order_done.html', &#123;'order': order&#125;)</code></pre>
+
+    <h4>Шаг 5. Адреса</h4>
+
+    <div class="code-title">shop/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># shop/urls.py — новый файл
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.catalog, name='catalog'),
+    path('product/&lt;int:pk&gt;/', views.product_detail, name='product'),
+    path('cart/', views.cart_view, name='cart'),
+    path('cart/add/&lt;int:pk&gt;/', views.cart_add_view, name='cart_add'),
+    path('checkout/', views.checkout, name='checkout'),
+    path('order/&lt;int:pk&gt;/', views.order_done, name='order_done'),
+]</code></pre>
+
+    <div class="code-title">config/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># config/urls.py — магазин на главной, аккаунты отдельным путём
+from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('accounts/', include('accounts.urls')),  # вход/регистрация/кабинет
+    path('', include('shop.urls')),               # витрина — на главной
+]</code></pre>
+
+    <h4>Шаг 6. Админка: добавляем товары и смотрим заказы</h4>
+
+    <div class="code-title">shop/admin.py</div><pre><span class="lang-tag">python</span><code class="language-python"># shop/admin.py — заменить содержимое
+from django.contrib import admin
+from .models import Order, OrderItem, Product
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price', 'stock', 'is_published')
+    list_editable = ('price', 'stock', 'is_published')
+    search_fields = ('name', 'description')
+
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 0
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'status', 'created_at')
+    list_filter = ('status',)
+    inlines = [OrderItemInline]</code></pre>
+
+    <h4>Шаг 7. Шаблоны магазина (готовые блоки Bootstrap)</h4>
+
+    <p>Создайте папку <code>templates/shop</code> (<code>mkdir -p ~/shop/templates/shop</code>) и четыре файла.</p>
+
+    <div class="code-title">templates/shop/catalog.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- витрина: Grid of Cards --&gt;
+&#123;% extends "base.html" %&#125;
+&#123;% block title %&#125;Магазин&#123;% endblock %&#125;
+&#123;% block content %&#125;
+&lt;div class="d-flex justify-content-between align-items-center mb-4"&gt;
+  &lt;h1 class="h3 mb-0"&gt;Каталог товаров&lt;/h1&gt;
+  &lt;a href="&#123;% url 'cart' %&#125;" class="btn btn-outline-primary"&gt;
+    Корзина &lt;span class="badge text-bg-primary"&gt;&#123;&#123; cart_count &#125;&#125;&lt;/span&gt;
+  &lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div class="row g-4"&gt;
+  &#123;% for p in products %&#125;
+  &lt;div class="col-sm-6 col-lg-4"&gt;
+    &lt;div class="card h-100 shadow-sm"&gt;
+      &lt;div class="card-body d-flex flex-column"&gt;
+        &lt;h5 class="card-title"&gt;&#123;&#123; p.name &#125;&#125;&lt;/h5&gt;
+        &lt;p class="card-text text-muted flex-grow-1"&gt;&#123;&#123; p.description|truncatechars:90 &#125;&#125;&lt;/p&gt;
+        &lt;div class="d-flex justify-content-between align-items-center"&gt;
+          &lt;span class="fs-5 fw-bold"&gt;&#123;&#123; p.price &#125;&#125; ₽&lt;/span&gt;
+          &#123;% if p.available %&#125;
+            &lt;form method="post" action="&#123;% url 'cart_add' p.pk %&#125;"&gt;
+              &#123;% csrf_token %&#125;
+              &lt;button class="btn btn-primary btn-sm" type="submit"&gt;В корзину&lt;/button&gt;
+            &lt;/form&gt;
+          &#123;% else %&#125;
+            &lt;span class="badge text-bg-secondary"&gt;Нет в наличии&lt;/span&gt;
+          &#123;% endif %&#125;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="card-footer bg-white border-0"&gt;
+        &lt;a href="&#123;% url 'product' p.pk %&#125;" class="small"&gt;Подробнее →&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &#123;% empty %&#125;
+  &lt;div class="col-12"&gt;&lt;div class="alert alert-info"&gt;Товаров пока нет — добавьте их в админке.&lt;/div&gt;&lt;/div&gt;
+  &#123;% endfor %&#125;
+&lt;/div&gt;
+&#123;% endblock %&#125;</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+
+    <div class="code-title">templates/shop/cart.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- корзина: Bootstrap Table --&gt;
+&#123;% extends "base.html" %&#125;
+&#123;% block title %&#125;Корзина&#123;% endblock %&#125;
+&#123;% block content %&#125;
+&lt;h1 class="h3 mb-4"&gt;Корзина&lt;/h1&gt;
+&#123;% if items %&#125;
+&lt;div class="card shadow-sm"&gt;
+  &lt;table class="table align-middle mb-0"&gt;
+    &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Товар&lt;/th&gt;&lt;th&gt;Цена&lt;/th&gt;&lt;th&gt;Кол-во&lt;/th&gt;&lt;th&gt;Сумма&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+    &lt;tbody&gt;
+      &#123;% for row in items %&#125;
+      &lt;tr&gt;
+        &lt;td&gt;&#123;&#123; row.product.name &#125;&#125;&lt;/td&gt;
+        &lt;td&gt;&#123;&#123; row.product.price &#125;&#125; ₽&lt;/td&gt;
+        &lt;td&gt;&#123;&#123; row.qty &#125;&#125;&lt;/td&gt;
+        &lt;td class="fw-semibold"&gt;&#123;&#123; row.line_total &#125;&#125; ₽&lt;/td&gt;
+      &lt;/tr&gt;
+      &#123;% endfor %&#125;
+    &lt;/tbody&gt;
+    &lt;tfoot&gt;&lt;tr&gt;&lt;th colspan="3" class="text-end"&gt;Итого:&lt;/th&gt;&lt;th&gt;&#123;&#123; total &#125;&#125; ₽&lt;/th&gt;&lt;/tr&gt;&lt;/tfoot&gt;
+  &lt;/table&gt;
+  &lt;div class="card-body text-end"&gt;
+    &lt;a href="&#123;% url 'checkout' %&#125;" class="btn btn-primary btn-lg"&gt;Оформить заказ&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&#123;% else %&#125;
+&lt;div class="alert alert-warning"&gt;Корзина пуста. &lt;a href="&#123;% url 'catalog' %&#125;"&gt;В каталог&lt;/a&gt;&lt;/div&gt;
+&#123;% endif %&#125;
+&#123;% endblock %&#125;</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+
+    <div class="code-title">templates/shop/checkout.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- оформление заказа: список позиций + форма комментария --&gt;
+&#123;% extends "base.html" %&#125;
+&#123;% load django_bootstrap5 %&#125;
+&#123;% block title %&#125;Оформление&#123;% endblock %&#125;
+&#123;% block content %&#125;
+&lt;div class="row justify-content-center"&gt;
+  &lt;div class="col-lg-7"&gt;
+    &lt;div class="card shadow-sm"&gt;
+      &lt;div class="card-body p-4"&gt;
+        &lt;h1 class="h4 mb-3"&gt;Подтверждение заказа&lt;/h1&gt;
+        &lt;ul class="list-group list-group-flush mb-3"&gt;
+          &#123;% for row in items %&#125;
+          &lt;li class="list-group-item d-flex justify-content-between"&gt;
+            &#123;&#123; row.product.name &#125;&#125; × &#123;&#123; row.qty &#125;&#125;
+            &lt;span&gt;&#123;&#123; row.line_total &#125;&#125; ₽&lt;/span&gt;
+          &lt;/li&gt;
+          &#123;% endfor %&#125;
+        &lt;/ul&gt;
+        &lt;p class="fs-5 fw-bold text-end"&gt;К оплате: &#123;&#123; total &#125;&#125; ₽&lt;/p&gt;
+        &lt;form method="post"&gt;
+          &#123;% csrf_token %&#125;
+          &lt;label class="form-label"&gt;Комментарий к заказу&lt;/label&gt;
+          &lt;textarea name="comment" class="form-control mb-3" rows="3"
+                    placeholder="Например: позвоните перед доставкой"&gt;&lt;/textarea&gt;
+          &#123;% bootstrap_button "Купить" button_type="submit" button_class="btn-success btn-lg w-100" %&#125;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&#123;% endblock %&#125;</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+
+    <div class="code-title">templates/shop/product.html + order_done.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- карточка товара --&gt;
+&#123;% extends "base.html" %&#125;
+&#123;% block title %&#125;&#123;&#123; product.name &#125;&#125;&#123;% endblock %&#125;
+&#123;% block content %&#125;
+&lt;div class="card shadow-sm p-4" style="max-width: 640px;"&gt;
+  &lt;h1 class="h3"&gt;&#123;&#123; product.name &#125;&#125;&lt;/h1&gt;
+  &lt;p&gt;&#123;&#123; product.description|linebreaks &#125;&#125;&lt;/p&gt;
+  &lt;p class="fs-4 fw-bold"&gt;&#123;&#123; product.price &#125;&#125; ₽&lt;/p&gt;
+  &lt;form method="post" action="&#123;% url 'cart_add' product.pk %&#125;"&gt;
+    &#123;% csrf_token %&#125;
+    &lt;button class="btn btn-primary" type="submit"&gt;Добавить в корзину&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/div&gt;
+&#123;% endblock %&#125;
+
+&lt;!-- === файл templates/shop/order_done.html === --&gt;
+&#123;% extends "base.html" %&#125;
+&#123;% block content %&#125;
+&lt;div class="alert alert-success"&gt;
+  &lt;h1 class="h4"&gt;Заказ №&#123;&#123; order.id &#125;&#125; принят!&lt;/h1&gt;
+  Сумма: &#123;&#123; order.total &#125;&#125; ₽. Статус: &#123;&#123; order.get_status_display &#125;&#125;.
+&lt;/div&gt;
+&lt;a class="btn btn-outline-primary" href="&#123;% url 'catalog' %&#125;"&gt;Продолжить покупки&lt;/a&gt;
+&#123;% endblock %&#125;</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+
+    <h4>Шаг 8. Демо-товары и запуск</h4>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash"># быстрый способ залить 6 демо-товаров прямо в базу
+python manage.py shell -c "
+from shop.models import Product
+for i in range(1, 7):
+    Product.objects.get_or_create(
+        name='Товар %d' % i,
+        defaults=dict(price=i*450, stock=10,
+                      description='Демо-товар для проверки витрины.'))
+print('готово:', Product.objects.count())
+"
+
+python manage.py runserver
+# http://127.0.0.1:8000/ — каталог; /admin/ — добавить реальные товары</code></pre>
+
+    <h4>Шаг 9. Git</h4>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash">git init
+printf "venv/\n__pycache__/\n*.pyc\ndb.sqlite3\n.env\n" &gt; .gitignore
+git add .
+git commit -m "Интернет-магазин: каталог, корзина, заказы"</code></pre>
+
+    <h3 id="cmd-hr" class="commands-variant">Вариант C. Система хранения данных для учёта сотрудников</h3>
+
+    <p>Тот же каркас (Django + django_bootstrap5 + вход), но вместо товаров — сотрудники, отделы и журнал кадровых событий. Данные хранятся в реляционной базе SQLite; для боевого использования легко заменяется на PostgreSQL (раздел 26 гайда).</p>
+
+    <h4>Шаг 1. Каркас + приложение hr</h4>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash">mkdir -p ~/hrsystem &amp;&amp; cd ~/hrsystem
+python3 -m venv venv &amp;&amp; source venv/bin/activate
+pip install django django-bootstrap5
+
+django-admin startproject config .
+python manage.py startapp accounts   # вход/регистрация — как в варианте A
+python manage.py startapp hr         # сотрудники, отделы, события
+
+python manage.py migrate
+python manage.py createsuperuser</code></pre>
+
+    <p>В <code>config/settings.py</code> добавьте в INSTALLED_APPS <code>'django_bootstrap5'</code>, <code>'accounts'</code>, <code>'hr'</code> и настройте <code>DIRS</code> как в варианте A; файлы accounts скопируйте из варианта A.</p>
+
+    <h4>Шаг 2. Модели учёта</h4>
+
+    <div class="code-title">hr/models.py</div><pre><span class="lang-tag">python</span><code class="language-python"># hr/models.py
+from django.conf import settings
+from django.db import models
+
+
+class Department(models.Model):
+    """Отдел компании."""
+    name = models.CharField('Отдел', max_length=120, unique=True)
+    manager = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
+                                on_delete=models.SET_NULL, verbose_name='Руководитель')
+
+    class Meta:
+        verbose_name = 'Отдел'
+        verbose_name_plural = 'Отделы'
+        ordering = ('name',)
+
+    def __str__(self):
+        return self.name
+
+
+class Employee(models.Model):
+    """Карточка сотрудника — основные хранимые данные учёта."""
+    class Position(models.TextChoices):
+        JUNIOR = 'JR', 'Junior'
+        MIDDLE = 'MD', 'Middle'
+        SENIOR = 'SR', 'Senior'
+        LEAD = 'LD', 'Team Lead'
+
+    first_name = models.CharField('Имя', max_length=80)
+    last_name = models.CharField('Фамилия', max_length=80)
+    patronymic = models.CharField('Отчество', max_length=80, blank=True)
+    department = models.ForeignKey(Department, on_delete=models.PROTECT,
+                                   related_name='employees', verbose_name='Отдел')
+    position = models.CharField('Должность/грейд', max_length=2,
+                                choices=Position.choices, default=Position.MIDDLE)
+    salary = models.DecimalField('Оклад, ₽', max_digits=11, decimal_places=2)
+    hired_at = models.DateField('Принят')
+    phone = models.CharField('Телефон', max_length=30, blank=True)
+    email = models.EmailField('Рабочая почта', blank=True)
+    is_active = models.BooleanField('Работает', default=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Сотрудник'
+        verbose_name_plural = 'Сотрудники'
+        ordering = ('last_name', 'first_name')
+
+    def __str__(self):
+        return f'&#123;self.last_name&#125; &#123;self.first_name&#125;'
+
+    @property
+    def full_name(self):
+        return ' '.join(filter(None, [self.last_name, self.first_name, self.patronymic]))
+
+
+class HrEvent(models.Model):
+    """Журнал кадровых событий: приём, перевод, повышение, увольнение."""
+    class Kind(models.TextChoices):
+        HIRE = 'HIRE', 'Приём'
+        TR = 'TR', 'Перевод'
+        PROM = 'PROM', 'Повышение'
+        DISM = 'DISM', 'Увольнение'
+
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE,
+                                 related_name='events', verbose_name='Сотрудник')
+    kind = models.CharField('Событие', max_length=4, choices=Kind.choices)
+    happened_at = models.DateField('Дата')
+    note = models.TextField('Комментарий', blank=True)
+
+    class Meta:
+        verbose_name = 'Кадровое событие'
+        verbose_name_plural = 'Кадровые события'
+        ordering = ('-happened_at',)</code></pre>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash">python manage.py makemigrations hr
+python manage.py migrate</code></pre>
+
+    <h4>Шаг 3. Формы</h4>
+
+    <div class="code-title">hr/forms.py</div><pre><span class="lang-tag">python</span><code class="language-python"># hr/forms.py — новый файл
+from django import forms
+from .models import Department, Employee, HrEvent
+
+W = forms.widgets
+
+
+class EmployeeForm(forms.ModelForm):
+    class Meta:
+        model = Employee
+        exclude = ('updated_at',)
+        widgets = &#123;
+            'hired_at': W.DateInput(attrs=&#123;'type': 'date'&#125;),
+            'department': W.Select(attrs=&#123;'class': 'form-select'&#125;),
+        &#125;
+
+
+class HrEventForm(forms.ModelForm):
+    class Meta:
+        model = HrEvent
+        fields = ('kind', 'happened_at', 'note')
+        widgets = &#123;'happened_at': W.DateInput(attrs=&#123;'type': 'date'&#125;)&#125;
+
+
+class DepartmentForm(forms.ModelForm):
+    class Meta:
+        model = Department
+        fields = ('name', 'manager')</code></pre>
+
+    <h4>Шаг 4. Представления: панель, карточка, поиск, добавление</h4>
+
+    <div class="code-title">hr/views.py</div><pre><span class="lang-tag">python</span><code class="language-python"># hr/views.py — заменить содержимое
+from django.contrib import messages
+from django.db.models import Q
+from django.shortcuts import get_object_or_404, redirect, render
+
+from .forms import EmployeeForm, HrEventForm
+from .models import Department, Employee, HrEvent
+
+
+def dashboard(request):
+    """Главный экран: сводка + список сотрудников + поиск."""
+    q = request.GET.get('q', '').strip()
+    employees = Employee.objects.select_related('department')
+    if q:
+        employees = employees.filter(
+            Q(first_name__icontains=q) | Q(last_name__icontains=q)
+            | Q(department__name__icontains=q))
+    return render(request, 'hr/dashboard.html', &#123;
+        'employees': employees,
+        'total_count': Employee.objects.count(),
+        'active_count': Employee.objects.filter(is_active=True).count(),
+        'departments': Department.objects.count(),
+        'q': q,
+    &#125;)
+
+
+def employee_detail(request, pk):
+    emp = get_object_or_404(Employee, pk=pk)
+    return render(request, 'hr/employee.html',
+                  &#123;'emp': emp, 'events': emp.events.all()&#125;)
+
+
+def employee_create(request):
+    form = EmployeeForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        emp = form.save()
+        HrEvent.objects.create(employee=emp, kind=HrEvent.Kind.HIRE,
+                               happened_at=emp.hired_at, note='Первичный приём')
+        messages.success(request, 'Сотрудник ' + emp.full_name + ' добавлен')
+        return redirect('employee_detail', pk=emp.pk)
+    return render(request, 'hr/employee_form.html',
+                  &#123;'form': form, 'title': 'Новый сотрудник'&#125;)
+
+
+def employee_edit(request, pk):
+    emp = get_object_or_404(Employee, pk=pk)
+    form = EmployeeForm(request.POST or None, instance=emp)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        messages.success(request, 'Данные сохранены')
+        return redirect('employee_detail', pk=pk)
+    return render(request, 'hr/employee_form.html',
+                  &#123;'form': form, 'title': 'Правка: ' + emp.full_name&#125;)
+
+
+def event_add(request, pk):
+    emp = get_object_or_404(Employee, pk=pk)
+    form = HrEventForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        ev = form.save(commit=False)
+        ev.employee = emp
+        ev.save()
+        messages.success(request, 'Событие записано в журнал')
+        return redirect('employee_detail', pk=pk)
+    return render(request, 'hr/event_form.html', &#123;'form': form, 'emp': emp&#125;)</code></pre>
+
+    <h4>Шаг 5. Адреса</h4>
+
+    <div class="code-title">hr/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># hr/urls.py — новый файл
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.dashboard, name='dashboard'),
+    path('employee/new/', views.employee_create, name='employee_create'),
+    path('employee/&lt;int:pk&gt;/', views.employee_detail, name='employee_detail'),
+    path('employee/&lt;int:pk&gt;/edit/', views.employee_edit, name='employee_edit'),
+    path('employee/&lt;int:pk&gt;/event/', views.event_add, name='event_add'),
+]</code></pre>
+
+    <div class="code-title">config/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># config/urls.py
+from django.contrib import admin
+from django.urls import include, path
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('accounts/', include('accounts.urls')),
+    path('', include('hr.urls')),
+]</code></pre>
+
+    <h4>Шаг 6. Админка с фильтрами и поиском</h4>
+
+    <div class="code-title">hr/admin.py</div><pre><span class="lang-tag">python</span><code class="language-python"># hr/admin.py — заменить содержимое
+from django.contrib import admin
+from .models import Department, Employee, HrEvent
+
+
+@admin.register(Department)
+class DepartmentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'manager')
+
+
+@admin.register(Employee)
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ('last_name', 'first_name', 'department', 'position',
+                    'salary', 'hired_at', 'is_active')
+    list_filter = ('department', 'position', 'is_active')
+    search_fields = ('first_name', 'last_name', 'email')
+
+
+@admin.register(HrEvent)
+class HrEventAdmin(admin.ModelAdmin):
+    list_display = ('employee', 'kind', 'happened_at')
+    list_filter = ('kind',)
+    date_hierarchy = 'happened_at'</code></pre>
+
+    <h4>Шаг 7. Шаблоны (Bootstrap: Stat cards, Table, List group, Form)</h4>
+
+    <p>Создайте папку <code>templates/hr</code> (<code>mkdir -p ~/hrsystem/templates/hr</code>) и четыре файла.</p>
+
+    <div class="code-title">templates/hr/dashboard.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- панель учёта: сводка + таблица + поиск --&gt;
+&#123;% extends "base.html" %&#125;
+&#123;% block title %&#125;Учёт сотрудников&#123;% endblock %&#125;
+&#123;% block content %&#125;
+&lt;div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2"&gt;
+  &lt;h1 class="h3 mb-0"&gt;Учёт сотрудников&lt;/h1&gt;
+  &lt;a class="btn btn-primary" href="&#123;% url 'employee_create' %&#125;"&gt;+ Добавить сотрудника&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;!-- Готовый блок Bootstrap: карточки-счётчики --&gt;
+&lt;div class="row g-3 mb-4"&gt;
+  &lt;div class="col-6 col-lg-3"&gt;
+    &lt;div class="card text-center shadow-sm"&gt;&lt;div class="card-body"&gt;
+      &lt;div class="text-muted small"&gt;Всего&lt;/div&gt;&lt;div class="fs-3 fw-bold"&gt;&#123;&#123; total_count &#125;&#125;&lt;/div&gt;
+    &lt;/div&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="col-6 col-lg-3"&gt;
+    &lt;div class="card text-center shadow-sm"&gt;&lt;div class="card-body"&gt;
+      &lt;div class="text-muted small"&gt;Работают&lt;/div&gt;&lt;div class="fs-3 fw-bold text-success"&gt;&#123;&#123; active_count &#125;&#125;&lt;/div&gt;
+    &lt;/div&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="col-6 col-lg-3"&gt;
+    &lt;div class="card text-center shadow-sm"&gt;&lt;div class="card-body"&gt;
+      &lt;div class="text-muted small"&gt;Отделов&lt;/div&gt;&lt;div class="fs-3 fw-bold"&gt;&#123;&#123; departments &#125;&#125;&lt;/div&gt;
+    &lt;/div&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;form class="row g-2 mb-3" method="get"&gt;
+  &lt;div class="col" style="min-width: 260px"&gt;
+    &lt;input type="search" name="q" value="&#123;&#123; q &#125;&#125;" class="form-control"
+           placeholder="Поиск по фамилии, имени или отделу"&gt;
+  &lt;/div&gt;
+  &lt;div class="col-auto"&gt;&lt;button class="btn btn-outline-secondary" type="submit"&gt;Найти&lt;/button&gt;&lt;/div&gt;
+&lt;/form&gt;
+
+&lt;!-- Готовый блок Bootstrap: Table --&gt;
+&lt;div class="card shadow-sm"&gt;
+  &lt;table class="table table-hover align-middle mb-0"&gt;
+    &lt;thead class="table-light"&gt;
+      &lt;tr&gt;&lt;th&gt;ФИО&lt;/th&gt;&lt;th&gt;Отдел&lt;/th&gt;&lt;th&gt;Грейд&lt;/th&gt;&lt;th&gt;Оклад&lt;/th&gt;&lt;th&gt;Принят&lt;/th&gt;&lt;th&gt;&lt;/th&gt;&lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &#123;% for e in employees %&#125;
+      &lt;tr class="&#123;% if not e.is_active %&#125;table-secondary text-muted&#123;% endif %&#125;"&gt;
+        &lt;td&gt;&lt;a href="&#123;% url 'employee_detail' e.pk %&#125;" class="fw-semibold text-decoration-none"&gt;&#123;&#123; e.full_name &#125;&#125;&lt;/a&gt;&lt;/td&gt;
+        &lt;td&gt;&#123;&#123; e.department.name &#125;&#125;&lt;/td&gt;
+        &lt;td&gt;&lt;span class="badge text-bg-info"&gt;&#123;&#123; e.get_position_display &#125;&#125;&lt;/span&gt;&lt;/td&gt;
+        &lt;td&gt;&#123;&#123; e.salary &#125;&#125; ₽&lt;/td&gt;
+        &lt;td&gt;&#123;&#123; e.hired_at|date:"d.m.Y" &#125;&#125;&lt;/td&gt;
+        &lt;td class="text-end"&gt;&lt;a class="btn btn-sm btn-outline-secondary"
+            href="&#123;% url 'employee_edit' e.pk %&#125;"&gt;Править&lt;/a&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &#123;% empty %&#125;
+      &lt;tr&gt;&lt;td colspan="6" class="text-center text-muted py-4"&gt;Никого не найдено&lt;/td&gt;&lt;/tr&gt;
+      &#123;% endfor %&#125;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+&lt;/div&gt;
+&#123;% endblock %&#125;</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+
+    <div class="code-title">templates/hr/employee.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- карточка сотрудника + журнал событий --&gt;
+&#123;% extends "base.html" %&#125;
+&#123;% block title %&#125;&#123;&#123; emp.full_name &#125;&#125;&#123;% endblock %&#125;
+&#123;% block content %&#125;
+&lt;div class="row g-4"&gt;
+  &lt;div class="col-lg-5"&gt;
+    &lt;div class="card shadow-sm"&gt;
+      &lt;div class="card-header fw-semibold"&gt;&#123;&#123; emp.full_name &#125;&#125;&lt;/div&gt;
+      &lt;ul class="list-group list-group-flush"&gt;
+        &lt;li class="list-group-item"&gt;Отдел: &lt;strong&gt;&#123;&#123; emp.department.name &#125;&#125;&lt;/strong&gt;&lt;/li&gt;
+        &lt;li class="list-group-item"&gt;Грейд: &#123;&#123; emp.get_position_display &#125;&#125;&lt;/li&gt;
+        &lt;li class="list-group-item"&gt;Оклад: &#123;&#123; emp.salary &#125;&#125; ₽&lt;/li&gt;
+        &lt;li class="list-group-item"&gt;Принят: &#123;&#123; emp.hired_at|date:"d.m.Y" &#125;&#125;&lt;/li&gt;
+        &lt;li class="list-group-item"&gt;Телефон: &#123;&#123; emp.phone|default:"—" &#125;&#125;&lt;/li&gt;
+        &lt;li class="list-group-item"&gt;Почта: &#123;&#123; emp.email|default:"—" &#125;&#125;&lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;div class="card-body d-flex gap-2"&gt;
+        &lt;a class="btn btn-outline-primary btn-sm" href="&#123;% url 'employee_edit' emp.pk %&#125;"&gt;Редактировать&lt;/a&gt;
+        &lt;a class="btn btn-success btn-sm" href="&#123;% url 'event_add' emp.pk %&#125;"&gt;+ Событие&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="col-lg-7"&gt;
+    &lt;div class="card shadow-sm"&gt;
+      &lt;div class="card-header fw-semibold"&gt;Кадровый журнал&lt;/div&gt;
+      &lt;ul class="list-group list-group-flush"&gt;
+        &#123;% for ev in events %&#125;
+        &lt;li class="list-group-item d-flex justify-content-between align-items-start"&gt;
+          &lt;div&gt;
+            &lt;span class="badge text-bg-primary me-2"&gt;&#123;&#123; ev.get_kind_display &#125;&#125;&lt;/span&gt;
+            &#123;&#123; ev.note|default:"без комментария" &#125;&#125;
+          &lt;/div&gt;
+          &lt;span class="text-muted small"&gt;&#123;&#123; ev.happened_at|date:"d.m.Y" &#125;&#125;&lt;/span&gt;
+        &lt;/li&gt;
+        &#123;% empty %&#125;
+        &lt;li class="list-group-item text-muted"&gt;Событий пока нет&lt;/li&gt;
+        &#123;% endfor %&#125;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&#123;% endblock %&#125;</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+
+    <div class="code-title">templates/hr/employee_form.html + event_form.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- форма сотрудника: django_bootstrap5 рисует поля в стиле Bootstrap --&gt;
+&#123;% extends "base.html" %&#125;
+&#123;% load django_bootstrap5 %&#125;
+&#123;% block content %&#125;
+&lt;div class="card shadow-sm mx-auto p-4" style="max-width: 720px;"&gt;
+  &lt;h1 class="h4 mb-3"&gt;&#123;&#123; title &#125;&#125;&lt;/h1&gt;
+  &lt;form method="post"&gt;
+    &#123;% csrf_token %&#125;
+    &#123;% bootstrap_form form layout="vertical" %&#125;
+    &#123;% bootstrap_button "Сохранить" button_type="submit" button_class="btn-primary" %&#125;
+    &lt;a class="btn btn-link" href="&#123;% url 'dashboard' %&#125;"&gt;Отмена&lt;/a&gt;
+  &lt;/form&gt;
+&lt;/div&gt;
+&#123;% endblock %&#125;
+
+&lt;!-- === файл templates/hr/event_form.html === --&gt;
+&#123;% extends "base.html" %&#125;
+&#123;% load django_bootstrap5 %&#125;
+&#123;% block content %&#125;
+&lt;div class="card shadow-sm mx-auto p-4" style="max-width: 560px;"&gt;
+  &lt;h1 class="h4 mb-3"&gt;Новое событие: &#123;&#123; emp.full_name &#125;&#125;&lt;/h1&gt;
+  &lt;form method="post"&gt;
+    &#123;% csrf_token %&#125;
+    &#123;% bootstrap_field form.kind %&#125;
+    &#123;% bootstrap_field form.happened_at %&#125;
+    &#123;% bootstrap_field form.note %&#125;
+    &#123;% bootstrap_button "Записать" button_type="submit" button_class="btn-success" %&#125;
+  &lt;/form&gt;
+&lt;/div&gt;
+&#123;% endblock %&#125;</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что это:</b> HTML-шаблон страницы на готовых блоках Bootstrap 5. Создайте файл по пути из подписи над блоком и вставьте это содержимое целиком.</p></div>
+
+    <h4>Шаг 8. Демо-данные и запуск</h4>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash"># наливаем отделы и сотрудников для проверки
+python manage.py shell -c "
+import datetime as dt
+from hr.models import Department, Employee
+it = Department.objects.get_or_create(name='Отдел разработки')[0]
+hrd = Department.objects.get_or_create(name='Кадры')[0]
+Employee.objects.get_or_create(last_name='Иванов', first_name='Иван',
+    defaults=dict(department=it, position='MD', salary=180000,
+                  hired_at=dt.date(2023, 3, 1)))
+Employee.objects.get_or_create(last_name='Петрова', first_name='Анна',
+    defaults=dict(department=hrd, position='SR', salary=210000,
+                  hired_at=dt.date(2021, 9, 15)))
+print('сотрудников:', Employee.objects.count())
+"
+
+python manage.py runserver
+# http://127.0.0.1:8000/ — панель учёта; /admin/ — полное управление данными</code></pre>
+
+    <h4>Шаг 9. Резервная копия базы и Git</h4>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash"># база лежит в файле db.sqlite3 — копируйте её регулярно на случай сбоя
+cp db.sqlite3 backup-$(date +%F).sqlite3
+
+git init
+printf "venv/\n__pycache__/\n*.pyc\ndb.sqlite3\n*.sqlite3\n.env\n" &gt; .gitignore
+git add .
+git commit -m "Учёт сотрудников: отделы, карточки, журнал событий"</code></pre>
+
+    <div class="callout tip">
+  <p><strong>Куда расти дальше:</strong> заменить SQLite на PostgreSQL (раздел 26), ограничить редактирование правами групп (раздел 24), выложить сайт на сервер (раздел 27), добавить тесты (раздел 21).</p>
+</div>
+<button type="button" class="mark-read" data-section="commands@reference.html">Отметить как изученное</button>
+
+    <!-- section:summary -->
+    
+</div>
+
+<!-- section:export -->
+    <h2 id="export" class="mark-read-anchor">35. Экспорт гайда</h2>
     <p>Этот гайд можно сохранить в PDF или DOCX прямо из браузера — стили для печати уже встроены.</p>
 
     <h4>PDF</h4>
@@ -512,7 +1742,7 @@
     <div class="hotkey-row"><span>Очистить поиск</span><kbd>Esc</kbd></div>
     <div class="hotkey-row"><span>След/пред. секция</span><kbd>J</kbd> / <kbd>K</kbd></div>
     <div class="hotkey-row"><span>Добавить раздел в закладки</span><kbd>B</kbd></div>
-    <div class="hotkey-row"><span>Скрыть/показать Python-код</span><kbd>Ctrl</kbd> + <kbd>B</kbd></div>
+    <div class="hotkey-row"><span>Режим «без кода»: скрыть/показать Python и HTML-шаблоны</span><kbd>Ctrl</kbd> + <kbd>B</kbd></div>
     <div class="hotkey-row"><span>Показать это окно</span><kbd>?</kbd></div>
     <div class="hotkey-row"><span>Печать / PDF</span><kbd>Ctrl</kbd> + <kbd>P</kbd></div>
     <div class="hotkey-row"><span>Наверх страницы</span><kbd>Home</kbd></div>
@@ -550,7 +1780,7 @@
 <script src="js/idmap.js" defer></script>
 <script src="js/ui.js" defer></script>
 <script src="js/theme.js" defer></script>
-<script>window.GUIDE_SECTIONS=["intro-all","prerequisites","architecture","intro","no-sudo","python","django","django-admin","django-bootstrap5","quickstart","shop","api","test-api","jsonplaceholder","deeper","nvm","react","proxy","react-code","jwt","test","run-all","git-intro","extended-model","auth-register","tests","env-config","db-schema","auth-compare","db-python","postgresql","deploy","cors-deep","troubleshooting","glossary","faq","cheatsheet","summary","export"];</script>
+<script>window.GUIDE_SECTIONS=["intro-all","prerequisites","architecture","intro","no-sudo","python","django","django-admin","django-bootstrap5","quickstart","shop","api","test-api","jsonplaceholder","deeper","nvm","react","proxy","react-code","jwt","test","run-all","git-intro","extended-model","auth-register","tests","env-config","db-schema","auth-compare","db-python","postgresql","deploy","cors-deep","troubleshooting","glossary","faq","cheatsheet","summary","commands","export"];</script>
 <script src="js/progress.js" defer></script>
 <script src="js/search.js" defer></script>
 <script src="js/toc.js" defer></script>

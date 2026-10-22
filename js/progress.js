@@ -33,7 +33,7 @@
   // Фолбэк-копия списка разделов (синхронна с инлайн GUIDE_SECTIONS на всех
   // страницах). Нужна на случай, если инлайн-скрипт не выполнится до этого
   // файла — иначе счётчик «N из X» падал с ошибкой или показывал 0.
-  const FALLBACK_SECTIONS = ["intro-all","prerequisites","architecture","intro","no-sudo","python","django","django-admin","django-bootstrap5","quickstart","shop","api","test-api","jsonplaceholder","deeper","nvm","react","proxy","react-code","jwt","test","run-all","git-intro","extended-model","auth-register","tests","env-config","db-schema","auth-compare","db-python","postgresql","deploy","cors-deep","troubleshooting","glossary","faq","cheatsheet","summary","export"];
+  const FALLBACK_SECTIONS = ["intro-all","prerequisites","architecture","intro","no-sudo","python","django","django-admin","django-bootstrap5","quickstart","shop","api","test-api","jsonplaceholder","deeper","nvm","react","proxy","react-code","jwt","test","run-all","git-intro","extended-model","auth-register","tests","env-config","db-schema","auth-compare","db-python","postgresql","deploy","cors-deep","troubleshooting","glossary","faq","cheatsheet","summary","commands","export"];
   const TRACKED_IDS = new Set();
   const SECTIONS = Array.isArray(window.GUIDE_SECTIONS) && window.GUIDE_SECTIONS.length
     ? window.GUIDE_SECTIONS : FALLBACK_SECTIONS;

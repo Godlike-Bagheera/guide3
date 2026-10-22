@@ -138,7 +138,21 @@
       </div>
     </section>
 
+<!--
+Заметки для Windows 10 (PowerShell в VS Code) — не отображаются на сайте.
 
+1. Очистить историю команд текущей сессии PowerShell:
+powershell
+Clear-History
+
+2. Стереть историю, которая вызывается стрелкой «Вверх» (она хранится в файле PSReadLine):
+powershell
+Remove-Item -Force (Get-PSReadlineOption).HistorySavePath
+
+3. Удалить папку .git в корне проекта (аналог Unix-команды rm -rf .git):
+powershell
+Remove-Item -Recurse -Force .git
+-->
 
     <div class="welcome">
       <h3><span class="h-icon" aria-hidden="true">👋</span>Как пользоваться гайдом</h3>

@@ -77,6 +77,9 @@ function langOf(pre) {
   w.scrollTo = () => { scrolled = true; };
   d.dispatchEvent(new w.Event('DOMContentLoaded'));
   const sec = d.getElementById('commands-section');
+  /* в jsdom нет layout: все элементы имеют нулевой rect, поэтому имитируем,
+     что раздел 34 находится в области видимости экрана */
+  sec.getBoundingClientRect = () => ({ top: 100, bottom: 500, left: 0, right: 0 });
   const pyIn34 = [...sec.querySelectorAll('pre')].filter(p => ['python','html'].includes(langOf(p)));
   const bashIn34 = [...sec.querySelectorAll('pre')].filter(p => langOf(p) === 'bash');
   check('ref34: python/html блоков в разделе 34 = 30', pyIn34.length === 30);
@@ -86,16 +89,32 @@ function langOf(pre) {
 
   d.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'b', ctrlKey: true, bubbles: true }));
   check('ref34: атрибут data-no-python на html', d.documentElement.hasAttribute('data-no-python'));
-  check('ref34: подсказка commands-only показана', [...d.querySelectorAll('.commands-only')].every(e => !e.hidden));
+  check('ref34: РАЗДЕЛ 34 ПОЛНОСТЬЮ СКРЫТ (sec.hidden)', sec.hidden === true);
+  check('ref34: пункт навигации «34...» скрыт в левой панели reference',
+    [...d.querySelectorAll('a[href="#commands"]')].every(a => { const li = a.closest('li'); return li && li.hidden; }));
   check('ref34: все python/html-файлы раздела 34 скрыты', pyIn34.every(p => p.hasAttribute('data-code-hidden')));
-  check('ref34: bash-команды раздела 34 НЕ скрыты', bashIn34.every(p => !p.hasAttribute('data-code-hidden')));
-  check('ref34: описания файлов раздела 34 показаны', [...sec.querySelectorAll('.code-desc')].every(e => !e.hidden));
-  check('ref34: автопрокрутка УБРАНА (раздел остаётся на месте)', !scrolled);
+  check('ref34: автопрокрутка вверх вызвана (раздел был открыт)', scrolled);
 
   d.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'b', ctrlKey: true, bubbles: true }));
   check('ref34: режим выключен', !d.documentElement.hasAttribute('data-no-python'));
+  check('ref34: раздел 34 вернулся на экран', sec.hidden === false);
+  check('ref34: пункт навигации «34...» снова виден',
+    [...d.querySelectorAll('a[href="#commands"]')].every(a => { const li = a.closest('li'); return li && !li.hidden; }));
   check('ref34: код вернулся', pyIn34.every(p => !p.hasAttribute('data-code-hidden')));
-  check('ref34: подсказка снова скрыта', [...d.querySelectorAll('.commands-only')].every(e => e.hidden));
+}
+
+// ─── левая панель на ДРУГИХ страницах: пункт 34 тоже скрывается ───
+{
+  const { dom } = loadPage('part1-django.html');
+  const w = dom.window, d = w.document;
+  d.dispatchEvent(new w.Event('DOMContentLoaded'));
+  const navLinks = [...d.querySelectorAll('a[href="reference.html#commands"]')];
+  check('part1: пункт навигации на раздел 34 найден', navLinks.length === 1);
+  check('part1: в режиме «с кодом» пункты 34 видны', navLinks.every(a => { const li = a.closest('li'); return li && !li.hidden; }));
+  d.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'b', ctrlKey: true, bubbles: true }));
+  check('part1: Ctrl+B скрывает пункт 34 из левой панели', navLinks.every(a => { const li = a.closest('li'); return li && li.hidden; }));
+  d.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'b', ctrlKey: true, bubbles: true }));
+  check('part1: повторный Ctrl+B возвращает пункт 34', navLinks.every(a => { const li = a.closest('li'); return li && !li.hidden; }));
 }
 
 // ─── восстановление сохранённого режима при загрузке ───

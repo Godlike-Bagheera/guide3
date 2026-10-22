@@ -80,6 +80,28 @@
     }
     /* подсказка внутри раздела 34: только в режиме «без кода» */
     document.querySelectorAll('.commands-only').forEach(el => { el.hidden = !state; });
+
+    /* Раздел 34 («Простая последовательность команд») целиком — это код,
+       поэтому в режиме «без кода» он полностью скрывается: и сам раздел на
+       странице, и его пункт в левой панели навигации (на всех страницах).
+       В режиме «с кодом» — возвращается на место. */
+    const sec = document.getElementById('commands-section');
+    const wasInView = sec && !sec.hidden && (() => {
+      try { return sec.getBoundingClientRect().top < innerHeight && sec.getBoundingClientRect().bottom > 0; }
+      catch (e) { return false; }
+    })();
+    if (sec) sec.hidden = state;
+    document.querySelectorAll('a[href="#commands"], a[href*="reference.html#commands"]')
+      .forEach(a => { const li = a.closest('li'); if (li) li.hidden = state; });
+
+    /* Если пользователь смотрел на раздел 34 и включил режим «без кода» —
+       прокручиваем страницу в самое начало, чтобы не остаться посреди пустоты. */
+    if (state && wasInView) {
+      try {
+        history.replaceState(null, '', location.pathname + location.search);
+      } catch (e) { location.hash = ''; }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
     /* визуальная кнопка-переключатель в шапке */
     const btn = document.getElementById('codeToggleBtn');
     if (btn) {

@@ -808,18 +808,20 @@
   <a class="variant-chip" href="#cmd-base">A · Каркас с входом</a>
   <a class="variant-chip" href="#cmd-shop">B · Интернет-магазин</a>
   <a class="variant-chip" href="#cmd-hr">C · Учёт сотрудников</a>
+  <a class="variant-chip" href="#cmd-own">D · Своя тема</a>
 </nav>
-<p>Это «шпаргалка-конструктор»: три полностью рабочие последовательности — от пустой папки до запущенного сайта. Каждая разбита на маленькие шаги: серые блоки с командами выполняйте в терминале по порядку, а код из остальных блоков вставляйте в файлы (путь подписан над каждым блоком). Ничего выдумывать не нужно — копируйте шаг за шагом сверху вниз.</p>
+<p>Это «шпаргалка-конструктор»: полностью рабочие последовательности — от пустой папки до запущенного сайта (три готовых варианта + план для своей темы). Каждая разбита на маленькие шаги: серые блоки с командами выполняйте в терминале по порядку, а код из остальных блоков вставляйте в файлы (путь подписан над каждым блоком). Ничего выдумывать не нужно — копируйте шаг за шагом сверху вниз.</p>
 
 <div class="callout warn">
   <p><strong>Один проект = одна папка.</strong> Не смешивайте проекты: каждый создаётся отдельно (<code>~/myproject</code>, <code>~/shop</code>, <code>~/hrsystem</code>). Перед началом нового проекта выйдите из старого окружения командой <code>deactivate</code>.</p>
 </div>
 
-<h4>Три варианта последовательности</h4>
+<h4>Четыре варианта последовательности</h4>
 <ul>
   <li><a href="#cmd-base">Вариант A — Универсальный каркас</a>: Django + django_bootstrap5 + регистрация и вход. Основа для любого сайта.</li>
   <li><a href="#cmd-shop">Вариант B — Интернет-магазин</a>: тот же каркас + товары, корзина, оформление заказа.</li>
   <li><a href="#cmd-hr">Вариант C — Учёт сотрудников</a>: тот же каркас + сотрудники, отделы, журнал кадровых событий.</li>
+  <li><a href="#cmd-own">Вариант D — Сайт по СВОЕЙ теме</a>: пошаговый план, как взять каркас из варианта A и превратить его в сайт на любую другую тему (библиотека, клиника, склад, курсы — что угодно).</li>
 </ul>
 
 <div class="callout info">
@@ -1242,7 +1244,11 @@ git commit -m "Каркас: Django + django_bootstrap5 + регистрация
 <div class="commands-variant-block" id="cmdv-b">
 <h3 id="cmd-shop" class="commands-variant">Вариант B. Интернет-магазин</h3>
 
-    <p>Строится поверх варианта A: те же команды создания проекта, то же подключение django_bootstrap5, та же регистрация/вход (файлы <code>main/*</code> и <code>templates/login.html…</code> — без изменений). Отличия — приложение <code>shop</code>: модели товаров и заказов, корзина в сессии, витрина и оформление.</p>
+    <p>Строится поверх варианта A: те же команды создания проекта, то же подключение django_bootstrap5, та же регистрация/вход (файлы <code>main/*</code> и <code>templates/login.html…</code> — без изменений). Отличия — новые модели товаров и заказов внутри того же приложения <code>main</code>, корзина в сессии, витрина и оформление.</p>
+
+    <div class="callout info">
+      <p><strong>Тема не совпадает с магазином?</strong> Не обязательно копировать именно товары и заказы. Посмотрите <a href="#cmd-own">Вариант D — Сайт по СВОЕЙ теме</a>: там общий план (модель → админка → миграция → вьюха → url → шаблон), по которому из каркаса A собирается сайт на любую тему.</p>
+    </div>
 
     <h4>Шаг 1. Каркас + приложение магазина</h4>
 
@@ -1649,7 +1655,7 @@ git commit -m "Интернет-магазин: каталог, корзина, 
 <div class="commands-variant-block" id="cmdv-c">
 <h3 id="cmd-hr" class="commands-variant">Вариант C. Система хранения данных для учёта сотрудников</h3>
 
-    <p>Тот же каркас (Django + django_bootstrap5 + вход), но вместо товаров — сотрудники, отделы и журнал кадровых событий. Данные хранятся в реляционной базе SQLite; для боевого использования легко заменяется на PostgreSQL (раздел 26 гайда).</p>
+    <p>Тот же каркас (Django + django_bootstrap5 + вход), но вместо товаров — сотрудники, отделы и журнал кадровых событий. Данные хранятся в реляционной базе SQLite; для боевого использования легко заменяется на PostgreSQL (раздел 26 гайда). Нужна другая тема (не кадры)? Общий план переработки каркаса под любую тему — <a href="#cmd-own">Вариант D</a>.</p>
 
     <h4>Шаг 1. Каркас (приложение main из варианта A)</h4>
 
@@ -2077,6 +2083,169 @@ git commit -m "Учёт сотрудников: отделы, карточки, 
     <div class="callout tip">
   <p><strong>Куда расти дальше:</strong> заменить SQLite на PostgreSQL (раздел 26), ограничить редактирование правами групп (раздел 24), выложить сайт на сервер (раздел 27), добавить тесты (раздел 21).</p>
 </div>
+
+<!-- Вариант D: своя тема -->
+<div class="commands-variant-block" id="cmdv-d">
+<h3 id="cmd-own" class="commands-variant">Вариант D. Сайт по СВОЕЙ теме (не магазин и не кадры)</h3>
+
+    <p>Темы B и C — просто примеры. Каркас из варианта A подходит для ЛЮБОЙ темы: библиотека, клиника, склад, курсы, блог, бронирование столиков — что угодно. Разница только в том, КАКИЕ ДАННЫЕ вы храните. Ниже — общий план: 6 шагов, которые повторяются для любой темы. В качестве примера показана тема «Библиотека: книги».</p>
+
+    <div class="callout info">
+      <p><strong>Главный принцип Django:</strong> почти любая новая фича = одна модель (как данные хранить) + одна вьюха (что показать) + один url-адрес (по какому адресу показать) + один шаблон (как выглядит). Четыре маленьких правки — и страница работает. Порядок действий всегда одинаковый, меняются только имена.</p>
+    </div>
+
+    <h4>Шаг D0. Начните с каркаса</h4>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash"># выполните шаги 1-9 варианта A до конца:
+# проект config, приложение main, вход/регистрация работают,
+# python manage.py runserver запускается без ошибок.
+# Дальше ничего нового создавать НЕ нужно — дорабатываем тот же проект.</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> сначала полностью соберите каркас из варианта A (папка, окружение, Django, регистрация и вход). Убедитесь, что сайт запускается и кабинет работает. Только после этого переходите к шагам D1-D6 — они превращают каркас в сайт по вашей теме. Новое приложение создавать не нужно, всё добавляем в то же main.</p></div>
+
+    <h4>Шаг D1. Придумайте объект и его поля</h4>
+
+    <p>Ответьте одним списком на вопрос: «что мой сайт хранит?» Каждый предмет = одна таблица (модель), каждое свойство предмета = поле строкой ниже. Пример для библиотеки: книга → название, авторы, год, статус. Для клиники: приём → пациент, врач, дата, кабинет. Для склада: товар → наименование, количество, место хранения.</p>
+
+    <h4>Шаг D2. Опишите объект в коде (models.py)</h4>
+
+    <div class="code-title">main/models.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/models.py — добавьте в конец файла (пример: тема «Библиотека»)
+from django.db import models
+
+
+class Book(models.Model):
+    """Одна книга в библиотеке. Для своей темы переименуйте Book
+    в название своего объекта (Patient, Product, Lesson...) и
+    замените поля на свои."""
+    title = models.CharField("Название", max_length=200)          # короткая строка
+    author = models.CharField("Автор", max_length=150)           # короткая строка
+    year = models.PositiveIntegerField("Год издания", null=True, blank=True)  # число, может быть пустым
+    description = models.TextField("Описание", blank=True)        # длинный текст
+    is_available = models.BooleanField("В наличии", default=True) # да/нет
+    created_at = models.DateTimeField("Добавлена", auto_now_add=True)  # дата проставляется сама
+
+    class Meta:
+        verbose_name = "Книга"        # как показывать в админке (единств. число)
+        verbose_name_plural = "Книги" # множественное число
+        ordering = ["-created_at"]    # свежие сверху
+
+    def __str__(self):
+        return self.title             # как объект подписан в админке и списках</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> откройте файл <code>main/models.py</code> и допишите в конец класс вашего объекта по образцу: имя класса — предмет вашими словами в единственном числе (Book, Patient, Product), поля — свойства из шага D1. Типы выбирайте так: короткий текст — CharField(max_length=...), длинный — TextField, число — PositiveIntegerField, да/нет — BooleanField, дата — DateTimeField(auto_now_add=True) («проставляется автоматически»), связь «много к одному» — ForeignKey (пример в вариантах B и C: заказ → пользователь).</p><p class="code-desc-sub">Django по этому описанию сам создаст таблицу в базе данных — руками базу трогать не нужно.</p></div>
+
+    <h4>Шаг D3. Зарегистрируйте объект в админке</h4>
+
+    <div class="code-title">main/admin.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/admin.py — дополните импорты и регистрацию
+from django.contrib import admin
+from .models import Book, EmployeeEvent   # EmployeeEvent — из вариантов C; если нет — уберите
+
+
+@admin.register(Book)
+class BookAdmin(admin.ModelAdmin):
+    list_display = ("title", "author", "year", "is_available", "created_at")  # колонки списка
+    search_fields = ("title", "author")   # строка поиска в админке
+    list_filter = ("is_available",)       # фильтры сбоку</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> в файле <code>main/admin.py</code> добавьте импорт вашей модели и блок регистрации по образцу. После этого в админке (<code>/admin/</code>) появится раздел с вашим объектом: можно добавлять, правлять и удалять записи через браузер, ничего не программируя. list_display — какие колонки видеть, search_fields — по каким полям искать.</p></div>
+
+    <h4>Шаг D4. Примените изменения к базе (миграция)</h4>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash"># Django читает models.py и сам создаёт таблицу в базе
+python manage.py makemigrations main
+python manage.py migrate
+
+# заполните данные прямо сейчас через админку:
+python manage.py runserver
+# откройте http://127.0.0.1:8000/admin/, войдите суперпользователем,
+# добавьте 3-5 записей вашего объекта — с ними нагляднее проверять сайт</code></pre>
+
+    <h4>Шаг D5. Покажите объект на странице (вьюха + url + шаблон)</h4>
+
+    <div class="code-title">main/views.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/views.py — допишите в конец файла
+from django.shortcuts import render
+from .models import Book
+
+
+def book_list(request):
+    """Страница со списком всех книг (для своей темы — своих объектов)."""
+    books = Book.objects.all()          # все записи из таблицы
+    return render(request, "main/book_list.html", {"books": books})</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> в <code>main/views.py</code> добавьте функцию-вьюху по образцу: она берёт все записи вашей модели (<code>ИмяМодели.objects.all()</code>; фильтры — например <code>.filter(is_available=True)</code>, сортировка — <code>.order_by("-year")</code>) и передаёт их в шаблон. Имена внутри функции (books, book_list) можете заменить на свои — главное, чтобы совпадали с шагом D6.</p></div>
+
+    <div class="code-title">main/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/urls.py — добавьте адрес в список urlpatterns
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    # ... адреса входа/регистрации/profile из варианта A уже здесь ...
+    path("books/", views.book_list, name="book_list"),  # новый адрес вашей страницы
+]</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> в <code>main/urls.py</code> допишите одну строку <code>path(...)</code>: первый аргумент — адрес в браузере (например <code>"books/"</code> или <code>"catalog/"</code>), второй — функция вьюхи из предыдущего блока, третий name — имя для ссылок из шаблонов. Адрес станет доступен как http://127.0.0.1:8000/books/.</p></div>
+
+    <div class="code-title">templates/main/book_list.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- templates/main/book_list.html --&gt;
+{% extends 'main/base.html' %}
+
+{% block content %}
+&lt;div class="px-4 py-5 my-4 text-center"&gt;
+  &lt;h1 class="display-5 fw-bold"&gt;Наша библиотека&lt;/h1&gt;
+  &lt;p class="lead"&gt;Всего книг: {{ books|length }}&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="container"&gt;
+  &lt;div class="row row-cols-1 row-cols-md-3 g-4"&gt;
+    {% for book in books %}
+    &lt;div class="col"&gt;
+      &lt;div class="card h-100"&gt;
+        &lt;div class="card-body"&gt;
+          &lt;h5 class="card-title"&gt;{{ book.title }}&lt;/h5&gt;
+          &lt;h6 class="card-subtitle mb-2 text-body-secondary"&gt;{{ book.author }}, {{ book.year }}&lt;/h6&gt;
+          &lt;p class="card-text"&gt;{{ book.description }}&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="card-footer"&gt;
+          {% if book.is_available %}
+            &lt;span class="badge text-bg-success"&gt;В наличии&lt;/span&gt;
+          {% else %}
+            &lt;span class="badge text-bg-secondary"&gt;Выдана&lt;/span&gt;
+          {% endif %}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    {% empty %}
+    &lt;p&gt;Пока пусто. Добавьте книги через &lt;a href="/admin/"&gt;админку&lt;/a&gt;.&lt;/p&gt;
+    {% endfor %}
+  &lt;/div&gt;
+&lt;/div&gt;
+{% endblock %}</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/main/book_list.html</code> (имя — такое же, как во втором аргументе вьюхи). Разметка — готовый блок Bootstrap «карточки в сетке»: карточка card, сетка row/col, бейджи badge. Для своей темы поменяйте заголовок и то, какие поля показывает карточка: {{ book.title }} означает «взять поле title у каждой записи». Цикл {% for %} повторяет карточку для каждой записи, {% empty %} — сообщение, если записей нет.</p></div>
+
+    <h4>Шаг D6. Проверьте и сохраните результат</h4>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash"># сайт уже запущен (runserver из шага D4) — просто откройте в браузере:
+# http://127.0.0.1:8000/books/   — список ваших объектов
+# http://127.0.0.1:8000/admin/   — добавить/править объекты
+python manage.py check   # должно написать: System check identified no issues
+
+git add .
+git commit -m "Своя тема: модель, админка и страница списка"</code></pre>
+
+    <h4>Шпаргалка: что менять под свою тему</h4>
+    <table class="table table-striped align-middle">
+      <thead><tr><th>Вопрос</th><th>Где ответ</th><th>Пример (библиотека)</th></tr></thead>
+      <tbody>
+        <tr><td>Какие данные храню?</td><td>main/models.py — класс и поля</td><td>Book: title, author, year</td></tr>
+        <tr><td>Кто будет заполнять данные?</td><td>Админка /admin/ (регистрация в main/admin.py)</td><td>Библиотекарь добавляет книги</td></tr>
+        <tr><td>Что показать посетителю?</td><td>main/views.py — функция</td><td>book_list отдаёт все книги</td></tr>
+        <tr><td>По какому адресу?</td><td>main/urls.py — path()</td><td>/books/</td></tr>
+        <tr><td>Как это выглядит?</td><td>templates/main/*.html — блок Bootstrap</td><td>Сетка карточек</td></tr>
+        <tr><td>Хочу страницу одной записи?</td><td>path("books/&lt;int:pk&gt;/", ...) + detail-view + шаблон</td><td>/books/3/ — карточка книги</td></tr>
+        <tr><td>Хочу форму добавления?</td><td>main/forms.py (образец — форма регистрации в варианте A)</td><td>Форма «новая книга»</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout warn">
+      <p><strong>После каждого изменения models.py</strong> обязательно выполняйте пару команд <code>makemigrations main</code> + <code>migrate</code> (шаг D4), иначе Django будет ругаться, что таблицы не соответствуют описанию. Если сделали опечатку — читайте последнюю строку ошибки в терминале: там обычно указано имя файла и строки.</p>
+    </div>
+</div>
+<!-- /Вариант D -->
+
 <button type="button" class="mark-read" data-section="commands@reference.html">Отметить как изученное</button>
 
     <!-- section:summary -->

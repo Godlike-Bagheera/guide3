@@ -1,4 +1,4 @@
-/* Два режима чтения гайда (переключаются кнопкой «</>» в шапке или Ctrl+B):
+/* Два режима чтения гайда (переключается по Ctrl+B):
    1) «С кодом» (по умолчанию): виден весь код.
    2) «Без кода»: скрывается ТОЛЬКО код файлов проекта — блоки Python и
       HTML-шаблоны (в том числе python/html-файлы раздела 34). Вместо каждого
@@ -102,15 +102,6 @@
       } catch (e) { location.hash = ''; }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    /* визуальная кнопка-переключатель в шапке */
-    const btn = document.getElementById('codeToggleBtn');
-    if (btn) {
-      btn.classList.toggle('active', state);
-      btn.setAttribute('aria-pressed', state ? 'true' : 'false');
-      btn.title = state
-        ? 'Показать код (Ctrl+B)'
-        : 'Скрыть код и показать пошаговые объяснения (Ctrl+B)';
-    }
     try { localStorage.setItem(STORAGE_KEY, state ? '1' : '0'); } catch (e) {}
   }
 
@@ -128,13 +119,7 @@
     hidden = saved === '1';
     apply(hidden);
 
-    /* кнопка в шапке — основной способ переключения */
-    const btn = document.getElementById('codeToggleBtn');
-    if (btn) {
-      btn.addEventListener('click', toggle);
-    }
-
-    /* Ctrl+B / Cmd+B — тот же переключатель */
+    /* Ctrl+B / Cmd+B — переключатель режима */
     document.addEventListener('keydown', e => {
       if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === 'b') {
         e.preventDefault();

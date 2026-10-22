@@ -1144,18 +1144,6 @@ html[data-no-python] .commands-only { display: block !important; }
 .commands-only[hidden] { display: none; }
 html:not([data-no-python]) .commands-only { display: none !important; }
 
-/* ─── Кнопка переключения режима «без кода» в шапке ─── */
-.code-toggle-btn {
-  font-family: var(--font-mono, monospace);
-  font-size: .78rem;
-  letter-spacing: -.02em;
-}
-.code-toggle-btn.active {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
-
 /* ─── Быстрая навигация по вариантам раздела 34 ─── */
 .variant-nav {
   display: flex;

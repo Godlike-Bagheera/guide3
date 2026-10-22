@@ -1,4 +1,4 @@
-/* Тесты режима «без кода» (Ctrl+B / кнопка </> в шапке). Запуск: node test-ctrlb.js */
+/* Тесты режима «без кода» (переключается по Ctrl+B). Запуск: node test-ctrlb.js */
 const fs = require('fs');
 const { JSDOM } = require('jsdom');
 
@@ -50,18 +50,12 @@ function langOf(pre) {
   check('part1: bash НЕ скрыты', bash.every(p => !p.hasAttribute('data-code-hidden')));
   check('part1: описания показаны', [...d.querySelectorAll('.code-desc')].some(e => !e.hidden));
   check('part1: режим сохранён в localStorage', store['guide-no-code'] === '1');
-  check('part1: кнопка активна', d.getElementById('codeToggleBtn').classList.contains('active'));
   check('part1: bash-блоки помечены бейджем', bash.every(p => p.getAttribute('data-lang-badge') === 'bash'));
 
   // повторное Ctrl+B возвращает код
   d.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'b', ctrlKey: true, bubbles: true }));
   check('part1: код вернулся', py.every(p => !p.hasAttribute('data-code-hidden')) && htmlB.every(p => !p.hasAttribute('data-code-hidden')));
   check('part1: localStorage сброшен', store['guide-no-code'] === '0');
-
-  // клик по кнопке тоже переключает
-  d.getElementById('codeToggleBtn').click();
-  check('part1: кнопка переключает режим', py.every(p => p.hasAttribute('data-code-hidden')));
-  d.getElementById('codeToggleBtn').click();
 
   // простая клавиша B не трогает режим
   d.dispatchEvent(new w.KeyboardEvent('keydown', { key: 'b', bubbles: true }));

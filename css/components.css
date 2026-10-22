@@ -1081,3 +1081,8 @@ code.has-tip:focus-visible {
   margin-top: auto;
   align-self: flex-start;
 }
+
+/* ─── Ctrl+B: скрытый Python-код (js/hide-code.js) ─── */
+pre[data-code-hidden] {
+  display: none !important;
+}

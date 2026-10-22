@@ -14,19 +14,38 @@ jobs:
       - name: Проверка синтаксиса Python (server.py)
         run: python3 -m py_compile server.py
 
-      - uses: actions/setup-node@v4
+      - name: Настройка Node.js 20 (с кэшем npm)
+        uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: "20"
+          cache: "npm"
 
       - name: Синтаксис всех JS-файлов
         run: for f in js/*.js; do node --check "$f"; done
 
       - name: Валидация HTML (все страницы парсятся без ошибок)
+        # Фиксируем версию html-validate, отключаем аудит/фонды и чистим кэш при сбое —
+        # это обходит ошибку npm v10 "Cannot read properties of null (reading 'edgesOut')"
         run: |
-          npm install --no-save html-validate
-          npx html-validate "*.html" --rule "required-open-hash:false" || true
+          set -e
+          install_htmlvalidate() {
+            npm install --no-save --no-audit --no-fund --prefer-online html-validate@8.9.0
+          }
+          if ! install_htmlvalidate; then
+            echo "::warning::Первая установка html-validate не удалась, чищу npm-кэш и пробую снова"
+            npm cache clean --force
+            rm -rf node_modules package-lock.json
+            install_htmlvalidate
+          fi
+          npx html-validate "*.html" || true
 
       - name: Тесты режима Ctrl+B (jsdom)
         run: |
-          npm install jsdom
+          set -e
+          if ! npm install --no-save --no-audit --no-fund --prefer-online jsdom@24.1.0; then
+            echo "::warning::Первая установка jsdom не удалась, чищу npm-кэш и пробую снова"
+            npm cache clean --force
+            rm -rf node_modules package-lock.json
+            npm install --no-save --no-audit --no-fund --prefer-online jsdom@24.1.0
+          fi
           node test-ctrlb.js

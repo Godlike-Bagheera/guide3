@@ -14,11 +14,12 @@ jobs:
       - name: Проверка синтаксиса Python (server.py)
         run: python3 -m py_compile server.py
 
-      - name: Настройка Node.js 20 (с кэшем npm)
+      - name: Настройка Node.js 20
+        # Без cache: npm — в репозитории нет package-lock.json, и опция cache
+        # приводит к падению setup-node ("Dependencies lock file is not found")
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
 
       - name: Синтаксис всех JS-файлов
         run: for f in js/*.js; do node --check "$f"; done

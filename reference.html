@@ -860,8 +860,9 @@ python -m pip list | grep -i -E "django|bootstrap"</code></pre>
     <pre><span class="lang-tag">bash</span><code class="language-bash"># стартуем проект (точка в конце = «в текущей папке»)
 django-admin startproject config .
 
-# приложение, где будет логика пользователей
-python manage.py startapp accounts
+# основное приложение проекта — здесь вся логика сайта:
+# пока это регистрация и вход, сюда же позже добавляются товары, сотрудники и т.д.
+python manage.py startapp main
 
 # наводим порядок в базе и заводим администратора
 python manage.py migrate
@@ -881,7 +882,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_bootstrap5',   # добавить: Bootstrap 5 в шаблонах
-    'accounts',            # добавить: наше приложение
+    'main',                # добавить: наше приложение
 ]
 
 # 2) найдите секцию TEMPLATES и разрешите читать templates/ из корня проекта:
@@ -904,11 +905,11 @@ TEMPLATES = [
 # 3) в самый конец файла добавьте адреса после входа/выхода:
 LOGIN_REDIRECT_URL = '/'     # куда идти после входа
 LOGOUT_REDIRECT_URL = '/'    # куда идти после выхода</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> откройте файл <code>config/settings.py</code> текстовым редактором и внесите три правки из карточки: добавьте <code>django_bootstrap5</code> и <code>accounts</code> в список INSTALLED_APPS, укажите папку шаблонов <code>DIRS</code>, пропишите адрес входа <code>LOGIN_URL</code> и русскую локаль (LANGUAGE_CODE/USE_I18N). Сохраните файл.</p><p class="code-desc-sub">Файл настроек проекта: Django узнаёт из него, какие приложения включены, где искать шаблоны и куда перенаправлять невошедшего пользователя. Правки обычные — текст в кавычках, после каждой строки запятая.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> откройте файл <code>config/settings.py</code> текстовым редактором и внесите три правки из карточки: добавьте <code>django_bootstrap5</code> и <code>main</code> в список INSTALLED_APPS, укажите папку шаблонов <code>DIRS</code>, пропишите адрес входа <code>LOGIN_URL</code> и русскую локаль (LANGUAGE_CODE/USE_I18N). Сохраните файл.</p><p class="code-desc-sub">Файл настроек проекта: Django узнаёт из него, какие приложения включены, где искать шаблоны и куда перенаправлять невошедшего пользователя. Правки обычные — текст в кавычках, после каждой строки запятая.</p></div>
 
     <h4>Шаг 4. Формы регистрации и входа</h4>
 
-    <div class="code-title">accounts/forms.py</div><pre><span class="lang-tag">python</span><code class="language-python"># accounts/forms.py — новый файл
+    <div class="code-title">main/forms.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/forms.py — новый файл
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -936,11 +937,11 @@ class LoginForm(AuthenticationForm):
         attrs=&#123;'class': 'form-control', 'placeholder': 'Логин'&#125;))
     password = forms.CharField(widget=forms.PasswordInput(
         attrs=&#123;'class': 'form-control', 'placeholder': 'Пароль'&#125;))</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>accounts/forms.py</code> (папка <code>accounts</code>) и скопируйте в него код формы регистрации целиком. Файл новый — ничего искать и менять внутри не нужно.</p><p class="code-desc-sub">Форма регистрации: Django сам соберёт поля «имя пользователя», «email», «пароль» и «повтор пароля» и проверит, что пароль надёжный и два ввода совпадают.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>main/forms.py</code> (папка <code>main</code>) и скопируйте в него код формы регистрации целиком. Файл новый — ничего искать и менять внутри не нужно.</p><p class="code-desc-sub">Форма регистрации: Django сам соберёт поля «имя пользователя», «email», «пароль» и «повтор пароля» и проверит, что пароль надёжный и два ввода совпадают.</p></div>
 
     <h4>Шаг 5. Представления (что отдавать на какой адрес)</h4>
 
-    <div class="code-title">accounts/views.py</div><pre><span class="lang-tag">python</span><code class="language-python"># accounts/views.py — заменить содержимое целиком
+    <div class="code-title">main/views.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/views.py — заменить содержимое целиком
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
@@ -989,11 +990,11 @@ def logout_view(request):
     """Выход из аккаунта."""
     logout(request)
     return redirect('home')</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> откройте готовый файл <code>accounts/views.py</code> (создан командой startapp) и полностью замените его содержимое кодом из блока: страницы регистрации, входа через форму, выхода и личного кабинета.</p><p class="code-desc-sub">Обработчики страниц каркаса: регистрация нового пользователя, вход, выход и кабинет со сведениями о вошедшем.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> откройте готовый файл <code>main/views.py</code> (создан командой startapp) и полностью замените его содержимое кодом из блока: страницы регистрации, входа через форму, выхода и личного кабинета.</p><p class="code-desc-sub">Обработчики страниц каркаса: регистрация нового пользователя, вход, выход и кабинет со сведениями о вошедшем.</p></div>
 
     <h4>Шаг 6. Адреса сайта</h4>
 
-    <div class="code-title">accounts/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># accounts/urls.py — новый файл
+    <div class="code-title">main/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/urls.py — новый файл
 from django.urls import path
 from . import views
 
@@ -1004,7 +1005,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('profile/', views.profile, name='profile'),
 ]</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>accounts/urls.py</code> и скопируйте в него целиком — это адреса страниц нашего приложения (регистрация, вход, выход, кабинет).</p><p class="code-desc-sub">Список адресов приложения accounts: какое действие Django выполняет по каждому URL сайта.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>main/urls.py</code> и скопируйте в него целиком — это адреса страниц нашего приложения (регистрация, вход, выход, кабинет).</p><p class="code-desc-sub">Список адресов приложения main: какое действие Django выполняет по каждому URL сайта.</p></div>
 
     <div class="code-title">config/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># config/urls.py — заменить содержимое целиком
 from django.contrib import admin
@@ -1012,13 +1013,13 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('accounts.urls')),   # все наши адреса
+    path('', include('main.urls')),   # все наши адреса
 ]</code></pre>
     <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте (или дополните) файл <code>config/urls.py</code> кодом из блока — адреса страниц.</p><p class="code-desc-sub">Маршруты: связь адреса с обработчиком.</p></div>
 
     <h4>Шаг 7. Админка (чтобы видеть пользователей)</h4>
 
-    <div class="code-title">accounts/admin.py</div><pre><span class="lang-tag">python</span><code class="language-python"># accounts/admin.py — заменить содержимое
+    <div class="code-title">main/admin.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/admin.py — заменить содержимое
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
@@ -1030,7 +1031,7 @@ admin.site.unregister(User)
 class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'date_joined', 'is_staff')
     ordering = ('-date_joined',)</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> файл <code>accounts/admin.py</code> можно оставить пустым — код из блока нужен только если захотите выводить пользователей админки с дополнительными колонками. При желании скопируйте и сохраните.</p><p class="code-desc-sub">Настройка внешнего вида админ-панели для модели пользователя (необязательный шаг).</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> файл <code>main/admin.py</code> можно оставить пустым — код из блока нужен только если захотите выводить пользователей админки с дополнительными колонками. При желании скопируйте и сохраните.</p><p class="code-desc-sub">Настройка внешнего вида админ-панели для модели пользователя (необязательный шаг).</p></div>
 
     <h4>Шаг 8. HTML-шаблоны из готовых блоков Bootstrap</h4>
 
@@ -1222,7 +1223,7 @@ git commit -m "Каркас: Django + django_bootstrap5 + регистрация
 <div class="commands-variant-block" id="cmdv-b">
 <h3 id="cmd-shop" class="commands-variant">Вариант B. Интернет-магазин</h3>
 
-    <p>Строится поверх варианта A: те же команды создания проекта, то же подключение django_bootstrap5, та же регистрация/вход (файлы <code>accounts/*</code> и <code>templates/login.html…</code> — без изменений). Отличия — приложение <code>shop</code>: модели товаров и заказов, корзина в сессии, витрина и оформление.</p>
+    <p>Строится поверх варианта A: те же команды создания проекта, то же подключение django_bootstrap5, та же регистрация/вход (файлы <code>main/*</code> и <code>templates/login.html…</code> — без изменений). Отличия — приложение <code>shop</code>: модели товаров и заказов, корзина в сессии, витрина и оформление.</p>
 
     <h4>Шаг 1. Каркас + приложение магазина</h4>
 
@@ -1231,17 +1232,16 @@ python3 -m venv venv &amp;&amp; source venv/bin/activate
 pip install django django-bootstrap5
 
 django-admin startproject config .
-python manage.py startapp accounts   # регистрация/вход — как в варианте A
-python manage.py startapp shop       # товары, корзина, заказы
+python manage.py startapp main       # каркас из варианта A: вход/регистрация + товары, корзина, заказы
 
 python manage.py migrate
 python manage.py createsuperuser</code></pre>
 
-    <p>В <code>config/settings.py</code> в INSTALLED_APPS добавьте <code>'django_bootstrap5'</code>, <code>'accounts'</code> и <code>'shop'</code>; настройте <code>DIRS</code> и <code>LOGIN_REDIRECT_URL</code> — точь-в-точь как в шаге 3 варианта A (плюс скопируйте файлы accounts из варианта A).</p>
+    <p>В <code>config/settings.py</code> в INSTALLED_APPS добавьте <code>'django_bootstrap5'</code> и <code>'main'</code>; настройте <code>DIRS</code> и <code>LOGIN_REDIRECT_URL</code> — точь-в-точь как в шаге 3 варианта A (просто продолжайте проект из варианта A, новое приложение создавать не нужно).</p>
 
     <h4>Шаг 2. Модели: товар, заказ, позиция корзины</h4>
 
-    <div class="code-title">shop/models.py</div><pre><span class="lang-tag">python</span><code class="language-python"># shop/models.py
+    <div class="code-title">main/models.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/models.py
 from decimal import Decimal
 from django.conf import settings
 from django.db import models
@@ -1305,15 +1305,15 @@ class OrderItem(models.Model):
     @property
     def line_total(self):
         return self.unit_price * self.quantity</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте приложение <code>python manage.py startapp shop</code>, затем заполните файл <code>shop/models.py</code> кодом из блока — это таблицы базы: товар (название, цена, описание, остаток) и заказ (позиции, сумма, статус). После копирования обязательно выполните две команды миграции из следующего bash-блока.</p><p class="code-desc-sub">Модели магазина: Django по ним сам создаст таблицы товаров и заказов в базе данных.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> продолжайте приложение <code>main</code> из варианта A: заполните файл <code>main/models.py</code> кодом из блока — это таблицы базы: товар (название, цена, описание, остаток) и заказ (позиции, сумма, статус). После копирования обязательно выполните две команды миграции из следующего bash-блока.</p><p class="code-desc-sub">Модели магазина: Django по ним сам создаст таблицы товаров и заказов в базе данных.</p></div>
 
     <pre><span class="lang-tag">bash</span><code class="language-bash"># применяем модели к базе
-python manage.py makemigrations shop
+python manage.py makemigrations main
 python manage.py migrate</code></pre>
 
     <h4>Шаг 3. Корзина в сессии (без лишней таблицы)</h4>
 
-    <div class="code-title">shop/cart.py</div><pre><span class="lang-tag">python</span><code class="language-python"># shop/cart.py — новый файл, помощники корзины
+    <div class="code-title">main/cart.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/cart.py — новый файл, помощники корзины
 from decimal import Decimal
 
 from .models import Product
@@ -1346,11 +1346,11 @@ def cart_items(request):
 def cart_clear(request):
     request.session[CART_KEY] = &#123;&#125;
     request.session.modified = True</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>shop/cart.py</code> и скопируйте в него код целиком — это «корзина»: она хранится в сессии браузера, поэтому товары не теряются между страницами.</p><p class="code-desc-sub">Логика корзины: добавить товар, посчитать количество позиций и общую сумму заказа.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>main/cart.py</code> и скопируйте в него код целиком — это «корзина»: она хранится в сессии браузера, поэтому товары не теряются между страницами.</p><p class="code-desc-sub">Логика корзины: добавить товар, посчитать количество позиций и общую сумму заказа.</p></div>
 
     <h4>Шаг 4. Представления витрины, корзины и заказа</h4>
 
-    <div class="code-title">shop/views.py</div><pre><span class="lang-tag">python</span><code class="language-python"># shop/views.py — заменить содержимое
+    <div class="code-title">main/views.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/views.py — заменить содержимое
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
@@ -1363,19 +1363,19 @@ def catalog(request):
     """Витрина: все товары в продаже + счётчик корзины."""
     products = Product.objects.filter(is_published=True)
     items, total = cart_items(request)
-    return render(request, 'shop/catalog.html',
+    return render(request, 'main/catalog.html',
                   &#123;'products': products, 'cart_count': len(items), 'cart_total': total&#125;)
 
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk, is_published=True)
-    return render(request, 'shop/product.html', &#123;'product': product&#125;)
+    return render(request, 'main/product.html', &#123;'product': product&#125;)
 
 
 @login_required
 def cart_view(request):
     items, total = cart_items(request)
-    return render(request, 'shop/cart.html', &#123;'items': items, 'total': total&#125;)
+    return render(request, 'main/cart.html', &#123;'items': items, 'total': total&#125;)
 
 
 @login_required
@@ -1402,18 +1402,18 @@ def checkout(request):
         cart_clear(request)
         messages.success(request, 'Заказ №%s на сумму %s руб. оформлен' % (order.pk, total))
         return redirect('order_done', pk=order.pk)
-    return render(request, 'shop/checkout.html', &#123;'items': items, 'total': total&#125;)
+    return render(request, 'main/checkout.html', &#123;'items': items, 'total': total&#125;)
 
 
 @login_required
 def order_done(request, pk):
     order = get_object_or_404(Order, pk=pk, user=request.user)
-    return render(request, 'shop/order_done.html', &#123;'order': order&#125;)</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> замените содержимое файла <code>shop/views.py</code> кодом из блока — страницы витрины, товара, корзины и оформления заказа.</p><p class="code-desc-sub">Обработчики страниц магазина: каталог, карточка товара, корзина, оформление заказа.</p></div>
+    return render(request, 'main/order_done.html', &#123;'order': order&#125;)</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> замените содержимое файла <code>main/views.py</code> кодом из блока — страницы витрины, товара, корзины и оформления заказа.</p><p class="code-desc-sub">Обработчики страниц магазина: каталог, карточка товара, корзина, оформление заказа.</p></div>
 
     <h4>Шаг 5. Адреса</h4>
 
-    <div class="code-title">shop/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># shop/urls.py — новый файл
+    <div class="code-title">main/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/urls.py — новый файл
 from django.urls import path
 from . import views
 
@@ -1424,23 +1424,27 @@ urlpatterns = [
     path('cart/add/&lt;int:pk&gt;/', views.cart_add_view, name='cart_add'),
     path('checkout/', views.checkout, name='checkout'),
     path('order/&lt;int:pk&gt;/', views.order_done, name='order_done'),
+    # плюс адреса каркаса из варианта A — регистрация, вход, выход, кабинет:
+    path('register/', views.register, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('dashboard/', views.dashboard, name='dashboard'),
 ]</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>shop/urls.py</code> и скопируйте целиком — адреса магазина (каталог, корзина, добавление в корзину, заказ).</p><p class="code-desc-sub">Адреса приложения shop: связка «URL страницы → обработчик».</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> дополните файл <code>main/urls.py</code> (создан в варианте A) адресами магазина: каталог, корзина, добавление в корзину, заказ. Адреса входа/регистрации остаются на месте.</p><p class="code-desc-sub">Адреса приложения main: связка «URL страницы → обработчик».</p></div>
 
-    <div class="code-title">config/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># config/urls.py — магазин на главной, аккаунты отдельным путём
+    <div class="code-title">config/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># config/urls.py — магазин на главной; вход/регистрация там же, в main
 from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),  # вход/регистрация/кабинет
-    path('', include('shop.urls')),               # витрина — на главной
+        path('', include('main.urls')),                  # витрина — на главной
 ]</code></pre>
     <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте (или дополните) файл <code>config/urls.py</code> кодом из блока — адреса страниц.</p><p class="code-desc-sub">Маршруты: связь адреса с обработчиком.</p></div>
 
     <h4>Шаг 6. Админка: добавляем товары и смотрим заказы</h4>
 
-    <div class="code-title">shop/admin.py</div><pre><span class="lang-tag">python</span><code class="language-python"># shop/admin.py — заменить содержимое
+    <div class="code-title">main/admin.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/admin.py — заменить содержимое
 from django.contrib import admin
 from .models import Order, OrderItem, Product
 
@@ -1462,13 +1466,13 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'status', 'created_at')
     list_filter = ('status',)
     inlines = [OrderItemInline]</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> замените содержимое <code>shop/admin.py</code> кодом из блока — после этого товары и заказы появится редактировать через админку (/admin/). Не забудьте выполнить migrate из bash-блока рядом.</p><p class="code-desc-sub">Регистрация моделей магазина в админке: добавление/правка товаров и просмотр заказов.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> замените содержимое <code>main/admin.py</code> кодом из блока — после этого товары и заказы появится редактировать через админку (/admin/). Не забудьте выполнить migrate из bash-блока рядом.</p><p class="code-desc-sub">Регистрация моделей магазина в админке: добавление/правка товаров и просмотр заказов.</p></div>
 
     <h4>Шаг 7. Шаблоны магазина (готовые блоки Bootstrap)</h4>
 
-    <p>Создайте папку <code>templates/shop</code> (<code>mkdir -p ~/shop/templates/shop</code>) и четыре файла.</p>
+    <p>Создайте папку <code>templates/main</code> (<code>mkdir -p templates/main</code>) и четыре файла.</p>
 
-    <div class="code-title">templates/shop/catalog.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- витрина: Grid of Cards --&gt;
+    <div class="code-title">templates/main/catalog.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- витрина: Grid of Cards --&gt;
 &#123;% extends "base.html" %&#125;
 &#123;% block title %&#125;Магазин&#123;% endblock %&#125;
 &#123;% block content %&#125;
@@ -1508,9 +1512,9 @@ class OrderAdmin(admin.ModelAdmin):
   &#123;% endfor %&#125;
 &lt;/div&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/shop/catalog.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/main/catalog.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
-    <div class="code-title">templates/shop/cart.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- корзина: Bootstrap Table --&gt;
+    <div class="code-title">templates/main/cart.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- корзина: Bootstrap Table --&gt;
 &#123;% extends "base.html" %&#125;
 &#123;% block title %&#125;Корзина&#123;% endblock %&#125;
 &#123;% block content %&#125;
@@ -1539,9 +1543,9 @@ class OrderAdmin(admin.ModelAdmin):
 &lt;div class="alert alert-warning"&gt;Корзина пуста. &lt;a href="&#123;% url 'catalog' %&#125;"&gt;В каталог&lt;/a&gt;&lt;/div&gt;
 &#123;% endif %&#125;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/shop/cart.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/main/cart.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
-    <div class="code-title">templates/shop/checkout.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- оформление заказа: список позиций + форма комментария --&gt;
+    <div class="code-title">templates/main/checkout.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- оформление заказа: список позиций + форма комментария --&gt;
 &#123;% extends "base.html" %&#125;
 &#123;% load django_bootstrap5 %&#125;
 &#123;% block title %&#125;Оформление&#123;% endblock %&#125;
@@ -1572,9 +1576,9 @@ class OrderAdmin(admin.ModelAdmin):
   &lt;/div&gt;
 &lt;/div&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/shop/checkout.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/main/checkout.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
-    <div class="code-title">templates/shop/product.html + order_done.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- карточка товара --&gt;
+    <div class="code-title">templates/main/product.html + order_done.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- карточка товара --&gt;
 &#123;% extends "base.html" %&#125;
 &#123;% block title %&#125;&#123;&#123; product.name &#125;&#125;&#123;% endblock %&#125;
 &#123;% block content %&#125;
@@ -1589,7 +1593,7 @@ class OrderAdmin(admin.ModelAdmin):
 &lt;/div&gt;
 &#123;% endblock %&#125;
 
-&lt;!-- === файл templates/shop/order_done.html === --&gt;
+&lt;!-- === файл templates/main/order_done.html === --&gt;
 &#123;% extends "base.html" %&#125;
 &#123;% block content %&#125;
 &lt;div class="alert alert-success"&gt;
@@ -1598,13 +1602,13 @@ class OrderAdmin(admin.ModelAdmin):
 &lt;/div&gt;
 &lt;a class="btn btn-outline-primary" href="&#123;% url 'catalog' %&#125;"&gt;Продолжить покупки&lt;/a&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/shop/product.html + order_done.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/main/product.html + order_done.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
     <h4>Шаг 8. Демо-товары и запуск</h4>
 
     <pre><span class="lang-tag">bash</span><code class="language-bash"># быстрый способ залить 6 демо-товаров прямо в базу
 python manage.py shell -c "
-from shop.models import Product
+from main.models import Product
 for i in range(1, 7):
     Product.objects.get_or_create(
         name='Товар %d' % i,
@@ -1628,24 +1632,23 @@ git commit -m "Интернет-магазин: каталог, корзина, 
 
     <p>Тот же каркас (Django + django_bootstrap5 + вход), но вместо товаров — сотрудники, отделы и журнал кадровых событий. Данные хранятся в реляционной базе SQLite; для боевого использования легко заменяется на PostgreSQL (раздел 26 гайда).</p>
 
-    <h4>Шаг 1. Каркас + приложение hr</h4>
+    <h4>Шаг 1. Каркас (приложение main из варианта A)</h4>
 
     <pre><span class="lang-tag">bash</span><code class="language-bash">mkdir -p ~/hrsystem &amp;&amp; cd ~/hrsystem
 python3 -m venv venv &amp;&amp; source venv/bin/activate
 pip install django django-bootstrap5
 
 django-admin startproject config .
-python manage.py startapp accounts   # вход/регистрация — как в варианте A
-python manage.py startapp hr         # сотрудники, отделы, события
+python manage.py startapp main       # каркас из варианта A: вход/регистрация + сотрудники, отделы, события
 
 python manage.py migrate
 python manage.py createsuperuser</code></pre>
 
-    <p>В <code>config/settings.py</code> добавьте в INSTALLED_APPS <code>'django_bootstrap5'</code>, <code>'accounts'</code>, <code>'hr'</code> и настройте <code>DIRS</code> как в варианте A; файлы accounts скопируйте из варианта A.</p>
+    <p>В <code>config/settings.py</code> добавьте в INSTALLED_APPS <code>'django_bootstrap5'</code> и <code>'main'</code> и настройте <code>DIRS</code> как в варианте A (продолжайте проект из варианта A, новое приложение создавать не нужно).</p>
 
     <h4>Шаг 2. Модели учёта</h4>
 
-    <div class="code-title">hr/models.py</div><pre><span class="lang-tag">python</span><code class="language-python"># hr/models.py
+    <div class="code-title">main/models.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/models.py
 from django.conf import settings
 from django.db import models
 
@@ -1718,14 +1721,14 @@ class HrEvent(models.Model):
         verbose_name = 'Кадровое событие'
         verbose_name_plural = 'Кадровые события'
         ordering = ('-happened_at',)</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте приложение <code>python manage.py startapp hr</code> и заполните <code>hr/models.py</code> кодом из блока — таблицы «Отдел», «Сотрудник» и «Кадровое событие». Затем выполните команды миграции из соседнего bash-блока.</p><p class="code-desc-sub">Модели учёта сотрудников: отделы, карточки людей (ФИО, грейд, оклад, дата приёма) и журнал кадровых событий.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> продолжайте приложение <code>main</code> из варианта A: заполните <code>main/models.py</code> кодом из блока — таблицы «Отдел», «Сотрудник» и «Кадровое событие». Затем выполните команды миграции из соседнего bash-блока.</p><p class="code-desc-sub">Модели учёта сотрудников: отделы, карточки людей (ФИО, грейд, оклад, дата приёма) и журнал кадровых событий.</p></div>
 
-    <pre><span class="lang-tag">bash</span><code class="language-bash">python manage.py makemigrations hr
+    <pre><span class="lang-tag">bash</span><code class="language-bash">python manage.py makemigrations main
 python manage.py migrate</code></pre>
 
     <h4>Шаг 3. Формы</h4>
 
-    <div class="code-title">hr/forms.py</div><pre><span class="lang-tag">python</span><code class="language-python"># hr/forms.py — новый файл
+    <div class="code-title">main/forms.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/forms.py — новый файл
 from django import forms
 from .models import Department, Employee, HrEvent
 
@@ -1753,11 +1756,11 @@ class DepartmentForm(forms.ModelForm):
     class Meta:
         model = Department
         fields = ('name', 'manager')</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>hr/forms.py</code> и скопируйте код целиком — формы добавления сотрудника и записи события; поля и проверки Django построит сам по моделям.</p><p class="code-desc-sub">Формы для ввода данных о сотрудниках и событиях.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>main/forms.py</code> и скопируйте код целиком — формы добавления сотрудника и записи события; поля и проверки Django построит сам по моделям.</p><p class="code-desc-sub">Формы для ввода данных о сотрудниках и событиях.</p></div>
 
     <h4>Шаг 4. Представления: панель, карточка, поиск, добавление</h4>
 
-    <div class="code-title">hr/views.py</div><pre><span class="lang-tag">python</span><code class="language-python"># hr/views.py — заменить содержимое
+    <div class="code-title">main/views.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/views.py — заменить содержимое
 from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
@@ -1774,7 +1777,7 @@ def dashboard(request):
         employees = employees.filter(
             Q(first_name__icontains=q) | Q(last_name__icontains=q)
             | Q(department__name__icontains=q))
-    return render(request, 'hr/dashboard.html', &#123;
+    return render(request, 'main/dashboard.html', &#123;
         'employees': employees,
         'total_count': Employee.objects.count(),
         'active_count': Employee.objects.filter(is_active=True).count(),
@@ -1785,7 +1788,7 @@ def dashboard(request):
 
 def employee_detail(request, pk):
     emp = get_object_or_404(Employee, pk=pk)
-    return render(request, 'hr/employee.html',
+    return render(request, 'main/employee.html',
                   &#123;'emp': emp, 'events': emp.events.all()&#125;)
 
 
@@ -1797,7 +1800,7 @@ def employee_create(request):
                                happened_at=emp.hired_at, note='Первичный приём')
         messages.success(request, 'Сотрудник ' + emp.full_name + ' добавлен')
         return redirect('employee_detail', pk=emp.pk)
-    return render(request, 'hr/employee_form.html',
+    return render(request, 'main/employee_form.html',
                   &#123;'form': form, 'title': 'Новый сотрудник'&#125;)
 
 
@@ -1808,7 +1811,7 @@ def employee_edit(request, pk):
         form.save()
         messages.success(request, 'Данные сохранены')
         return redirect('employee_detail', pk=pk)
-    return render(request, 'hr/employee_form.html',
+    return render(request, 'main/employee_form.html',
                   &#123;'form': form, 'title': 'Правка: ' + emp.full_name&#125;)
 
 
@@ -1821,12 +1824,12 @@ def event_add(request, pk):
         ev.save()
         messages.success(request, 'Событие записано в журнал')
         return redirect('employee_detail', pk=pk)
-    return render(request, 'hr/event_form.html', &#123;'form': form, 'emp': emp&#125;)</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> полностью замените содержимое <code>hr/views.py</code> кодом из блока — панель учёта со сводкой и поиском, карточка сотрудника, добавление/правка, журнал событий. Все страницы доступны только вошедшим пользователям.</p><p class="code-desc-sub">Обработчики страниц системы учёта: dashboard, карточка и форма сотрудника, добавление события.</p></div>
+    return render(request, 'main/event_form.html', &#123;'form': form, 'emp': emp&#125;)</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> полностью замените содержимое <code>main/views.py</code> кодом из блока — панель учёта со сводкой и поиском, карточка сотрудника, добавление/правка, журнал событий. Все страницы доступны только вошедшим пользователям.</p><p class="code-desc-sub">Обработчики страниц системы учёта: dashboard, карточка и форма сотрудника, добавление события.</p></div>
 
     <h4>Шаг 5. Адреса</h4>
 
-    <div class="code-title">hr/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># hr/urls.py — новый файл
+    <div class="code-title">main/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/urls.py — новый файл
 from django.urls import path
 from . import views
 
@@ -1836,8 +1839,12 @@ urlpatterns = [
     path('employee/&lt;int:pk&gt;/', views.employee_detail, name='employee_detail'),
     path('employee/&lt;int:pk&gt;/edit/', views.employee_edit, name='employee_edit'),
     path('employee/&lt;int:pk&gt;/event/', views.event_add, name='event_add'),
+    # плюс адреса каркаса из варианта A — регистрация, вход, выход:
+    path('register/', views.register, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 ]</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>hr/urls.py</code> и скопируйте целиком — адреса системы учёта.</p><p class="code-desc-sub">Адреса приложения hr.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> дополните файл <code>main/urls.py</code> (создан в варианте A) адресами системы учёта. Адрес входа <code>/login/</code> остаётся из каркаса, а кабинет теперь отдаёт панель сотрудников (<code>dashboard</code> из этого блока).</p><p class="code-desc-sub">Адреса приложения main: связка «URL страницы → обработчик».</p></div>
 
     <div class="code-title">config/urls.py</div><pre><span class="lang-tag">python</span><code class="language-python"># config/urls.py
 from django.contrib import admin
@@ -1845,14 +1852,13 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
-    path('', include('hr.urls')),
+    path('', include('main.urls')),
 ]</code></pre>
     <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте (или дополните) файл <code>config/urls.py</code> кодом из блока — адреса страниц.</p><p class="code-desc-sub">Маршруты: связь адреса с обработчиком.</p></div>
 
     <h4>Шаг 6. Админка с фильтрами и поиском</h4>
 
-    <div class="code-title">hr/admin.py</div><pre><span class="lang-tag">python</span><code class="language-python"># hr/admin.py — заменить содержимое
+    <div class="code-title">main/admin.py</div><pre><span class="lang-tag">python</span><code class="language-python"># main/admin.py — заменить содержимое
 from django.contrib import admin
 from .models import Department, Employee, HrEvent
 
@@ -1875,13 +1881,13 @@ class HrEventAdmin(admin.ModelAdmin):
     list_display = ('employee', 'kind', 'happened_at')
     list_filter = ('kind',)
     date_hierarchy = 'happened_at'</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> замените содержимое <code>hr/admin.py</code> кодом из блока — сотрудники и отделы станут доступны для правки через админку.</p><p class="code-desc-sub">Регистрация моделей учёта в админке.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> замените содержимое <code>main/admin.py</code> кодом из блока — сотрудники и отделы станут доступны для правки через админку.</p><p class="code-desc-sub">Регистрация моделей учёта в админке.</p></div>
 
     <h4>Шаг 7. Шаблоны (Bootstrap: Stat cards, Table, List group, Form)</h4>
 
-    <p>Создайте папку <code>templates/hr</code> (<code>mkdir -p ~/hrsystem/templates/hr</code>) и четыре файла.</p>
+    <p>Создайте папку <code>templates/main</code> (<code>mkdir -p ~/hrsystem/templates/main</code>) и четыре файла.</p>
 
-    <div class="code-title">templates/hr/dashboard.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- панель учёта: сводка + таблица + поиск --&gt;
+    <div class="code-title">templates/main/dashboard.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- панель учёта: сводка + таблица + поиск --&gt;
 &#123;% extends "base.html" %&#125;
 &#123;% block title %&#125;Учёт сотрудников&#123;% endblock %&#125;
 &#123;% block content %&#125;
@@ -1941,9 +1947,9 @@ class HrEventAdmin(admin.ModelAdmin):
   &lt;/table&gt;
 &lt;/div&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/hr/dashboard.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/main/dashboard.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
-    <div class="code-title">templates/hr/employee.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- карточка сотрудника + журнал событий --&gt;
+    <div class="code-title">templates/main/employee.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- карточка сотрудника + журнал событий --&gt;
 &#123;% extends "base.html" %&#125;
 &#123;% block title %&#125;&#123;&#123; emp.full_name &#125;&#125;&#123;% endblock %&#125;
 &#123;% block content %&#125;
@@ -1985,9 +1991,9 @@ class HrEventAdmin(admin.ModelAdmin):
   &lt;/div&gt;
 &lt;/div&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/hr/employee.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/main/employee.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
-    <div class="code-title">templates/hr/employee_form.html + event_form.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- форма сотрудника: django_bootstrap5 рисует поля в стиле Bootstrap --&gt;
+    <div class="code-title">templates/main/employee_form.html + event_form.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- форма сотрудника: django_bootstrap5 рисует поля в стиле Bootstrap --&gt;
 &#123;% extends "base.html" %&#125;
 &#123;% load django_bootstrap5 %&#125;
 &#123;% block content %&#125;
@@ -2002,7 +2008,7 @@ class HrEventAdmin(admin.ModelAdmin):
 &lt;/div&gt;
 &#123;% endblock %&#125;
 
-&lt;!-- === файл templates/hr/event_form.html === --&gt;
+&lt;!-- === файл templates/main/event_form.html === --&gt;
 &#123;% extends "base.html" %&#125;
 &#123;% load django_bootstrap5 %&#125;
 &#123;% block content %&#125;
@@ -2017,14 +2023,14 @@ class HrEventAdmin(admin.ModelAdmin):
   &lt;/form&gt;
 &lt;/div&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/hr/employee_form.html + event_form.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/main/employee_form.html + event_form.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
 
     <h4>Шаг 8. Демо-данные и запуск</h4>
 
     <pre><span class="lang-tag">bash</span><code class="language-bash"># наливаем отделы и сотрудников для проверки
 python manage.py shell -c "
 import datetime as dt
-from hr.models import Department, Employee
+from main.models import Department, Employee
 it = Department.objects.get_or_create(name='Отдел разработки')[0]
 hrd = Department.objects.get_or_create(name='Кадры')[0]
 Employee.objects.get_or_create(last_name='Иванов', first_name='Иван',

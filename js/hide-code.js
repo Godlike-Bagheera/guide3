@@ -37,11 +37,6 @@
   function toggle() {
     hidden = !hidden;
     apply(hidden);
-    if (typeof window.showToast === 'function') {
-      window.showToast(hidden
-        ? '🐍 Python-код скрыт — Ctrl+B, чтобы вернуть'
-        : '🐍 Python-код снова виден');
-    }
   }
 
   document.addEventListener('keydown', e => {

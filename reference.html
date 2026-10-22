@@ -902,9 +902,9 @@ TEMPLATES = [
 ]
 
 # 3) в самый конец файла добавьте адреса после входа/выхода:
-LOGIN_REDIRECT_URL = '/'     # куда идти после входа
-LOGOUT_REDIRECT_URL = '/'    # куда идти после выхода</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> откройте файл <code>config/settings.py</code> текстовым редактором и внесите три правки из карточки: добавьте <code>django_bootstrap5</code> и <code>main</code> в список INSTALLED_APPS, укажите папку шаблонов <code>DIRS</code>, пропишите адрес входа <code>LOGIN_URL</code> и русскую локаль (LANGUAGE_CODE/USE_I18N). Сохраните файл.</p><p class="code-desc-sub">Файл настроек проекта: Django узнаёт из него, какие приложения включены, где искать шаблоны и куда перенаправлять невошедшего пользователя. Правки обычные — текст в кавычках, после каждой строки запятая.</p></div>
+LOGIN_REDIRECT_URL = 'profile'   # после успешного входа Django сам отведёт пользователя в личный кабинет (/profile/)
+LOGOUT_REDIRECT_URL = '/'        # после выхода — обратно на главную</code></pre>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> откройте файл <code>config/settings.py</code> текстовым редактором и внесите три правки из карточки: добавьте <code>django_bootstrap5</code> и <code>main</code> в список INSTALLED_APPS, укажите папку шаблонов <code>DIRS</code>, а в самый конец файла допишите две строки: <code>LOGIN_REDIRECT_URL = 'profile'</code> и <code>LOGOUT_REDIRECT_URL = '/'</code>. Именно эти две строки решают вопрос «куда попасть после входа»: Django сам отведёт вошедшего пользователя в личный кабинет (<code>/profile/</code>), а вышедшего — на главную. Сохраните файл.</p><p class="code-desc-sub">Файл настроек проекта: Django узнаёт из него, какие приложения включены, где искать шаблоны и куда перенаправлять пользователя после входа и выхода. Правки обычные — текст в кавычках, после каждой строки списка запятая.</p></div>
 
     <h4>Шаг 4. Формы регистрации и входа</h4>
 
@@ -973,10 +973,14 @@ def login_view(request):
         form = LoginForm(data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
-            return redirect(request.GET.get('next', '/'))
+            # после входа: на страницу, с которой пользователя сюда прислали (next),
+            # иначе — в личный кабинет (/profile/). Про «next» см. шаг 8.
+            return redirect(request.GET.get('next', '/profile/'))
     else:
         form = LoginForm()
-    return render(request, 'login.html', &#123;'form': form&#125;)
+    # отдаём шаблону next — форма входа сохранит его и вернёт пользователя
+    # туда, откуда он пришёл (например, в кабинет или в корзину)
+    return render(request, 'login.html', &#123;'form': form, 'next': request.GET.get('next', '')&#125;)
 
 
 @login_required                # без входа сюда не пустят
@@ -989,7 +993,7 @@ def logout_view(request):
     """Выход из аккаунта."""
     logout(request)
     return redirect('home')</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> откройте готовый файл <code>main/views.py</code> (создан командой startapp) и полностью замените его содержимое кодом из блока: страницы регистрации, входа через форму, выхода и личного кабинета.</p><p class="code-desc-sub">Обработчики страниц каркаса: регистрация нового пользователя, вход, выход и кабинет со сведениями о вошедшем.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> откройте готовый файл <code>main/views.py</code> (создан командой startapp) и полностью замените его содержимое кодом из блока: страницы регистрации, входа через форму, выхода и личного кабинета.</p><p class="code-desc-sub">Обработчики страниц каркаса: регистрация нового пользователя, вход, выход и кабинет со сведениями о вошедшем. После успешной регистрации или входа пользователь сам попадает в личный кабинет (/profile/) — адрес «куда вести» задан в настройках на шаге 3 и здесь же в коде входа; если вас прислали на страницу входа с защищённой страницы, Django вернёт обратно туда (параметр next).</p></div>
 
     <h4>Шаг 6. Адреса сайта</h4>
 
@@ -1164,8 +1168,11 @@ class CustomUserAdmin(UserAdmin):
     &lt;div class="card shadow-sm"&gt;
       &lt;div class="card-body p-4"&gt;
         &lt;h1 class="h4 mb-3"&gt;Вход&lt;/h1&gt;
+        &lt;!-- action пустой + next: Django сам решает, куда вернуть
+             пользователя после входа (см. views.py и LOGIN_REDIRECT_URL) --&gt;
         &lt;form method="post"&gt;
           &#123;% csrf_token %&#125;
+          &#123;% if next %&#125;&lt;input type="hidden" name="next" value="&#123;&#123; next &#125;&#125;"&gt;&#123;% endif %&#125;
           &#123;% bootstrap_form form %&#125;
           &#123;% bootstrap_button "Войти" button_type="submit" button_class="btn-primary w-100" %&#125;
         &lt;/form&gt;
@@ -1177,7 +1184,7 @@ class CustomUserAdmin(UserAdmin):
   &lt;/div&gt;
 &lt;/div&gt;
 &#123;% endblock %&#125;</code></pre>
-    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/login.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы, таблицы, списки) — разметка взята из официальной документации getbootstrap.com/docs/5.3.</p></div>
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> создайте файл <code>templates/login.html</code> и вставьте содержимое блока целиком. Внешний вид страницы собран из стандартных блоков Bootstrap — свой CSS писать не нужно.</p><p class="code-desc-sub">HTML-шаблон страницы. Готовые блоки Bootstrap 5 (карточки, формы) — разметка из официальной документации getbootstrap.com/docs/5.3. Скрытое поле next нужно для маршрутизации: если пользователь попытался открыть защищённую страницу без входа, Django запоминает этот адрес и после успешного входа возвращает человека именно туда; если адреса нет — сработает LOGIN_REDIRECT_URL из шага 3 (личный кабинет).</p></div>
 
     <div class="code-title">templates/profile.html</div><pre><span class="lang-tag">html</span><code class="language-html">&lt;!-- личный кабинет: Bootstrap List group --&gt;
 &#123;% extends "base.html" %&#125;
@@ -1210,6 +1217,19 @@ python manage.py runserver
 #   http://127.0.0.1:8000/admin/  — админка (логин: superuser из шага 2)
 
 # проверить себя: зарегистрироваться → войти → кабинет → выйти</code></pre>
+
+    <p><b>Куда что ведёт — шпаргалка маршрутизации,</b> чтобы не потеряться после регистрации или входа:</p>
+    <div class="table-responsive">
+      <table class="table table-striped align-middle mb-4">
+        <thead><tr><th>Действие пользователя</th><th>Куда попадёт</th><th>Почему так</th></tr></thead>
+        <tbody>
+          <tr><td>Зарегистрировался</td><td>/profile/ (личный кабинет)</td><td>views.py сам пускает новичка внутрь и ведёт в кабинет</td></tr>
+          <tr><td>Вошёл по кнопке «Вход»</td><td>/profile/ (личный кабинет)</td><td>LOGIN_REDIRECT_URL = 'profile' из settings.py (шаг 3)</td></tr>
+          <tr><td>Пытался открыть защищённую страницу без входа, затем вошёл</td><td>Обратно на ту же защищённую страницу</td><td>Django передаёт адрес через параметр next (скрытое поле в форме входа)</td></tr>
+          <tr><td>Нажал «Выйти»</td><td>/ (главная)</td><td>LOGOUT_REDIRECT_URL = '/' из settings.py (шаг 3)</td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <h4>Шаг 10. Сохраняем результат в Git</h4>
 

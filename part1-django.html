@@ -265,7 +265,7 @@ python manage.py startapp api</code><button type="button" class="copy-btn">Ко�
     'corsheaders',
     # Наше
     'api',
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Что делать: откройте файл <code>backend/settings.py</code> и найдите в нём список <code>INSTALLED_APPS</code> — это «список приложений», которые Django загружает при старте. Оставьте все шесть системных строк (admin, auth, contenttypes, sessions, messages, staticfiles), а после них добавьте три сторонних пакета — <code>'rest_framework'</code>, <code>'rest_framework_simplejwt'</code>, <code>'corsheaders'</code> — и наше приложение <code>'api'</code>. Каждая строка заканчивается запятой.</p></div>
 
     <p>Найдите <code>MIDDLEWARE</code> и добавьте <code>CorsMiddleware</code> <strong>первым</strong>:</p>
 <pre><code>MIDDLEWARE = [
@@ -277,7 +277,7 @@ python manage.py startapp api</code><button type="button" class="copy-btn">Ко�
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Там же, в <code>backend/settings.py</code>, найдите список <code>MIDDLEWARE</code> и вставьте самой первой строкой запись <code>'corsheaders.middleware.CorsMiddleware',</code>. Остальные строки не трогайте. Если поставить CorsMiddleware ниже остальных, браузеры перестанут получать ответы от API — правило простое: он всегда первый.</p></div>
 
     <div class="callout warn">
       <p><strong>Почему первым?</strong> CORS должен обрабатывать запрос до того, как Django начнёт его маршрутизировать. Если поставить его позже — preflight-запросы OPTIONS будут отбиваться раньше, чем до них доберётся обработчик CORS.</p>
@@ -309,7 +309,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False,
-}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>В самый конец файла <code>backend/settings.py</code> допишите три блока настроек:<br>• <b>CORS_ALLOWED_ORIGINS</b> — список адресов фронтенда, которым разрешено обращаться к нашему API: локальные порты 3000 и 5173 (localhost и 127.0.0.1).<br>• <b>REST_FRAMEWORK</b> — как себя ведёт API: проверяет JWT-токены и разрешает смотреть данные всем, а изменять — только вошедшим.<br>• <b>SIMPLE_JWT</b> — срок жизни токенов: доступный — 60 минут, обновляемый — 7 дней.</p></div>
 
     <div class="callout info">
       <p><strong>Что такое JWT?</strong> JSON Web Token — стандарт передачи данных между сторонами в виде JSON-объекта. Сервер выдаёт клиенту <strong>access token</strong> (короткоживущий) и <strong>refresh token</strong> (долгоживущий). Клиент прикладывает access token к каждому запросу в заголовке <code>Authorization: Bearer &lt;token&gt;</code>. Когда access истекает — использует refresh. Разбор на <a href="https://www.jwt.io/" target="_blank" rel="noopener">jwt.io</a>.</p>
@@ -350,7 +350,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',  # ← без него admin не пустит
     ...
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Проверьте два момента в <code>backend/settings.py</code> (менять ничего не нужно, они включены по умолчанию): в списке <code>INSTALLED_APPS</code> должны быть строки <code>'django.contrib.admin'</code> (сама админка) и <code>'django.contrib.auth'</code> (пользователи), а в <code>MIDDLEWARE</code> — строки про сессии и авторизацию. Без них админка не пустит на страницу входа.</p></div>
     <div class="callout info">
       <p><strong>Как это работает:</strong> админка построена на тех же моделях, что и ваш сайт. Таблица в браузере — это буквально <code>Model.objects.all()</code>, а форма редактирования автоматически строится из полей модели (CharField → текстовое поле, DateTimeField → виджет с календарём и т.д.).</p>
     </div>
@@ -371,7 +371,7 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),   # ← вся админка живёт здесь
     path('api/', include('api.urls')),
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Откройте <code>backend/urls.py</code> — это «оглавление» сайта: оно говорит Django, какой адрес какой обработчик обслуживает. Убедитесь, что там есть маршрут <code>admin/</code> (ведёт в админку) и маршрут <code>api/</code>, который передаёт все запросы дальше в файл <code>api/urls.py</code>.</p></div>
 
     <h4>5.4. Зарегистрируйте модель</h4>
     <p>По умолчанию в админке видны только Группы и Пользователи. Чтобы появились ваши заметки, зарегистрируйте модель в <code>api/admin.py</code>:</p>
@@ -386,7 +386,7 @@ class NoteAdmin(admin.ModelAdmin):
     list_filter = ('created_at', 'owner')                  # фильтры сбоку
     search_fields = ('title', 'content')                   # строка поиска
     ordering = ('-created_at',)                            # сортировка по умолчанию
-    readonly_fields = ('created_at',)                      # только для чтения</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    readonly_fields = ('created_at',)                      # только для чтения</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Откройте файл <code>api/admin.py</code> (Django создал его пустым вместе с приложением) и зарегистрируйте в нём модель Note со следующими настройками отображения:<br>• list_display — какие колонки видеть в списке: id, заголовок, владелец, дата создания;<br>• list_filter — фильтры сбоку: по дате и владельцу;<br>• search_fields — по каким полям работает поиск: title и content;<br>• ordering — порядок по умолчанию: сначала новые;<br>• readonly_fields — поле created_at нельзя редактировать руками.</p></div>
     <p>Старый стиль регистрации — <code>admin.site.register(Note)</code> — тоже работает, но класс с настройками удобнее. После сохранения страницы обновите админку: в разделе «Api» появится «Заметки» со списком, поиском и кнопкой «Добавить».</p>
 
     <h4>5.5. Что умеет админка</h4>
@@ -410,7 +410,7 @@ class NoteAdmin(admin.ModelAdmin):
 
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):
-    inlines = [NoteTagInline]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    inlines = [NoteTagInline]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Необязательное улучшение той же админки: опишите «вложенную» форму тегов — отдельным классом-инлайном, у которого моделью служит промежуточная таблица связи «заметка — тег», и одна пустая строка для нового тега. Затем подключите этот инлайн в настройках регистрации заметки (поле inlines). После этого теги можно будет добавлять прямо в окне редактирования заметки, не переходя на отдельную страницу.</p></div>
 
     <div class="callout warn">
       <p><strong>Не выставляйте /admin/ в интернет без настройки!</strong> Смените путь <code>path('admin/', ...)</code> на нестандартный, включите <code>DEBUG=False</code>, держите сильный пароль и выдавайте staff-права только нужным группам. Админка — самый лакомый объект для брутфорса.</p>
@@ -445,12 +445,12 @@ pip install django-bootstrap5</code><button type="button" class="copy-btn">Ко�
     'django_bootstrap5',   # ← Bootstrap 5 для Django
     # Наше
     'api',
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Снова откройте <code>backend/settings.py</code>: в списке <code>INSTALLED_APPS</code> добавьте одной строкой <code>'django_bootstrap5',</code> — обратите внимание: в pip пакет пишется через дефис (django-bootstrap5), а здесь, в Python-файле, через нижнее подчёркивание. Ставьте строку рядом с остальными сторонними пакетами, перед нашим приложением 'api'.</p></div>
     <p>Настройки самого bootstrap-пакета можно добавить в конец того же файла (не обязательно, по умолчанию всё уже хорошо):</p>
 <pre><code># settings.py — опционально
 DJANGO_BOOTSTRAP5 = {
     'css_bundle': 'dist',      # или 'core' — только CSS без JS-плагинов
-}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Необязательная настройка того же пакета: в конец <code>settings.py</code> можно дописать короткий словарь DJANGO_BOOTSTRAP5 с параметром css_bundle (значение 'dist' — полная версия Bootstrap). Если ничего не дописать, всё будет работать и так.</p></div>
 
     <h4>6.2. Базовый шаблон base.html</h4>
     <p>Создайте папку и файл шаблона:</p>
@@ -492,7 +492,7 @@ nano api/templates/api/base.html</code><button type="button" class="copy-btn">К
 
 
 def home(request):
-    return render(request, 'api/home.html')</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    return render(request, 'api/home.html')</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Откройте файл <code>api/views.py</code> (views = «представления», функции, которые отвечают на запросы) и добавьте в него простую функцию home: она принимает запрос и возвращает готовую HTML-страницу из шаблона api/home.html. Для этого сверху файла понадобится импорт render.</p></div>
     <p>Пропишите маршрут в <code>backend/urls.py</code>:</p>
 <pre><code>from django.contrib import admin
 from django.urls import path, include
@@ -503,7 +503,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),       # ← главная страница
     path('api/', include('api.urls')),
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Теперь скажите Django, где живёт эта страница: в файле <code>backend/urls.py</code> импортируйте функцию home из нашего приложения и добавьте в список маршрутов строку path('', home, name='home') — пустой адрес '' означает главную страницу сайта. Маршруты admin/ и api/ остаются на месте.</p></div>
     <p>И сам шаблон <code>api/templates/api/home.html</code>:</p>
 <pre><code>{% extends "api/base.html" %}
 {% load django_bootstrap5 %}
@@ -633,11 +633,11 @@ python3 manage.py startapp webapp</code><button type="button" class="copy-btn">�
     # ... базовые приложения Django ...
     'django_bootstrap5',
     'webapp',
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Откройте <code>config/settings.py</code> в VS Code: в списке INSTALLED_APPS добавьте две строки — 'django_bootstrap5' и название вашего приложения 'webapp'. Системные строки Django не удаляйте.</p></div>
     <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
     <p>2. Спуститесь ниже и переключите язык интерфейса на русский:</p>
 <pre><code>LANGUAGE_CODE = 'ru-ru'
-TIME_ZONE = 'Europe/Moscow'  # или ваш регион</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+TIME_ZONE = 'Europe/Moscow'  # или ваш регион</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Чуть ниже в том же settings.py поменяйте две настройки: LANGUAGE_CODE сделайте 'ru-ru' (интерфейс станет русским), а TIME_ZONE — 'Europe/Moscow' или ваш часовой пояс.</p></div>
     <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
 
     <h4>Шаг 6. Создание логики и маршрутов</h4>
@@ -646,7 +646,7 @@ TIME_ZONE = 'Europe/Moscow'  # или ваш регион</code><button type="bu
 <pre><code>from django.shortcuts import render
 
 def index(request):
-    return render(request, 'webapp/index.html')</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    return render(request, 'webapp/index.html')</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Откройте <code>webapp/views.py</code> и напишите функцию index: она просто отдаёт браузеру страницу-шаблон webapp/index.html. Одна строка импорта + маленькая функция.</p></div>
     <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
     <p>2. <strong>Маршруты приложения (URLs):</strong><br>
     Создайте в папке <code>webapp</code> новый файл <code>urls.py</code>. Открыть файл в VSC и вставить в него код:</p>
@@ -655,7 +655,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Создайте новый файл <code>webapp/urls.py</code> и впишите в него один маршрут: адрес «пусто» (то есть корень сайта) должен вызывать функцию index из views этого же приложения.</p></div>
     <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
     <p>3. <strong>Главные маршруты проекта:</strong><br>
     Открыть файл <code>config/urls.py</code> в VSC и подключить туда маршруты из вашего приложения, приведя его структуру к следующему виду:</p>
@@ -665,7 +665,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('webapp.urls')),
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Откройте главный <code>config/urls.py</code> и подключите к нему файл маршрутов приложения: добавьте строку include('webapp.urls') по адресу ''. Маршрут админки остаётся.</p></div>
     <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
 
     <h4>Шаг 7. Создание HTML-шаблона с Bootstrap 5</h4>
@@ -744,10 +744,10 @@ python3 manage.py startapp webapp</code><button type="button" class="copy-btn">�
 <pre><code>INSTALLED_APPS = [
     # ... системные приложения ...
     'webapp',
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>В <code>config/settings.py</code> в списке INSTALLED_APPS добавьте строку 'webapp' — Django должен узнать о вашем новом приложении.</p></div>
     <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
     <p>2. В самом низу файла убедитесь в наличии строки для статики:</p>
-<pre><code>STATIC_URL = 'static/'</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+<pre><code>STATIC_URL = 'static/'</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>В том же settings.py убедитесь, что внизу есть строка STATIC_URL = 'static/' — без неё не будут грузиться стили.</p></div>
     <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
 
     <h4>Шаг 3. Локальное подключение оригинального Bootstrap 5 (Автономный режим)</h4>
@@ -794,7 +794,7 @@ def login_view(request):
             return redirect('index')
     else:
         form = AuthenticationForm()
-    return render(request, 'webapp/login.html', {'form': form})</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    return render(request, 'webapp/login.html', {'form': form})</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Откройте <code>webapp/views.py</code> и вставьте три функции:<br>• index — показывает главную страницу;<br>• register_view — страница регистрации: если форма отправлена и заполнена верно, создаёт пользователя, сразу входит им и уводит на главную; иначе показывает пустую форму;<br>• login_view — то же самое для входа, но проверяет уже существующий аккаунт.<br>Обе формы (UserCreationForm и AuthenticationForm) Django предоставляет сам, писать их с нуля не нужно.</p></div>
     <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
 
     <h4>Шаг 5. Настройка маршрутов (urls.py)</h4>
@@ -808,7 +808,7 @@ urlpatterns = [
     path('register/', views.register_view, name='register'),
     path('login/', views.login_view, name='login'),
     path('logout/', LogoutView.as_view(next_page='index'), name='logout'),
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Обновите <code>webapp/urls.py</code>: теперь там четыре адреса — главная, /register/ (регистрация), /login/ (вход) и /logout/ (выход; используется готовый LogoutView, который после выхода возвращает на главную).</p></div>
     <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
     <p>2. Подключите его в главном файле <code>config/urls.py</code>:</p>
 <pre><code>from django.contrib import admin
@@ -817,7 +817,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('webapp.urls')),
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Главный <code>config/urls.py</code> оставляем с двумя маршрутами: админка и подключение всех адресов приложения webapp.</p></div>
     <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
 
     <h4>Шаг 6. Создание оригинальных шаблонов из документации Bootstrap 5</h4>
@@ -1037,7 +1037,7 @@ class Review(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f'Отзыв {self.author} к «{self.product}»'</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+        return f'Отзыв {self.author} к «{self.product}»'</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Откройте <code>webapp/models.py</code> и опишите две таблицы классами:<br>• Product — товар: название (до 200 символов), описание, цена в рублях с копейками, ссылка на картинку (может быть пустой);<br>• Review — отзыв: привязка к конкретному товару (при удалении товара отзывы удаляются), автор — зарегистрированный пользователь, текст до 2000 знаков, оценка от 1 до 5, дата создания; отзывы выводятся от новых к старым.<br>Каждая модель также умеет называть себя («Майка», «Отзыв Вася к „Майка“») — это метод __str__, он нужен для админки.</p></div>
     <p><code>related_name='reviews'</code> позволяет из товара достать все его отзывы: <code>product.reviews.all()</code>. После изменения моделей не забудьте <code>makemigrations</code> и <code>migrate</code> (шаг 7).</p>
 
     <h4>Шаг 3. Регистрация и вход — встроенные средства Django</h4>
@@ -1052,7 +1052,7 @@ class RegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email']</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+        fields = ['username', 'email']</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Создайте файл <code>webapp/forms.py</code>: возьмите готовую форму регистрации UserCreationForm и добавьте в неё обязательное поле e-mail. Итого пользователь регистрируется по трём полям: логин, почта, пароль (и его повтор).</p></div>
     <p>Полный набор маршрутов магазина — файл <code>webapp/urls.py</code>:</p>
 <pre><code>from django.urls import path
 from django.contrib.auth import views as auth_views
@@ -1071,7 +1071,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='webapp/login.html'),
          name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Полный список адресов магазина в <code>webapp/urls.py</code>: главная (все товары), страница одного товара (/product/номер/), форма отзыва (/product/номер/review/new/), регистрация, вход и выход. Последние два — готовые view из Django, им только указали файлы шаблонов. Строка app_name даёт маршрутам префикс «webapp:», чтобы шаблоны находили нужную страницу.</p></div>
     <p>Логика представлений — файл <code>webapp/views.py</code> (замените в нём функцию <code>index</code> из раздела 6.5):</p>
 <pre><code>from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -1116,14 +1116,14 @@ def register(request):
             return redirect('webapp:index')
     else:
         form = RegisterForm()
-    return render(request, 'webapp/register.html', {'form': form})</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    return render(request, 'webapp/register.html', {'form': form})</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Логика страниц в <code>webapp/views.py</code> — пять функций:<br>• index — берёт из базы все товары вместе с их отзывами и авторами и отдаёт главную страницу;<br>• product_detail — находит товар по номеру (если такого нет — честно показывает 404);<br>• add_review — доступна только вошедшим: проверяет, что написан текст и стоит оценка от 1 до 5, сохраняет отзыв и возвращает на страницу товара;<br>• register — регистрация через нашу форму из forms.py: form.save() сам шифрует пароль, а login() сразу входит новым аккаунтом.<br>Нигде не нужно проверять пароли руками — всё делает Django.</p></div>
     <div class="callout tip"><p><strong>Почему это безопасно без единой строчки про пароли:</strong> <code>UserCreationForm</code> проверяет сложность и совпадение двух полей пароля, <code>form.save()</code> хеширует пароль (pbkdf2/argon2/bcrypt — зависит от настроек), а декоратор <code>@login_required</code> не пустит анонима на страницу отзыва — вместо этого покажет форму входа (<code>LOGIN_URL</code> из шага 4). Выход из системы — только POST-запросом, чтобы сторонние сайты не могли «разлогинить» пользователя ссылкой-картинкой.</p></div>
 
     <h4>Шаг 4. Настройки входа (<code>config/settings.py</code>)</h4>
 <pre><code># Куда редиректить после входа и куда вести ссылку "войдите, чтобы продолжить"
 LOGIN_REDIRECT_URL = 'webapp:index'
 LOGOUT_REDIRECT_URL = 'webapp:index'
-LOGIN_URL = 'webapp:login'</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+LOGIN_URL = 'webapp:login'</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>В <code>config/settings.py</code> допишите три адреса: куда вести после входа (главная магазина), куда вести после выхода (тоже главная) и какую страницу показывать невошедшему, который полез туда, куда пускают только участников (форма входа).</p></div>
 
     <h4>Шаг 5. Шаблоны</h4>
     <p>Все файлы кладём в <code>webapp/templates/webapp/</code>. Общий каркас с меню «вход/регистрация/выход» — <code>base.html</code>:</p>
@@ -1270,7 +1270,7 @@ register = template.Library()
 
 @register.filter
 def format_stars(n):
-    return range(int(n or 0))</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    return range(int(n or 0))</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Небольшой вспомогательный файл <code>webapp/templatetags/shop_extras.py</code>: регистрирует для шаблонов фильтр format_stars — по оценке товара он возвращает столько единиц, сколько звёздочек нарисовать. Не забудьте пустой файл __init__.py в папке templatetags и строку load shop_extras в начале шаблона product.html.</p></div>
     <p>И подключаете библиотеку тегов в начале <code>product.html</code>: <code>{% load shop_extras %}</code>.</p>
 
     <h4>Шаг 6. Товары через админку</h4>
@@ -1290,7 +1290,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('product', 'author', 'rating', 'created_at')</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    list_display = ('product', 'author', 'rating', 'created_at')</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Зарегистрируйте обе модели в <code>webapp/admin.py</code>, чтобы товары и отзывы появились в админке: у товара в списке видны название, цена и количество отзывов (последнее считается на лету), у отзыва — товар, автор, оценка и дата.</p></div>
 
     <h4>Шаг 7. Миграции и проверка цикла «регистрация → отзыв»</h4>
 <pre><code>source venv/bin/activate            # окружение из раздела 6.5
@@ -1336,7 +1336,7 @@ class Note(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return self.title</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+        return self.title</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Откройте <code>api/models.py</code> и опишите таблицу «Заметка» классом Note: заголовок (до 200 символов), текст, дата создания (заполняется сама) и владелец — ссылается на стандартного пользователя Django; если удалить пользователя, его заметки удалятся тоже. В служебном блоке Meta задайте русские названия («Заметка»/«Заметки») и сортировку «сначала новые». Метод __str__ возвращает заголовок — так заметка называется в админке.</p></div>
     <div class="callout tip">
       <p><code>ForeignKey</code> создаёт связь «многие к одному» — у одного пользователя много заметок. <code>on_delete=CASCADE</code> означает: при удалении пользователя удалятся его заметки. <code>related_name='notes'</code> позволяет обращаться к заметкам как <code>user.notes.all()</code>.</p>
     </div>
@@ -1353,7 +1353,7 @@ class NoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
         fields = ['id', 'title', 'content', 'created_at', 'owner']
-        read_only_fields = ['id', 'created_at', 'owner']</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+        read_only_fields = ['id', 'created_at', 'owner']</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Создайте файл <code>api/serializers.py</code>. Сериализатор — переводчик между объектами Python и JSON. Класс NoteSerializer говорит: работаем с моделью Note, наружу отдаём пять полей (id, title, content, created_at, owner), причём id, дата и владелец — только для чтения, а из владельца показывается только имя пользователя (не пароль).</p></div>
     <div class="callout tip">
       <p><code>ReadOnlyField</code> для <code>owner</code> означает: клиент не может подделать владельца — он всегда берётся из <code>request.user</code> на сервере.</p>
     </div>
@@ -1381,7 +1381,7 @@ class NoteDetailView(generics.RetrieveUpdateDestroyAPIView):
     """GET/PUT/PATCH/DELETE /api/notes/:id/."""
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Откройте <code>api/views.py</code> и опишите два представления:<br>• NoteListCreateView — адрес /api/notes/: GET возвращает список заметок (новые сверху), POST создаёт заметку; создавать может только вошедший пользователь, остальные могут лишь читать; владелец новой заметки всегда тот, кто прислал запрос — подставить чужого нельзя;<br>• NoteDetailView — адрес /api/notes/номер/: просмотр, изменение и удаление конкретной заметки, права те же.</p></div>
 
     <h4>7.4. URL-маршруты <code>api/urls.py</code></h4>
     <p>Создайте файл <code>api/urls.py</code>:</p>
@@ -1400,7 +1400,7 @@ urlpatterns = [
     # JWT-аутентификация
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Создайте файл <code>api/urls.py</code> с четырьмя адресами: список/создание заметок, работа с одной заметкой и два служебных адреса JWT — /api/token/ (обменять логин и пароль на пару токенов) и /api/token/refresh/ (обновить токен). Эти две страницы DRF поставляет готовыми, писать их логику не нужно.</p></div>
 
     <h4>7.5. Подключите URL-ы в главном <code>backend/urls.py</code></h4>
 <pre><code>from django.contrib import admin
@@ -1410,7 +1410,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),   # ← все маршруты api
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Подключите маршруты приложения в главном <code>backend/urls.py</code>: строка path('api/', include('api.urls')) означает — всё, что начинается на /api/, разбираем по правилам из api/urls.py. Маршрут админки остаётся первым.</p></div>
 
     <h4>7.6. Регистрация в админке <code>api/admin.py</code></h4>
 <pre><code>from django.contrib import admin
@@ -1421,7 +1421,7 @@ from .models import Note
 class NoteAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'owner', 'created_at']
     list_filter = ['created_at', 'owner']
-    search_fields = ['title', 'content']</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    search_fields = ['title', 'content']</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Финальный штрих бэкенда — <code>api/admin.py</code>: зарегистрируйте модель Note, чтобы заметки было видно и можно было редактировать через админку: колонки id/заголовок/владелец/дата, фильтры и поиск.</p></div>
 
     <h4>7.7. Миграции и запуск</h4>
 <pre><code>python manage.py makemigrations api
@@ -1576,7 +1576,7 @@ curl "https://jsonplaceholder.typicode.com/posts?_limit=5&amp;_page=2"</code><bu
         instance.title = validated_data.get('title', instance.title)
         instance.content = validated_data.get('content', instance.content)
         instance.save()
-        return instance</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+        return instance</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Для сравнения: так выглядел бы сериализатор заметок, если писать его вручную, без ModelSerializer — каждое поле описывается отдельно (id и дата только для чтения, заголовок максимум 200 символов), плюс две функции: create — создать объект из проверенных данных, update — обновить title/content и сохранить. ModelSerializer из раздела 7.2 делает то же самое в 8 строк вместо 15.</p></div>
     <p>ModelSerializer делает то же самое за 5 строк вместо 15 — и это только для одной модели.</p>
 
     <h4>10.3. Permission-классы</h4>

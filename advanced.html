@@ -233,7 +233,7 @@ class Note(models.Model):
         ]
 
     def __str__(self):
-        return self.title</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+        return self.title</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Замените содержимое <code>api/models.py</code> на три класса:<br>• Category — категория (уникальное название + «slug» — короткая латинская версия названия для ссылок вида /category/work; генерируется автоматически при сохранении);<br>• Tag — тег (просто уникальное слово);<br>• Note — заметка: заголовок, текст, даты создания/обновления (обновляются сами), флаг «закреплена», владелец, категория (может отсутствовать; при удалении категории заметка живёт дальше) и теги — связь «многие ко многим».<br>В Meta: закреплённые и свежие — всегда сверху, плюс две служебные индексные записи для скорости.</p></div>
 
     <div class="callout tip">
       <p><strong>Что тут нового:</strong><br>
@@ -301,7 +301,7 @@ class NoteSerializer(serializers.ModelSerializer):
         instance.save()
         if tags is not None:
             instance.tags.set(tags)
-        return instance</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+        return instance</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Перепишите <code>api/serializers.py</code>: три сериализатора — для категорий (id, name, slug), тегов (id, name) и заметок. В сериализаторе заметки: владелец только для чтения; категорию и теги наружу отдаём целиком (видно name/slug), а принимать — только их номера через отдельные поля category_id и tag_ids (write_only — клиент отправляет их, но не получает обратно). Функции create/update аккуратно сохраняют связку с тегами: сначала заметка, затем установка тегов.</p></div>
 
     <h4>19.3. Пагинация и фильтрация</h4>
 <pre><code># settings.py — добавьте в REST_FRAMEWORK
@@ -318,7 +318,7 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ],
-}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>В <code>backend/settings.py</code> расширьте словарь REST_FRAMEWORK новыми ключами: DEFAULT_PAGINATION_CLASS + PAGE_SIZE = 10 (API будет отдавать по 10 заметок за раз со ссылками «следующая страница») и DEFAULT_FILTER_BACKENDS — SearchFilter (поиск ?search=слово) и OrderingFilter (сортировка ?ordering=-created_at). Прежние строки про JWT и права остаются.</p></div>
 
 <pre><code># api/views.py — обновлённый NoteListCreateView
 from rest_framework import generics, permissions
@@ -358,7 +358,7 @@ class CategoryListCreateView(generics.ListCreateAPIView):
 class TagListCreateView(generics.ListCreateAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Обновите <code>api/views.py</code>:<br>• NoteListCreateView теперь умеет: искать по заголовку/тексту (?search=), сортировать (?ordering=), отдавать только мои (?mine=1), только выбранной категории (?category=slug) и только с тегом (?tag=name). Список собирается умело: связанные таблицы достаются одним запросом (select_related/prefetch_related) — иначе база будет дёргаться по разу на каждую заметку.<br>• Добавлены ещё два списка: категории и теги — читать могут все, создавать только вошедшие.</p></div>
 
     <div class="callout ok">
       <p><strong>Как это работает:</strong><br>
@@ -386,7 +386,7 @@ urlpatterns = [
     path('tags/', TagListCreateView.as_view(), name='tag-list'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Допишите в <code>api/urls.py</code> два новых адреса: /api/categories/ и /api/tags/. Остальные четыре (заметки, одна заметка, token, token/refresh) остаются как были.</p></div>
 
 <pre><code>python manage.py makemigrations api
 python manage.py migrate</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
@@ -433,7 +433,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             password=validated_data['password'],
         )
-        return user</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+        return user</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>В <code>api/serializers.py</code> добавьте RegisterSerializer — форму регистрации для API: поля username, email, password и password2; оба пароля write_only (никогда не возвращаются сервером), пароль проходит встроенную проверку сложности Django, а метод validate сверяет, что оба введённых пароля совпадают. При сохранении создаётся пользователь с корректно захешированным паролем.</p></div>
 
     <h4>20.2. View и URL</h4>
 <pre><code># api/views.py
@@ -456,12 +456,12 @@ class RegisterView(generics.CreateAPIView):
         return Response({
             'user': {'id': user.id, 'username': user.username, 'email': user.email},
             'message': 'Пользователь создан. Теперь можно войти.',
-        }, status=status.HTTP_201_CREATED)</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+        }, status=status.HTTP_201_CREATED)</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>В <code>api/views.py</code> добавьте RegisterView: принимает POST на /api/register/, проверяет данные (ошибки вернутся в JSON с кодом 400), создаёт пользователя и отвечает 201 с коротким сообщением. Разрешение AllowAny — страницу могут открыть даже невошедшие (это и есть смысл регистрации).</p></div>
 
 <pre><code># api/urls.py — добавьте
 from .views import RegisterView
 
-path('register/', RegisterView.as_view(), name='register'),</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+path('register/', RegisterView.as_view(), name='register'),</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Одна строка в <code>api/urls.py</code>: подключает адрес /api/register/ к новому представлению RegisterView.</p></div>
 
     <h4>20.3. Проверка через curl</h4>
 <pre><code>curl -X POST http://127.0.0.1:8000/api/register/ \
@@ -567,7 +567,7 @@ class TestRegisterAPI:
             'password': 'abc12345',
             'password2': 'different',
         })
-        assert r.status_code == status.HTTP_400_BAD_REQUEST</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+        assert r.status_code == status.HTTP_400_BAD_REQUEST</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Файл <code>api/tests.py</code> — автоматические проверки, которые запускаются одной командой и сами дергают наш API:<br>• заготовками (fixtures) создаются клиент, тестовый пользователь alice, «авторизованный» клиент и одна заметка;<br>• проверка 1: список заметок отдаётся всем (код 200);<br>• проверка 2: без токена создание заметки запрещено (401);<br>• проверка 3: авторизованный создаёт заметку, владелец подставляется автоматически;<br>• проверка 4: PATCH закрепляет заметку;<br>• проверки 5-6: регистрация работает, а при несовпадении паролей приходит ошибка 400.<br>Если код сломается — тест мгновенно это покажет, раньше чем пользователь найдёт баг.</p></div>
 
     <h4>21.3. Запуск тестов</h4>
 <pre><code>pytest                    # все тесты
@@ -614,7 +614,7 @@ CORS_ALLOWED_ORIGINS = config('CORS_ORIGINS', default='', cast=Csv())
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=config('ACCESS_TOKEN_LIFETIME_MIN', default=60, cast=int)),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=config('REFRESH_TOKEN_LIFETIME_DAYS', default=7, cast=int)),
-}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Начало <code>backend/settings.py</code> переписывается так, чтобы секретов в коде не осталось: SECRET_KEY, DEBUG, ALLOWED_HOSTS, список CORS и время жизни токенов берутся не из файла, а из окружения — библиотека python-decouple читает их из файла .env, который никогда не попадает в git. Значения по умолчанию безопасны (DEBUG выключен).</p></div>
 
     <p>Создайте рядом <code>.env.example</code> — шаблон без секретов, который коммитим:</p>
 <pre><code>SECRET_KEY=your-secret-here
@@ -794,7 +794,7 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     # ...
-}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Два шага в <code>settings.py</code> для «умерщвления» токенов: допишите в INSTALLED_APPS приложение rest_framework_simplejwt.token_blacklist и включите в SIMPLE_JWT два флага — ROTATE_REFRESH_TOKENS и BLACKLIST_AFTER_ROTATION. Теперь при обновлении старый refresh-токен заносится в «чёрный список» и повторно использовать его нельзя.</p></div>
 
 <pre><code>python manage.py migrate   # создаст таблицы для blacklist</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
 
@@ -816,7 +816,7 @@ class LogoutView(APIView):
             token.blacklist()
             return Response({'detail': 'Вы вышли'}, status=205)
         except TokenError:
-            return Response({'detail': 'Токен невалиден'}, status=400)</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+            return Response({'detail': 'Токен невалиден'}, status=400)</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>В <code>api/views.py</code> добавьте эндпоинт LogoutView: на POST с refresh-токеном он помечает этот токен мёртвым в базе (blacklist) и отвечает «Вы вышли» (код 205); если прислан мусор вместо токена — вежливый 400. Доступ — только авторизованным.</p></div>
     <button type="button" class="mark-read" data-section="auth-compare@advanced.html">Отметить как изученное</button>
 
     <!-- section:db-python -->
@@ -847,7 +847,7 @@ class Book(models.Model):
     published_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.title</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+        return self.title</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Пример модели из учебника: откройте <code>api/models.py</code> и опишите класс Book — книга с названием, автором, числом страниц (не меньше 1) и датой добавления (пишется сама). Этот класс — единственное, что нужно написать, чтобы в базе появилась таблица книг.</p></div>
     <p>Каждое поле класса — это колонка таблицы, а сам класс наследуется от <code>models.Model</code>. Колонку <code>id</code> Django добавит автоматически.</p>
     <p><strong>Шаг 2–3.</strong> Превращаем код в реальную базу двумя командами:</p>
 <pre><code>python manage.py makemigrations api   # создать файлы-миграции
@@ -861,7 +861,7 @@ python manage.py migrate              # применить их к БД</code><b
 &gt;&gt;&gt; Book.objects.create(title='Чистый код', author='Роберт Мартин', pages=464)
 &lt;Book: Чистый код&gt;
 &gt;&gt;&gt; Book.objects.filter(pages__gt=400).values_list('title', flat=True)
-&lt;QuerySet ['Чистый код']&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+&lt;QuerySet ['Чистый код']&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>В интерактивной оболочке (команда manage.py shell) несколько быстрых действий: импортируем модель Book, создаём книгу «Чистый код» (464 страницы) и находим все книги больше 400 страниц — Django сам превращает эти слова в SQL-запрос к базе.</p></div>
     <p>Никакого SQL — весь запрос к базе написан на Python. Это и есть <strong>Django ORM</strong>.</p>
 
     <h4>25.2. Популярные типы полей</h4>
@@ -905,7 +905,7 @@ python manage.py migrate              # применить их к БД</code><b
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',   # ← вот он, файл базы данных
     }
-}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Так выглядит переменная DATABASES в <code>settings.py</code> по умолчанию: движок SQLite, а сама база — один файл db.sqlite3 в папке проекта. Его, кстати, добавляют в .gitignore, чтобы не носить базу туда-сюда с каждым коммитом.</p></div>
     <p>Для серьёзного проекта тот же Python-код моделей работает с PostgreSQL или MySQL — меняется только <code>DATABASES</code>:</p>
 <pre><code>DATABASES = {
     'default': {
@@ -916,7 +916,7 @@ python manage.py migrate              # применить их к БД</code><b
         'HOST': 'localhost',
         'PORT': '5432',
     }
-}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Тот же блок DATABASES для PostgreSQL: вместо движка sqlite3 указываем postgresql и добавляем имя базы, пользователя, пароль, адрес сервера и порт 5432. Ни одна строчка моделей, serializers или views при этом не меняется — весь Python-код работает с любой из этих баз.</p></div>
     <div class="callout warn">
       <p><strong>Три правила миграций:</strong><br>
       • Файлы в <code>api/migrations/</code> нельзя редактировать руками и удалять — они часть истории базы.<br>
@@ -984,7 +984,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
     }
-}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>После установки драйвера psycopg меняем DATABASES в <code>backend/settings.py</code> на вариант с PostgreSQL: mydb / myuser / пароль / localhost:5432 — те значения, что вы задавали, когда создавали базу и пользователя в самой Postgres.</p></div>
     <div class="callout tip">
       <p><strong>Не храните пароль в коде.</strong> Вынесите значения в <code>.env</code> (раздел 22): <code>DB_NAME</code>, <code>DB_USER</code>, <code>DB_PASSWORD</code>, <code>DB_HOST</code>, <code>DB_PORT</code>, а в settings читайте через <code>config('DB_NAME')</code>. Тогда один и тот же проект спокойно работает на SQLite дома и на PostgreSQL на сервере.</p>
     </div>
@@ -1031,7 +1031,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 SECURE_HSTS_SECONDS = 31536000     # HTTPS везде (если есть сертификат)
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+CSRF_COOKIE_SECURE = True</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Прод-версия настроек в <code>backend/settings.py</code> — что обязательно поменять перед публикацией:<br>• DEBUG = False (главный флаг; при True злоумышленник увидит ваши секреты и куски кода на странице ошибки);<br>• ALLOWED_HOSTS — ваш домен и IP, без этого сайт ответит 400;<br>• SECRET_KEY берём из переменной окружения, а не храним в файле;<br>• CSRF_TRUSTED_ORIGINS — https-адрес домена;<br>• STATIC_ROOT — папка, куда соберутся все стили для nginx;<br>• четыре строки про безопасность: принудительный HTTPS, HSTS и защищенные cookie.</p></div>
     <div class="callout danger">
       <p><strong>Почему DEBUG=False обязателен:</strong> при <code>DEBUG=True</code> любая ошибка показывает полный стек-трейс, переменные окружения и фрагменты settings — подарок для атакующего. Плюс страницы ошибок утекают по памяти. Проверьте себя: <code>python manage.py check --deploy</code> — Django сам просканирует настройки и выдаст список предупреждений (W004 — DEBUG, W002 — ALLOWED_HOSTS и т.д.).</p>
     </div>
@@ -1187,7 +1187,7 @@ CORS_ALLOW_HEADERS = [
 ]
 
 CORS_EXPOSE_HEADERS = ['content-range']  # какие заголовки видны JS-коду
-CORS_PREFLIGHT_MAX_AGE = 86400           # кэш preflight в браузере, сек</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+CORS_PREFLIGHT_MAX_AGE = 86400           # кэш preflight в браузере, сек</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre><div class="code-desc" data-code-alt hidden><p>Полный набор настроек CORS в <code>backend/settings.py</code>, если браузер ругается на кросс-доменные запросы: список разрешённых адресов (или регулярка для поддоменов), разрешение cookie (CORS_ALLOW_CREDENTIALS), точный список передаваемых заголовков (обязательно authorization!), какие заголовки видны JS и сколько секунд браузер может помнить предварительную проверку (preflight).</p></div>
     <div class="callout warn">
       <p><strong>Звёздочка — зло.</strong> <code>CORS_ALLOW_ALL_ORIGINS = True</code> удобно в разработке, но в проде открывает ваш API любому сайту: вредоносная страница сможет читать данные авторизованных пользователей (при <code>CORS_ALLOW_CREDENTIALS = True</code> звёздочка вообще не работает — браузер её отвергает). Также нельзя смешивать <code>*</code> с конкретными origins.</p>
     </div>

@@ -1,4 +1,7 @@
-/* Ctrl+B — скрыть / вернуть обратно весь Python-код на странице */
+/* Ctrl+B — два режима чтения:
+   1) «С кодом» (по умолчанию): виден весь Python-код.
+   2) «Без кода»: Python-код скрыт, вместо каждого блока показывается
+      человеческое описание — что именно делать в этом месте шага. */
 
 (() => {
   'use strict';
@@ -23,15 +26,44 @@
     return false;
   }
 
-  function apply(state) {
+  /* Найти рядом с <pre> блок-описание div[data-code-alt].
+     Разметка: сразу после </pre> идёт <div class="code-desc" data-code-alt>.
+     На всякий случай ищем и перед/pre — если описание стоит выше блока. */
+  function findAltFor(pre) {
+    let el = pre.nextElementSibling;
+    while (el && el.tagName !== 'PRE') {
+      if (el.hasAttribute && el.hasAttribute('data-code-alt')) return el;
+      el = el.nextElementSibling;
+    }
+    el = pre.previousElementSibling;
+    while (el && el.tagName !== 'PRE') {
+      if (el.hasAttribute && el.hasAttribute('data-code-alt')) return el;
+      el = el.previousElementSibling;
+    }
+    return null;
+  }
+
+  /* Один раз при загрузке: связываем описания с их блоками кода */
+  const pairs = [];
+  function collectPairs() {
     document.querySelectorAll('pre').forEach(pre => {
       if (!isPythonBlock(pre)) return;
+      const alt = findAltFor(pre);
+      pairs.push({ pre, alt });
+    });
+  }
+
+  function apply(state) {
+    pairs.forEach(({ pre, alt }) => {
       if (state) {
         pre.setAttribute('data-code-hidden', 'true');
+        if (alt) alt.hidden = false;
       } else {
         pre.removeAttribute('data-code-hidden');
+        if (alt) alt.hidden = true;
       }
     });
+    document.documentElement.toggleAttribute('data-no-python', state);
   }
 
   function toggle() {
@@ -46,5 +78,11 @@
     }
   });
 
-  console.log('%cCtrl+B — скрыть/показать весь Python-код', 'color:#22c55e;');
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', collectPairs);
+  } else {
+    collectPairs();
+  }
+
+  console.log('%cCtrl+B — переключить режим: с Python-кодом / с пошаговыми объяснениями', 'color:#22c55e;');
 })();

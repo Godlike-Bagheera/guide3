@@ -1082,7 +1082,37 @@ code.has-tip:focus-visible {
   align-self: flex-start;
 }
 
-/* ─── Ctrl+B: скрытый Python-код (js/hide-code.js) ─── */
+/* ─── Ctrl+B: режим «без Python-кода» (js/hide-code.js) ─── */
 pre[data-code-hidden] {
   display: none !important;
+}
+
+/* Человеческое описание вместо скрытого блока кода.
+   В режиме «с кодом» описания скрыты атрибутом [hidden]. */
+.code-desc[hidden] {
+  display: none !important;
+}
+
+.code-desc {
+  margin: 0.5rem 0 1.25rem;
+  padding: 0.85rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--fg);
+}
+
+.code-desc p {
+  margin: 0;
+}
+
+.code-desc code {
+  background: var(--bg-code);
+  color: var(--fg-code);
+}
+
+.code-desc b {
+  color: var(--accent-2);
 }

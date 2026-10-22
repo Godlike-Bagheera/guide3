@@ -815,6 +815,18 @@
 
 <div class="callout info">
   <p><strong>Про интернет и внешний вид сайта.</strong> По умолчанию Bootstrap подгружается из интернета (CDN) — если сети не будет, сайт заработает, но станет «серым» без стилей. Чтобы этого не произошло, один раз скачайте официальные файлы Bootstrap архивом по ссылке <a href="https://github.com/twbs/bootstrap/releases/download/v5.3.8/bootstrap-5.3.8-dist.zip" target="_blank" rel="noopener">bootstrap-5.3.8-dist.zip</a>, положите из него <code>css/bootstrap.min.css</code> и <code>js/bootstrap.bundle.min.js</code> в папку <code>static/</code> вашего проекта (создайте подпапки <code>static/css/</code> и <code>static/js/</code>) и укажите эти локальные пути в настройках — подробные готовые команды есть в конце раздела: <a href="#cmd-offline">Оффлайн: если пропадёт интернет, Bootstrap продолжит работать</a>.</p>
+  <p><strong>Как выглядит путь (для проекта из варианта A).</strong> После шага 2 варианта A у вас в папке лежит проект с <code>manage.py</code> и папкой <code>config/</code>. Рядом с <code>manage.py</code> создаёте папку <code>static/</code>, а в ней две подпапки — итоговая структура такая:</p>
+  <pre><span class="lang-tag">text</span><code class="language-text">мой-проект/            ← папка, где лежит manage.py
+├── manage.py
+├── config/            ← настройки проекта (settings.py)
+├── main/              ← приложение из варианта A
+├── templates/main/    ← html-шаблоны
+└── static/            ← сюда кладём Bootstrap
+    ├── css/
+    │   └── bootstrap.min.css          ← из архива: bootstrap-5.3.8-dist/css/
+    └── js/
+        └── bootstrap.bundle.min.js    ← из архива: bootstrap-5.3.8-dist/js/</code></pre>
+  <p>Внутри скачанного архива файлы лежат в папках <code>css/</code> и <code>js/</code> — их нужно перенести один в один в <code>static/css/</code> и <code>static/js/</code>. В браузере Django отдаст их по адресам <code>/static/css/bootstrap.min.css</code> и <code>/static/js/bootstrap.bundle.min.js</code> — именно эти пути прописываются в настройках BOOTSTRAP5 на шаге O2.</p>
 </div>
 
 <div class="callout warn">

@@ -816,12 +816,13 @@
   <p><strong>Один проект = одна папка.</strong> Не смешивайте проекты: каждый создаётся отдельно (<code>~/myproject</code>, <code>~/shop</code>, <code>~/hrsystem</code>). Перед началом нового проекта выйдите из старого окружения командой <code>deactivate</code>.</p>
 </div>
 
-<h4>Четыре варианта последовательности</h4>
+<h4>Варианты последовательности</h4>
 <ul>
   <li><a href="#cmd-base">Вариант A — Универсальный каркас</a>: Django + django_bootstrap5 + регистрация и вход. Основа для любого сайта.</li>
   <li><a href="#cmd-shop">Вариант B — Интернет-магазин</a>: тот же каркас + товары, корзина, оформление заказа.</li>
   <li><a href="#cmd-hr">Вариант C — Учёт сотрудников</a>: тот же каркас + сотрудники, отделы, журнал кадровых событий.</li>
   <li><a href="#cmd-own">Вариант D — Сайт по СВОЕЙ теме</a>: пошаговый план, как взять каркас из варианта A и превратить его в сайт на любую другую тему (библиотека, клиника, склад, курсы — что угодно).</li>
+  <li><a href="#cmd-offline">Оффлайн-режим Bootstrap</a>: что делать, если пропадёт интернет — скачиваем два файла Bootstrap в папку static/ и прописываем их в settings.py, чтобы сайт оставался красивым без сети.</li>
 </ul>
 
 <div class="callout info">
@@ -2245,6 +2246,86 @@ git commit -m "Своя тема: модель, админка и страниц
     </div>
 </div>
 <!-- /Вариант D -->
+
+<!-- Оффлайн-режим Bootstrap -->
+<div class="commands-variant-block" id="cmdv-offline">
+<h3 id="cmd-offline" class="commands-variant">Оффлайн: если пропадёт интернет, Bootstrap продолжит работать</h3>
+
+    <p>Короткий ответ: <strong>по умолчанию — нет</strong>. Тег <code>{% bootstrap_css %}</code> пакета django_bootstrap5 вставляет ссылку на файлы Bootstrap с интернета (CDN): <code>cdn.jsdelivr.net/npm/bootstrap@5.3.8/.../bootstrap.min.css</code> и <code>.../bootstrap.bundle.min.js</code>. Без сети страницы перестанут быть красивыми (исчезнут стили), хотя регистрация, вход и данные никуда не денутся. Решается один раз за 2 минуты: скачиваем те же самые официальные файлы и кладём в папку <code>static/</code> своего проекта.</p>
+
+    <h4>Шаг O1. Скачиваем Bootstrap один раз (когда интернет есть)</h4>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash"># переходим к корню проекта (там, где manage.py)
+cd путь/до/вашего/проекта
+
+# создаём папки для статики: css и js
+mkdir -p static/css static/js
+
+# вариант 1: скачать готовые файлы напрямую по прямым ссылкам
+curl -L -o static/css/bootstrap.min.css \
+  https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css
+curl -L -o static/js/bootstrap.bundle.min.js \
+  https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js
+
+# вариант 2 (если curl нет): скачать одним архивом и распаковать нужные файлы
+curl -L -o /tmp/bootstrap.zip \
+  https://github.com/twbs/bootstrap/releases/download/v5.3.8/bootstrap-5.3.8-dist.zip
+python -c "import zipfile; z=zipfile.ZipFile('/tmp/bootstrap.zip'); \
+z.extract('bootstrap-5.3.8-dist/css/bootstrap.min.css','/tmp'); \
+z.extract('bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js','/tmp')"
+cp /tmp/bootstrap-5.3.8-dist/css/bootstrap.min.css static/css/
+cp /tmp/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js static/js/
+
+# проверка: оба файла на месте и «весят» больше 100 КБ
+ls -lh static/css static/js</code></pre>
+
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> откройте терминал в папке проекта (рядом с manage.py) и выполните команды из блока выше — они видны всегда, даже когда код скрыт. Проще всего скопировать в браузер адрес <code>https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css</code> и сохранить страницу как файл <code>bootstrap.min.css</code>, то же самое сделать со ссылкой на <code>bootstrap.bundle.min.js</code>. Положите эти два файла в проекте в папки <code>static/css/</code> и <code>static/js/</code> (создайте их, если их нет).</p><p class="code-desc-sub">Bootstrap — это просто один CSS-файл и один JS-файл. Пока они лежат у вас в проекте, внешний вид сайта не зависит от интернета.</p></div>
+
+    <h4>Шаг O2. Указываем django_bootstrap5 использовать локальные файлы</h4>
+
+    <pre><span class="lang-tag">python</span><code class="language-python"># config/settings.py — добавьте в самый конец файла.
+# Теперь {% bootstrap_css %} и {% bootstrap_javascript %}
+# подключат Bootstrap из папки static/, а не из интернета.
+
+BOOTSTRAP5 = {
+    # локальный CSS вместо CDN (путь относительный, без слэша в начале)
+    "css_url": {
+        "url": STATIC_URL + "css/bootstrap.min.css",
+    },
+    # локальный JS вместо CDN
+    "javascript_url": {
+        "url": STATIC_URL + "js/bootstrap.bundle.min.js",
+    },
+    # integrity/crossorigin (подпись безопасности) для локальных файлов не нужна
+    "theme_url": None,
+}
+
+# подсказка: значение по умолчанию STATIC_URL = "/static/" уже стоит
+# в settings.py, так что получится "/static/css/bootstrap.min.css" —
+# именно туда Django отдаст ваш файл.</code></pre>
+
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> откройте файл <code>config/settings.py</code>, прокрутите в самый конец и допишите блок настроек <code>BOOTSTRAP5 = {...}</code> из карточки (в режиме «с кодом» — скопируйте готовый блок). Эти четыре строки говорят библиотеке django_bootstrap5: «бери Bootstrap не из интернета, а из твоей папки static». Больше ничего менять не нужно — шаблоны остаются как есть.</p><p class="code-desc-sub">Настройки пакета django_bootstrap5 читаются из settings.py автоматически. Ключи css_url и javascript_url заменяют ссылки на CDN путями вашего проекта.</p></div>
+
+    <h4>Шаг O3. Проверяем, что всё работает оффлайн</h4>
+
+    <pre><span class="lang-tag">bash</span><code class="language-bash"># запускаем сервер
+python manage.py runserver
+
+# открываем http://127.0.0.1:8000/register/ —
+# форма должна выглядеть красиво (карточка, кнопки в стиле Bootstrap)
+
+# теперь проверяем настоящий оффлайн: отключите Wi-Fi / кабель и
+# обновите ту же страницу в браузере (Ctrl+F5 не нужен —
+# сервер локальный, он работает без интернета).
+# Страница осталась красивой? Значит, всё настроено верно.</code></pre>
+
+    <div class="code-desc" data-code-alt hidden><p><b>Что делать:</b> выполните команды из блока выше (они видны и в режиме без кода): запустите сервер, откройте <code>http://127.0.0.1:8000/register/</code>, убедитесь что страница оформлена, затем выдерните интернет и обновите страницу. Если вид остался прежним — Bootstrap теперь полностью локальный. Если страница стала «голым текстом» — проверьте пути: файл лежит в <code>static/css/bootstrap.min.css</code>, настройка BOOTSTRAP5 добавлена именно в <code>config/settings.py</code>.</p><p class="code-desc-sub">Django-сервер работает на вашем компьютере, поэтому ему интернет не нужен. Интернет был нужен только за тем, чтобы скачать два файла Bootstrap — вы сделали это заранее.</p></div>
+
+    <div class="callout info">
+      <p><strong>Частые вопросы.</strong> 1) А pip без интернета? Пакеты (<code>pip install django</code>) тоже можно скачать заранее: <code>pip download django django-bootstrap5 -d packages/</code>, а потом без сети <code>pip install --no-index --find-links=packages/ django django-bootstrap5</code>. 2) Можно ли вместо этого вписать ссылки на CDN руками в base.html? Да, но тогда оффлайн не заработает — локальные файлы надёжнее. 3) Обновление Bootstrap: скачали новые два файла, заменили в static/ — всё.</p>
+    </div>
+</div>
+<!-- /Оффлайн-режим Bootstrap -->
 
 <button type="button" class="mark-read" data-section="commands@reference.html">Отметить как изученное</button>
 

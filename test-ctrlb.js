@@ -78,7 +78,7 @@ function langOf(pre) {
   const bashIn34 = [...sec.querySelectorAll('pre')].filter(p => langOf(p) === 'bash');
   check('ref34: python/html блоков в разделе 34 = 36', pyIn34.length === 36);
   check('ref34: bash блоков в разделе 34 = 17', bashIn34.length === 17);
-  check('ref34: навигация по вариантам есть', !!d.querySelector('.variant-nav') && d.querySelectorAll('.variant-chip').length === 4);
+  check('ref34: навигация по вариантам есть', !!d.querySelector('.variant-nav') && d.querySelectorAll('.variant-chip').length === 5);
   check('ref34: пять блоков вариантов (A, B, C, D, Оффлайн)', d.querySelectorAll('.commands-variant-block').length === 5);
   check('ref34: вариант D «своя тема» присутствует', !!d.getElementById('cmd-own'));
 

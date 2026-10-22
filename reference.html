@@ -809,8 +809,13 @@
   <a class="variant-chip" href="#cmd-shop">B · Интернет-магазин</a>
   <a class="variant-chip" href="#cmd-hr">C · Учёт сотрудников</a>
   <a class="variant-chip" href="#cmd-own">D · Своя тема</a>
+  <a class="variant-chip" href="#cmd-offline">O · Оффлайн Bootstrap</a>
 </nav>
 <p>Это «шпаргалка-конструктор»: полностью рабочие последовательности — от пустой папки до запущенного сайта (три готовых варианта + план для своей темы). Каждая разбита на маленькие шаги: серые блоки с командами выполняйте в терминале по порядку, а код из остальных блоков вставляйте в файлы (путь подписан над каждым блоком). Ничего выдумывать не нужно — копируйте шаг за шагом сверху вниз.</p>
+
+<div class="callout info">
+  <p><strong>Про интернет и внешний вид сайта.</strong> По умолчанию Bootstrap подгружается из интернета (CDN) — если сети не будет, сайт заработает, но станет «серым» без стилей. Чтобы этого не произошло, один раз скачайте официальные файлы Bootstrap архивом по ссылке <a href="https://github.com/twbs/bootstrap/releases/download/v5.3.8/bootstrap-5.3.8-dist.zip" target="_blank" rel="noopener">bootstrap-5.3.8-dist.zip</a>, положите из него <code>css/bootstrap.min.css</code> и <code>js/bootstrap.bundle.min.js</code> в папку <code>static/</code> вашего проекта (создайте подпапки <code>static/css/</code> и <code>static/js/</code>) и укажите эти локальные пути в настройках — подробные готовые команды есть в конце раздела: <a href="#cmd-offline">Оффлайн: если пропадёт интернет, Bootstrap продолжит работать</a>.</p>
+</div>
 
 <div class="callout warn">
   <p><strong>Один проект = одна папка.</strong> Не смешивайте проекты: каждый создаётся отдельно (<code>~/myproject</code>, <code>~/shop</code>, <code>~/hrsystem</code>). Перед началом нового проекта выйдите из старого окружения командой <code>deactivate</code>.</p>

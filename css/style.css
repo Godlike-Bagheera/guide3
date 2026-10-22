@@ -1,0 +1,204 @@
+/* ═══════════ HERO ═══════════ */
+.hero {
+  position: relative;
+  text-align: center;
+  padding: clamp(56px, 8vw, 104px) clamp(20px, 4vw, 56px) clamp(72px, 9vw, 120px);
+  margin-bottom: 48px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  overflow: visible;
+}
+
+/* Мягкое свечение за заголовком — радиальный градиент, не блоб.
+   Очень низкая прозрачность (8% → 3% → 0) добавляет глубину,
+   но не отвлекает. Работает в обеих темах, т.к. завязано на --accent. */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -12%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(760px, 92%);
+  height: 130%;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--accent) 8%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 3%, transparent) 35%,
+    transparent 72%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Разделитель — градиентная линия, растворяется по краям,
+   акцент в центре. Заменяет резкую 120×1px полоску. */
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  max-width: 340px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--border-strong) 25%,
+    var(--accent) 50%,
+    var(--border-strong) 75%,
+    transparent 100%
+  );
+  opacity: .55;
+}
+
+.hero h1 {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(1.9rem, 1rem + 3.2vw, 2.9rem);
+  margin: 0 0 20px;
+  letter-spacing: -.03em;
+  line-height: 1.2;
+  padding-bottom: 4px;
+  color: var(--fg);
+  text-wrap: balance;
+}
+html[data-font="classic"] .hero h1 { letter-spacing: -.01em; }
+
+.hero > p {
+  position: relative;
+  z-index: 1;
+  color: var(--fg-muted);
+  font-size: 1.05rem;
+  margin: 0 auto;
+  max-width: 580px;
+  line-height: 1.6;
+  text-wrap: balance;
+}
+
+.hero .meta-info {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 30px;
+}
+.meta-info span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  font-weight: 500;
+  font-size: .82rem;
+  font-variant-numeric: tabular-nums;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.meta-info span:hover {
+  border-color: var(--border-strong);
+  color: var(--fg);
+  background: color-mix(in srgb, var(--fg) 3%, transparent);
+}
+
+.hero .badges {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 18px;
+}
+.badge {
+  padding: 5px 12px;
+  border-radius: 18px;
+  font-size: .76rem;
+  font-weight: 600;
+  background: transparent;
+  color: var(--fg-muted);
+  border: 1px solid var(--border);
+  transition: border-color .15s, color .15s, background .15s;
+  cursor: default;
+}
+.badge:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+
+/* ═══════════ REVEAL ═══════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .6s cubic-bezier(.22,1,.36,1),
+              transform .6s cubic-bezier(.22,1,.36,1);
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ═══════════ PRINT ═══════════ */
+@media print {
+  header, nav.toc, #totop, #studyBar, #readingBar, #toast,
+  .modal-overlay, .mark-read, .skip-link,
+  .bm-star, .toc-bookmarks, .section-nav, .section-nav-dock,
+  pre .copy-btn, pre::before, pre .lang-tag,
+  body::before, .hero::before, .hero::after {
+    display: none !important;
+  }
+  /* Подсветка кода в печати — всегда светлая тема, независимо от темы сайта */
+  #hljs-theme { display: none !important; }
+  pre code, pre code.hljs { color: #000 !important; background: transparent !important; }
+  .hljs-keyword, .hljs-built_in, .hljs-name, .hljs-type { font-weight: bold !important; }
+  .hljs-string, .hljs-attr, .hljs-symbol { color: #1a6b1a !important; }
+  .hljs-comment { color: #777 !important; font-style: italic !important; }
+  .hljs-number, .hljs-literal { color: #824a00 !important; }
+  body { background: #fff; color: #000; padding: 0; font-size: 11pt; }
+  .layout { display: block; padding: 0; max-width: none; }
+  main {
+    box-shadow: none; border: none; padding: 0;
+    background: #fff; color: #000;
+    backdrop-filter: none;
+  }
+  h2::before { background: #000 !important; }
+  h3::before { background: #000 !important; }
+  .hero h1 { color: #000 !important; }
+  th, .table-group {
+    background: #eee !important;
+    color: #000 !important;
+    border-bottom: 1px solid #000 !important;
+  }
+  pre {
+    background: #f4f4f4 !important;
+    color: #000 !important;
+    border: 1px solid #ccc;
+    page-break-inside: avoid;
+    font-size: 9pt;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  pre code { color: #000 !important; }
+  .callout {
+    background: #f9f9f9 !important;
+    border: 1px solid #ddd;
+    border-left-width: 3px;
+    page-break-inside: avoid;
+  }
+  h2, h3 { page-break-after: avoid; }
+  table { page-break-inside: avoid; }
+  a { color: #000; text-decoration: underline; }
+  /* Печать/PDF: показываем URL внешних ссылок прямо в тексте */
+  main a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8.5pt;
+    color: #555;
+    text-decoration: none;
+    word-break: break-all;
+  }
+}

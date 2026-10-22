@@ -1,0 +1,1666 @@
+<!--split-->
+<!DOCTYPE html>
+<html lang="ru" data-theme="rose" data-font="modern">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="От установки Python в venv без sudo до полноценного API на Django REST Framework.">
+<meta name="theme-color" content="#fdf2f6" id="metaThemeColor">
+<title>Часть 1 · Бэкенд на Django — Full-Stack гайд Django + DRF + React</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Manrope:wght@500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/themes.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Перейти к содержимому</a>
+
+<div id="readingBar" aria-hidden="true"><div id="readingBarFill"></div></div>
+
+<header>
+  <div class="brand"><a href="index.html"><span>Django + DRF + React</span></a></div>
+  <input type="text" id="search" placeholder="Поиск... (Ctrl+K)" autocomplete="off" aria-label="Поиск по странице">
+  <div class="header-btns">
+    <a class="icon-btn bm-page-link" href="bookmarks.html" title="Мои закладки" aria-label="Страница закладок"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 17.66l-5.9 3.11 1.13-6.57L2.45 9.54l6.6-.96L12 2.6z"/></svg><span class="bm-counter"></span></a>
+    <button type="button" class="icon-btn" id="fontBtn" title="Шрифт" aria-label="Выбрать шрифт">Aa</button>
+    <button type="button" class="icon-btn" id="hotkeysBtn" title="Горячие клавиши" aria-label="Показать горячие клавиши">⌨</button>
+    <div class="theme-switch" role="group" aria-label="Цветовая тема">
+      <button type="button" class="theme-btn" data-theme-btn="rose" title="Розовая" aria-label="Розовая тема">🌸</button>
+      <button type="button" class="theme-btn" data-theme-btn="rose-dark" title="Тёмно-розовая" aria-label="Тёмно-розовая тема">🌺</button>
+      <button type="button" class="theme-btn" data-theme-btn="light" title="Светлая" aria-label="Светлая тема">☀️</button>
+      <button type="button" class="theme-btn" data-theme-btn="dark" title="Тёмная" aria-label="Тёмная тема">🌙</button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="toc" aria-label="Содержание страницы">
+    <h3>Содержание</h3>
+    <ul class="toc-site">
+      <li class="toc-group">
+        <a href="intro.html" class="toc-part">Введение</a>
+        <ul class="toc-sub">
+          <li><a data-star href="intro.html#intro-all">Введение</a></li>
+          <li><a data-star href="intro.html#prerequisites">Prerequisites — что нужно знать до старта</a></li>
+          <li><a data-star href="intro.html#architecture">Архитектура приложения</a></li>
+        </ul>
+      </li>
+      <li class="toc-group toc-current">
+        <a href="part1-django.html" class="toc-part">Часть 1. Бэкенд <span class="cur-dot" aria-hidden="true"></span></a>
+        <ul class="toc-sub">
+          <li><a href="#part1" data-star>Часть 1. Бэкенд на Django</a></li>
+          <li><a href="#intro" data-star>1. Введение в бэкенд</a></li>
+          <li><a href="#no-sudo" data-star>2. Почему без sudo и как это работает</a></li>
+          <li><a href="#python" data-star>3. Проверка Python и создание виртуального окружения</a></li>
+          <li><a href="#django" data-star>4. Создание Django-проекта</a></li>
+          <li><a href="#django-admin" data-star>5. Django Admin — готовая админка из коробки</a></li>
+          <li><a href="#django-bootstrap5" data-star>6. Django + Bootstrap 5 — django_bootstrap5</a></li>
+          <li><a href="#quickstart" data-star>6.5. Быстрый старт: Django + Bootstrap 5 за 8 шагов (config + webapp)</a></li>
+          <li><a href="#shop" data-star>6.6. Мини-интернет-магазин: товары, регистрация, вход и отзывы</a></li>
+          <li><a href="#api" data-star>7. Модель, сериализатор, представления</a></li>
+          <li><a href="#test-api" data-star>8. Тестирование API через curl</a></li>
+          <li><a href="#jsonplaceholder" data-star>9. JSONPlaceholder</a></li>
+          <li><a href="#deeper" data-star>10. Углубляемся: что такое DRF под капотом</a></li>
+        </ul>
+      </li>
+      <li class="toc-group">
+        <a href="part2-react.html" class="toc-part">Часть 2. Фронтенд</a>
+        <ul class="toc-sub">
+          <li><a data-star href="part2-react.html#nvm">11. Установка Node.js через nvm (без sudo)</a></li>
+          <li><a data-star href="part2-react.html#react">12. Создание React-приложения</a></li>
+          <li><a data-star href="part2-react.html#proxy">13. Настройка прокси Vite к Django API</a></li>
+          <li><a data-star href="part2-react.html#react-code">14. Код React-приложения</a></li>
+          <li><a data-star href="part2-react.html#jwt">15. Что такое JWT — разбор на примере jwt.io</a></li>
+          <li><a data-star href="part2-react.html#test">16. Тестирование полного цикла</a></li>
+          <li><a data-star href="part2-react.html#run-all">17. Запуск одним скриптом</a></li>
+        </ul>
+      </li>
+      <li class="toc-group">
+        <a href="advanced.html" class="toc-part">Продвинутое</a>
+        <ul class="toc-sub">
+          <li><a data-star href="advanced.html#git-intro">18. Git с самого начала</a></li>
+          <li><a data-star href="advanced.html#extended-model">19. Расширенная модель: теги и категории</a></li>
+          <li><a data-star href="advanced.html#auth-register">20. Регистрация пользователей</a></li>
+          <li><a data-star href="advanced.html#tests">21. Тесты Django</a></li>
+          <li><a data-star href="advanced.html#env-config">22. Переменные окружения (.env)</a></li>
+          <li><a data-star href="advanced.html#db-schema">23. Схема БД и жизненный цикл запроса</a></li>
+          <li><a data-star href="advanced.html#auth-compare">24. Аутентификация: сравнение подходов</a></li>
+          <li><a data-star href="advanced.html#db-python">25. База данных «на Python»: модели и миграции</a></li>
+          <li><a data-star href="advanced.html#postgresql">26. PostgreSQL — серьёзная база данных для продакшена</a></li>
+          <li><a data-star href="advanced.html#deploy">27. Деплой: выкладываем сайт в интернет</a></li>
+          <li><a data-star href="advanced.html#cors-deep">28. CORS глубоко: как браузер решает, кому можно ходить на ваш API</a></li>
+        </ul>
+      </li>
+      <li class="toc-group">
+        <a href="reference.html" class="toc-part">Справочник</a>
+        <ul class="toc-sub">
+          <li><a data-star href="reference.html#troubleshooting">29. Troubleshooting: типичные ошибки</a></li>
+          <li><a data-star href="reference.html#glossary">30. Глоссарий</a></li>
+          <li><a data-star href="reference.html#faq">31. FAQ — частые вопросы</a></li>
+          <li><a data-star href="reference.html#cheatsheet">32. Cheat sheet — все команды в одном месте</a></li>
+          <li><a data-star href="reference.html#summary">33. Итог</a></li>
+          <li><a data-star href="reference.html#export">34. Экспорт гайда</a></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="toc-bookmarks">
+      <a href="bookmarks.html" id="tocBookmarksLink">⭐ Закладки <span class="bm-badge" id="tocBmCount"></span></a>
+    </div>
+  </nav>
+
+  <main id="content" tabindex="-1">
+        <!-- section:part1 -->
+    <h2 id="part1" class="mark-read-anchor">Часть 1. Бэкенд на Django</h2>
+
+    <!-- section:intro -->
+    <h3 id="intro" class="mark-read-anchor">1. Введение в бэкенд</h3>
+    <p>Мы создадим REST API для управления заметками. Каждая заметка имеет:</p>
+    <ul>
+      <li><strong>ID</strong> — автоматический идентификатор (создаёт Django)</li>
+      <li><strong>title</strong> — короткий заголовок (до 200 символов)</li>
+      <li><strong>content</strong> — текст заметки (без ограничения)</li>
+      <li><strong>created_at</strong> — дата создания (проставляется автоматически)</li>
+      <li><strong>owner</strong> — ссылка на пользователя-создателя</li>
+    </ul>
+    <p>API будет поддерживать 5 операций — классический <strong>CRUD</strong>:</p>
+    <div class="table-wrap">
+      <table>
+        <caption class="sr-only">CRUD-операции API заметок</caption>
+        <thead><tr><th>Операция</th><th>Метод HTTP</th><th>URL</th><th>Что делает</th></tr></thead>
+        <tbody>
+          <tr><td>Create</td><td><code>POST</code></td><td><code>/api/notes/</code></td><td>Создать заметку</td></tr>
+          <tr><td>Read (list)</td><td><code>GET</code></td><td><code>/api/notes/</code></td><td>Список всех заметок</td></tr>
+          <tr><td>Read (one)</td><td><code>GET</code></td><td><code>/api/notes/1/</code></td><td>Одна заметка по ID</td></tr>
+          <tr><td>Update</td><td><code>PUT/PATCH</code></td><td><code>/api/notes/1/</code></td><td>Обновить заметку</td></tr>
+          <tr><td>Delete</td><td><code>DELETE</code></td><td><code>/api/notes/1/</code></td><td>Удалить заметку</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <button type="button" class="mark-read" data-section="intro@part1-django.html">Отметить как изученное</button>
+
+    <!-- section:no-sudo -->
+    <h3 id="no-sudo" class="mark-read-anchor">2. Почему без sudo и как это работает</h3>
+    <p>В РЕД ОС команда <code>dnf install</code> <strong>требует прав суперпользователя</strong> — при попытке запуска без sudo вы получите ошибку: <em>«Эту команду нужно запускать с привилегиями суперпользователя»</em>. Поэтому мы не будем использовать системный менеджер пакетов вообще.</p>
+    <p><strong>Наш подход</strong>:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Компонент</th><th>Как ставим</th><th>Где живёт</th></tr></thead>
+        <tbody>
+          <tr><td>Python и зависимости</td><td><code>venv</code></td><td><code>~/projects/fullstack-app/venv/</code></td></tr>
+          <tr><td>Node.js и npm</td><td><code>nvm</code></td><td><code>~/.nvm/</code></td></tr>
+          <tr><td>Django-проект</td><td><code>django-admin</code></td><td><code>~/projects/fullstack-app/backend/</code></td></tr>
+          <tr><td>React-проект</td><td><code>vite</code></td><td><code>~/projects/fullstack-app/frontend/</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout ok">
+      <p><strong>Бонус:</strong> изолированное окружение — вы не сломаете систему и не получите конфликтов версий с уже установленными пакетами.</p>
+    </div>
+    <button type="button" class="mark-read" data-section="no-sudo@part1-django.html">Отметить как изученное</button>
+
+    <!-- section:python -->
+    <h3 id="python" class="mark-read-anchor">3. Проверка Python и создание виртуального окружения</h3>
+
+    <h4>3.1. Проверьте, есть ли Python 3</h4>
+    <p>Откройте терминал (в РЕД ОС это обычно GNOME Terminal) и выполните:</p>
+<pre><code>python3 --version</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Если Python не установлен, возможно, он есть под другим именем:</p>
+<pre><code>python3.11 --version
+# или
+python3.12 --version</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <div class="callout info">
+      <p>РЕД ОС обычно поставляется с Python 3.10 или 3.11. Если ничего не работает — попросите администратора установить только Python, остальное мы сделаем сами.</p>
+    </div>
+
+    <h4>3.2. Создайте папку проекта</h4>
+<pre><code>mkdir -p ~/projects/fullstack-app
+cd ~/projects/fullstack-app
+pwd</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p><code>pwd</code> должен показать <code>/home/ваш_логин/projects/fullstack-app</code>.</p>
+
+    <h4>3.3. Создайте виртуальное окружение</h4>
+<pre><code>python3 -m venv venv</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <div class="callout tip">
+      <p><strong>Что такое venv?</strong> Это изолированная среда Python. Всё, что вы установите внутри неё (через <code>pip</code>), будет лежать в папке <code>venv/</code> и не затронет системный Python. Никакого sudo не нужно.</p>
+    </div>
+
+    <h4>3.4. Активируйте окружение</h4>
+<pre><code>source venv/bin/activate</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Вы увидите, что приглашение терминала изменилось — появился префикс <code>(venv)</code>:</p>
+<pre><code>(venv) user@redos:~/projects/fullstack-app$</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <div class="callout tip">
+      <p><strong>Совет:</strong> Чтобы выйти из окружения, введите <code>deactivate</code>. Чтобы вернуться — <code>source venv/bin/activate</code> из папки проекта.</p>
+    </div>
+
+    <h4>3.5. Обновите pip и установите зависимости</h4>
+<pre><code>pip install --upgrade pip
+pip install django djangorestframework djangorestframework-simplejwt django-cors-headers</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Что мы установили:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Пакет</th><th>Для чего</th></tr></thead>
+        <tbody>
+          <tr><td><code>django</code></td><td>Веб-фреймворк — модели, URL, шаблоны, ORM</td></tr>
+          <tr><td><code>djangorestframework</code></td><td>DRF — сериализаторы, viewsets, permissions</td></tr>
+          <tr><td><code>djangorestframework-simplejwt</code></td><td>JWT-аутентификация — эндпоинты token/refresh</td></tr>
+          <tr><td><code>django-cors-headers</code></td><td>Разрешения CORS — React с другого порта</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Сохраните зависимости в файл (пригодится при деплое):</p>
+<pre><code>pip freeze &gt; requirements.txt
+cat requirements.txt</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <button type="button" class="mark-read" data-section="python@part1-django.html">Отметить как изученное</button>
+
+    <!-- section:django -->
+    <h3 id="django" class="mark-read-anchor">4. Создание Django-проекта</h3>
+
+    <h4>4.1. Создайте проект и приложение</h4>
+<pre><code>django-admin startproject backend
+cd backend
+python manage.py startapp api</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Структура после этих команд:</p>
+<pre><code>fullstack-app/
+├── venv/                 # виртуальное окружение (создали в разделе 3)
+└── backend/              # Django-проект (создаём здесь)
+    ├── manage.py
+    ├── backend/          # настройки проекта
+    │   ├── __init__.py
+    │   ├── settings.py   # ← здесь будем править
+    │   ├── urls.py       # ← и здесь
+    │   ├── asgi.py
+    │   └── wsgi.py
+    └── api/              # наше приложение
+        ├── __init__.py
+        ├── admin.py      # ← регистрация в админке
+        ├── apps.py
+        ├── models.py     # ← модель Note
+        ├── tests.py
+        ├── views.py      # ← представления
+        └── migrations/</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">text</span></pre>
+
+    <h4>4.2. Настройте settings.py</h4>
+    <p>Откройте файл <code>backend/settings.py</code> в редакторе:</p>
+<pre><code>nano backend/settings.py</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Найдите переменную <code>INSTALLED_APPS</code> и добавьте:</p>
+<pre><code>INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    # Сторонние
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'corsheaders',
+    # Наше
+    'api',
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+
+    <p>Найдите <code>MIDDLEWARE</code> и добавьте <code>CorsMiddleware</code> <strong>первым</strong>:</p>
+<pre><code>MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',   # ← первым!
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+
+    <div class="callout warn">
+      <p><strong>Почему первым?</strong> CORS должен обрабатывать запрос до того, как Django начнёт его маршрутизировать. Если поставить его позже — preflight-запросы OPTIONS будут отбиваться раньше, чем до них доберётся обработчик CORS.</p>
+    </div>
+
+    <p>В самый конец файла добавьте:</p>
+<pre><code># CORS — какие origins могут обращаться к нашему API
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5173",   # Vite по умолчанию
+    "http://127.0.0.1:5173",
+]
+
+# Настройки DRF
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ),
+}
+
+# Настройки JWT
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': False,
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+
+    <div class="callout info">
+      <p><strong>Что такое JWT?</strong> JSON Web Token — стандарт передачи данных между сторонами в виде JSON-объекта. Сервер выдаёт клиенту <strong>access token</strong> (короткоживущий) и <strong>refresh token</strong> (долгоживущий). Клиент прикладывает access token к каждому запросу в заголовке <code>Authorization: Bearer &lt;token&gt;</code>. Когда access истекает — использует refresh. Разбор на <a href="https://www.jwt.io/" target="_blank" rel="noopener">jwt.io</a>.</p>
+    </div>
+
+    <h4>4.3. Примените миграции</h4>
+<pre><code>python manage.py migrate</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Вы увидите список применённых миграций — это создаст стандартные таблицы Django (пользователи, сессии, права).</p>
+
+    <h4>4.4. Создайте суперпользователя</h4>
+<pre><code>python manage.py createsuperuser</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Введите:</p>
+    <ul>
+      <li><strong>Username</strong> — например, <code>admin</code></li>
+      <li><strong>Email</strong> — можно пропустить (нажать Enter)</li>
+      <li><strong>Password</strong> — минимум 8 символов, не должен быть слишком простым</li>
+    </ul>
+    <div class="callout ok">
+      <p><strong>Проверка:</strong> запустите <code>python manage.py runserver</code> и откройте <code>http://127.0.0.1:8000/admin/</code> — увидите форму входа. Войдите под созданным пользователем.</p>
+    </div>
+    <button type="button" class="mark-read" data-section="django@part1-django.html">Отметить как изученное</button>
+
+    <!-- section:django-admin -->
+    <h3 id="django-admin" class="mark-read-anchor">5. Django Admin — готовая админка из коробки</h3>
+    <p>Одна из главных «киллер-фич» Django: панель администратора создаётся <strong>автоматически</strong> из ваших моделей. Не нужно писать HTML, forms и CRUD-логику — Django сгенерирует интерфейс для добавления, редактирования и удаления записей. Идеально, чтобы быстро наполнять базу данными и смотреть, как работают модели.</p>
+
+    <h4>5.1. Включён ли Admin?</h4>
+    <p>В свежем проекте всё уже включено по умолчанию. Проверьте два файла:</p>
+<pre><code># backend/settings.py
+INSTALLED_APPS = [
+    ...
+    'django.contrib.admin',       # ← сама админка
+    'django.contrib.auth',        # ← пользователи и права
+    ...
+]
+
+MIDDLEWARE = [
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # ← без него admin не пустит
+    ...
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <div class="callout info">
+      <p><strong>Как это работает:</strong> админка построена на тех же моделях, что и ваш сайт. Таблица в браузере — это буквально <code>Model.objects.all()</code>, а форма редактирования автоматически строится из полей модели (CharField → текстовое поле, DateTimeField → виджет с календарём и т.д.).</p>
+    </div>
+
+    <h4>5.2. Создайте суперпользователя</h4>
+    <p>В админку может зайти только staff-пользователь. Создаём его одной командой:</p>
+<pre><code>python manage.py createsuperuser</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Django спросит имя, email и пароль (минимум 8 символов, пароль нельзя использовать как логин). Если модель ещё не создана — сначала выполните <code>makemigrations</code> и <code>migrate</code>.</p>
+
+    <h4>5.3. Вход в админку</h4>
+<pre><code># запустите сервер
+python manage.py runserver</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Откройте в браузере: <strong><a href="http://127.0.0.1:8000/admin/" target="_blank" rel="noopener">http://127.0.0.1:8000/admin/</a></strong> — увидите форму входа. URL задаётся в <code>backend/urls.py</code>:</p>
+<pre><code># backend/urls.py
+from django.contrib import admin
+from django.urls import path
+
+urlpatterns = [
+    path('admin/', admin.site.urls),   # ← вся админка живёт здесь
+    path('api/', include('api.urls')),
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+
+    <h4>5.4. Зарегистрируйте модель</h4>
+    <p>По умолчанию в админке видны только Группы и Пользователи. Чтобы появились ваши заметки, зарегистрируйте модель в <code>api/admin.py</code>:</p>
+<pre><code># api/admin.py
+from django.contrib import admin
+from .models import Note
+
+
+@admin.register(Note)
+class NoteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'owner', 'created_at')  # колонки списка
+    list_filter = ('created_at', 'owner')                  # фильтры сбоку
+    search_fields = ('title', 'content')                   # строка поиска
+    ordering = ('-created_at',)                            # сортировка по умолчанию
+    readonly_fields = ('created_at',)                      # только для чтения</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <p>Старый стиль регистрации — <code>admin.site.register(Note)</code> — тоже работает, но класс с настройками удобнее. После сохранения страницы обновите админку: в разделе «Api» появится «Заметки» со списком, поиском и кнопкой «Добавить».</p>
+
+    <h4>5.5. Что умеет админка</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Функция</th><th>Как выглядит</th><th>Настройка</th></tr></thead>
+        <tbody>
+          <tr><td>CRUD без кода</td><td>Список + форма добавления/изменения</td><td>автоматически из модели</td></tr>
+          <tr><td>Поиск и фильтры</td><td>строка сверху, панель справа</td><td><code>search_fields</code>, <code>list_filter</code></td></tr>
+          <tr><td>Массовые действия</td><td>выделить галочками → «Удалить выбранные»</td><td><code>actions = ['delete_selected']</code></td></tr>
+          <tr><td>Права по ролям</td><td>у обычного staff нет кнопки «Пользователи»</td><td>Группы → права (view/add/change/delete)</td></tr>
+          <tr><td>Inline-редактирование</td><td>дочерние записи прямо в форме родителя</td><td><code>admin.StackedInline</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Пример inline — теги заметки редактируются в её же форме:</p>
+<pre><code>class NoteTagInline(admin.TabularInline):
+    model = Note.tags.through   # промежуточная таблица ManyToMany
+    extra = 1                    # одна пустая строка для нового тега
+
+
+@admin.register(Note)
+class NoteAdmin(admin.ModelAdmin):
+    inlines = [NoteTagInline]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+
+    <div class="callout warn">
+      <p><strong>Не выставляйте /admin/ в интернет без настройки!</strong> Смените путь <code>path('admin/', ...)</code> на нестандартный, включите <code>DEBUG=False</code>, держите сильный пароль и выдавайте staff-права только нужным группам. Админка — самый лакомый объект для брутфорса.</p>
+    </div>
+    <div class="callout ok">
+      <p><strong>Итого:</strong> <code>createsuperuser</code> → заход на <code>/admin/</code> → регистрация модели через <code>@admin.register</code> — и у вас полноценная CMS для проекта за 5 минут. На этом этапе можно руками добавить тестовые заметки и проверить API-эндпоинты на реальных данных.</p>
+    </div>
+    <button type="button" class="mark-read" data-section="django-admin@part1-django.html">Отметить как изученное</button>
+
+    <!-- section:django-bootstrap5 -->
+    <h3 id="django-bootstrap5" class="mark-read-anchor">6. Django + Bootstrap 5 — django_bootstrap5</h3>
+    <p>Пока React — это про API и SPA, многие задачи решаются проще: обычные страницы рендерит сам Django через <strong>шаблоны</strong>. Чтобы сайт выглядел красиво, используем <strong>Bootstrap 5</strong> — самый популярный CSS-фреймворк, а для интеграции с Django — пакет <code>django_bootstrap5</code>.</p>
+
+    <h4>6.1. Установка django_bootstrap5</h4>
+    <p>Убедитесь, что окружение <code>(venv)</code> активно (раздел 3), и выполните:</p>
+<pre><code># вы в ~/projects/fullstack-app/backend, venv лежит на уровень выше
+source ../venv/bin/activate
+pip install django-bootstrap5</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <div class="callout tip">
+      <p><strong>Не путайте имена!</strong> В <code>pip install</code> пакет пишется <code>django-bootstrap5</code> (через дефис), а в <code>settings.py</code> — <code>django_bootstrap5</code> (через подчёркивание). Это одно и то же.</p>
+    </div>
+    <p>Затем откройте <code>backend/settings.py</code> и добавьте приложение в <code>INSTALLED_APPS</code>:</p>
+<pre><code>INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    # Сторонние
+    'rest_framework',
+    'django_bootstrap5',   # ← Bootstrap 5 для Django
+    # Наше
+    'api',
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <p>Настройки самого bootstrap-пакета можно добавить в конец того же файла (не обязательно, по умолчанию всё уже хорошо):</p>
+<pre><code># settings.py — опционально
+DJANGO_BOOTSTRAP5 = {
+    'css_bundle': 'dist',      # или 'core' — только CSS без JS-плагинов
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+
+    <h4>6.2. Базовый шаблон base.html</h4>
+    <p>Создайте папку и файл шаблона:</p>
+<pre><code>mkdir -p api/templates/api
+nano api/templates/api/base.html</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Django автоматически найдёт шаблоны по пути <code>название_приложения/templates/название_приложения/</code> — отдельную настройку <code>APP_DIRS</code> менять не нужно (она включена по умолчанию).</p>
+<pre><code>{% load django_bootstrap5 %}
+&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;{% block title %}Мой сайт{% endblock %}&lt;/title&gt;
+  {% bootstrap_css %}   &lt;!-- подключает весь CSS Bootstrap 5 --&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  {% bootstrap_javascript %}   &lt;!-- подключает JS Bootstrap (бандл с Popper) --&gt;
+
+  {% block content %}{% endblock %}
+&lt;/body&gt;
+&lt;/html&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+    <p>Что дают эти теги:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Тег шаблона</th><th>Что делает</th></tr></thead>
+        <tbody>
+          <tr><td><code>{% load django_bootstrap5 %}</code></td><td>Загружает библиотеку тегов — без неё остальные не работают</td></tr>
+          <tr><td><code>{% bootstrap_css %}</code></td><td>Вставляет ссылку на CSS Bootstrap 5 (файлы лежат внутри пакета, CDN не нужен)</td></tr>
+          <tr><td><code>{% bootstrap_javascript %}</code></td><td>Подключает JS Bootstrap — работают дропдауны, модалки, карусели, бургер-меню</td></tr>
+          <tr><td><code>{% bootstrap_form form %}</code></td><td>Рендерит всю Django-форму сразу в bootstrap-разметке с валидацией</td></tr>
+          <tr><td><code>{% bootstrap_alert "Готово!" %}</code></td><td>Красивое уведомление одним тегом</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>6.3. Простейшая страница через view</h4>
+    <p>Добавьте представление в <code>api/views.py</code>:</p>
+<pre><code>from django.shortcuts import render
+
+
+def home(request):
+    return render(request, 'api/home.html')</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <p>Пропишите маршрут в <code>backend/urls.py</code>:</p>
+<pre><code>from django.contrib import admin
+from django.urls import path, include
+from api.views import home
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', home, name='home'),       # ← главная страница
+    path('api/', include('api.urls')),
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <p>И сам шаблон <code>api/templates/api/home.html</code>:</p>
+<pre><code>{% extends "api/base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+  &lt;div class="container mt-5"&gt;
+    &lt;div class="row justify-content-center"&gt;
+      &lt;div class="col-md-6"&gt;
+        &lt;div class="card shadow-sm"&gt;
+          &lt;div class="card-body"&gt;
+            &lt;h1 class="card-title"&gt;Привет, Django!&lt;/h1&gt;
+            &lt;p class="card-text"&gt;Эта страница собрана из готовых кусков Bootstrap.&lt;/p&gt;
+            &lt;a href="/admin/" class="btn btn-primary"&gt;В админку&lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+{% endblock %}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+<pre><code>python manage.py runserver</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Откройте <code>http://127.0.0.1:8000/</code> — увидите аккуратную карточку со стилизованной кнопкой. Ноль собственного CSS!</p>
+
+    <h4>6.4. Сайт как конструктор: берём готовые куски кода с сайта Bootstrap</h4>
+    <p>Главная фишка Bootstrap — <strong>готовые компоненты</strong>: навбары, карточки, формы входа, футеры, hero-блоки. Их не нужно писать руками — их можно <strong>копировать прямо с официального сайта</strong> и вставлять в наши шаблоны Django. <code>django_bootstrap5</code> уже подключил нужные CSS и JS, поэтому скопированный HTML заработает «из коробки» — это и есть сборка сайта как из кубиков LEGO.</p>
+    <p><strong>Где брать готовые куски кода:</strong></p>
+    <ul>
+      <li><a href="https://getbootstrap.com/docs/5.3/components/" target="_blank" rel="noopener">getbootstrap.com/docs/5.3/components</a> — официальные примеры компонентов (Navbar, Cards, Buttons, Forms, Modals…) — жмите «Copy» на любом примере</li>
+      <li><a href="https://getbootstrap.com/docs/5.3/examples/" target="_blank" rel="noopener">getbootstrap.com/docs/5.3/examples</a> — готовые целые страницы: блоги, лендинги, панели администратора — можно забирать целиком</li>
+      <li><a href="https://getbootstrap.com/docs/5.3/layout/grid/" target="_blank" rel="noopener">Сетка (Grid)</a> — база основ: <code>container → row → col-*</code></li>
+      <li><a href="https://mdbootstrap.com/docs/standard/" target="_blank" rel="noopener">MDBootstrap (MDB)</a> — сотни бесплатных расширенных примеров на Bootstrap 5</li>
+      <li><a href="https://bootswatch.com/" target="_blank" rel="noopener">Bootswatch</a> — готовые цветовые темы для Bootstrap</li>
+    </ul>
+    <p><strong>Как перенести пример в Django-шаблон — три шага:</strong></p>
+    <ol>
+      <li>Открыли страницу компонентов Bootstrap, выбрали нужный блок (например, Navbar), нажали <strong>Copy</strong></li>
+      <li>Вставили HTML внутрь <code>{% block content %}...{% endblock %}</code> нашего шаблона</li>
+      <li>Заменили «статичный» текст на переменные Django — <code>{{ note.title }}</code>, циклы <code>{% for %}</code>, ссылки <code>{% url %}</code></li>
+    </ol>
+    <p>Пример: скопированный с сайта Bootstrap навбар превращаем в живой навбар Django:</p>
+<pre><code>&lt;!-- скопировано с getbootstrap.com/docs/5.3/components/navbar --&gt;
+&lt;nav class="navbar navbar-expand-lg navbar-dark bg-dark"&gt;
+  &lt;div class="container-fluid"&gt;
+    &lt;a class="navbar-brand" href="{% url 'home' %}"&gt;Мои заметки&lt;/a&gt;
+    &lt;button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#menu"&gt;
+      &lt;span class="navbar-toggler-icon"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;div class="collapse navbar-collapse" id="menu"&gt;
+      &lt;ul class="navbar-nav me-auto"&gt;
+        &lt;li class="nav-item"&gt;&lt;a class="nav-link" href="{% url 'home' %}"&gt;Главная&lt;/a&gt;&lt;/li&gt;
+        &lt;li class="nav-item"&gt;&lt;a class="nav-link" href="/admin/"&gt;Админка&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+    <p>А карусель или сетку карточек из примеров сайта — в вывод данных из базы:</p>
+<pre><code>&lt;div class="row"&gt;
+  {% for note in notes %}
+    &lt;div class="col-md-4 mb-4"&gt;
+      &lt;div class="card shadow-sm h-100"&gt;
+        &lt;div class="card-body"&gt;
+          &lt;h5 class="card-title"&gt;{{ note.title }}&lt;/h5&gt;
+          &lt;p class="card-text"&gt;{{ note.content|truncatewords:20 }}&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="card-footer bg-transparent border-0 pb-3"&gt;
+          &lt;a href="#" class="btn btn-sm btn-outline-primary"&gt;Открыть&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  {% endfor %}
+&lt;/div&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+    <div class="callout warn">
+      <p><strong>Два нюанса при копировании:</strong><br>
+      • Не копируйте теги <code>&lt;link&gt;</code>/<code>&lt;script&gt;</code> с CDN из примеров Bootstrap — у нас за это отвечают <code>{% bootstrap_css %}</code> и <code>{% bootstrap_javascript %}</code>, иначе стили загрузятся дважды.<br>
+      • Interactivity (бургер-меню, модалки) работает через атрибуты <code>data-bs-*</code> — их менять не надо, достаточно <code>{% bootstrap_javascript %}</code> в базовом шаблоне.</p>
+    </div>
+    <div class="callout ok">
+      <p><strong>Итог раздела:</strong> сайт действительно собирается как конструктор — открываете сайт Bootstrap, копируете приглянувшийся блок, вставляете в шаблон, подменяете текст на <code>{{ переменные }}</code> Django. Красивая вёрстка без единой строчки собственного CSS.</p>
+    </div>
+    <button type="button" class="mark-read" data-section="django-bootstrap5@part1-django.html">Отметить как изученное</button>
+
+    <!-- section:quickstart -->
+    <h3 id="quickstart" class="mark-read-anchor">6.5. Быстрый старт: Django + Bootstrap 5 за 8 шагов (config + webapp)</h3>
+    <p>Это самостоятельная мини-инструкция «с нуля» — по ней можно собрать первый сайт на РЕД ОС без прав администратора. Она использует другую структуру проекта (<code>config</code> + <code>webapp</code>, точка в <code>startproject</code>) и дополняет разделы 3–6 выше: там мы строим полноценный API с DRF, а здесь — быстрый проверочный шаблонный сайт на Bootstrap 5.</p>
+
+    <h4>Шаг 1. Проверка предустановленного Python 3</h4>
+    <p>Интерпретатор Python 3 встроен в РЕД ОС по умолчанию. Откройте терминал и убедитесь в этом:</p>
+<pre><code>python3 --version</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+    <p>Если команда возвращает версию (например, Python 3.8, 3.10 или выше), всё в порядке.</p>
+
+    <h4>Шаг 2. Создание папки и виртуального окружения</h4>
+    <p>Поскольку у нас нет прав sudo, мы создаем изолированное окружение внутри домашней директории пользователя. Все пакеты будут ставиться локально.</p>
+<pre><code># Создаем рабочую папку проекта в домашнем каталоге и переходим в нее
+mkdir ~/fullstack-app &amp;&amp; cd ~/fullstack-app
+
+# Создаем виртуальное окружение с именем venv
+python3 -m venv venv
+
+# Активируем виртуальное окружение в РЕД ОС
+source venv/bin/activate</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+    <p>После активации в начале строки вашего терминала обязательно появится маркер <code>(venv)</code>.</p>
+
+    <h4>Шаг 3. Установка Django и правильной библиотеки Bootstrap 5</h4>
+    <p>Используем явный вызов через <code>python3 -m pip</code>, чтобы избежать конфликтов путей:</p>
+<pre><code># Обновляем локальный менеджер пакетов pip
+python3 -m pip install --upgrade pip
+
+# Устанавливаем Django и актуальную официальную библиотеку django-bootstrap5
+python3 -m pip install django django-bootstrap5</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+
+    <h4>Шаг 4. Инициализация структуры проекта Django</h4>
+    <p>Создаем каркас проекта. Обратите внимание на точку в конце второй команды — она развернет файлы конфигурации прямо в текущей папке:</p>
+<pre><code># Создаем конфигурационный пакет с именем config
+django-admin startproject config .
+
+# Создаем приложение для нашего веб-сайта
+python3 manage.py startapp webapp</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+
+    <h4>Шаг 5. Настройка конфигурации проекта (settings.py)</h4>
+    <p>Открыть файл <code>config/settings.py</code> в VSC и внести следующие изменения:</p>
+    <p>1. Найдите список <code>INSTALLED_APPS</code> и добавьте туда <code>'django_bootstrap5'</code> (через нижнее подчеркивание) и ваше приложение <code>'webapp'</code>:</p>
+<pre><code>INSTALLED_APPS = [
+    # ... базовые приложения Django ...
+    'django_bootstrap5',
+    'webapp',
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+    <p>2. Спуститесь ниже и переключите язык интерфейса на русский:</p>
+<pre><code>LANGUAGE_CODE = 'ru-ru'
+TIME_ZONE = 'Europe/Moscow'  # или ваш регион</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+
+    <h4>Шаг 6. Создание логики и маршрутов</h4>
+    <p>1. <strong>Представление (View):</strong><br>
+    Открыть файл <code>webapp/views.py</code> в VSC и прописать логику отображения главной страницы:</p>
+<pre><code>from django.shortcuts import render
+
+def index(request):
+    return render(request, 'webapp/index.html')</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+    <p>2. <strong>Маршруты приложения (URLs):</strong><br>
+    Создайте в папке <code>webapp</code> новый файл <code>urls.py</code>. Открыть файл в VSC и вставить в него код:</p>
+<pre><code>from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.index, name='index'),
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+    <p>3. <strong>Главные маршруты проекта:</strong><br>
+    Открыть файл <code>config/urls.py</code> в VSC и подключить туда маршруты из вашего приложения, приведя его структуру к следующему виду:</p>
+<pre><code>from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('webapp.urls')),
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+
+    <h4>Шаг 7. Создание HTML-шаблона с Bootstrap 5</h4>
+    <p>Создаем правильную древовидную структуру папок для шаблонов Django в терминале РЕД ОС:</p>
+<pre><code>mkdir -p webapp/templates/webapp</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+    <p>Создайте в этой папке файл <code>index.html</code>. Открыть файл в VSC и вставить готовый код страницы. Обратите внимание на правильный тег загрузки <code>{% load django_bootstrap5 %}</code> в первой строке:</p>
+<pre><code>{% load django_bootstrap5 %}
+&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Django на РЕД ОС&lt;/title&gt;
+    &lt;!-- Автоматическое подключение CSS стилей Bootstrap 5 --&gt;
+    {% bootstrap_css %}
+&lt;/head&gt;
+&lt;body class="bg-light"&gt;
+
+    &lt;!-- Навигационная панель Bootstrap 5 --&gt;
+    &lt;nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4"&gt;
+        &lt;div class="container-fluid"&gt;
+            &lt;span class="navbar-brand"&gt;РЕД ОС Проект (User-space)&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+
+    &lt;!-- Основной контент --&gt;
+    &lt;div class="container"&gt;
+        &lt;div class="p-5 mb-4 bg-white rounded-3 border shadow-sm"&gt;
+            &lt;h1 class="display-5 fw-bold text-success"&gt;Всё работает на РЕД ОС!&lt;/h1&gt;
+            &lt;p class="col-md-8 fs-4 text-muted"&gt;Окружение настроено без root-прав, библиотека django-bootstrap5 успешно подключена.&lt;/p&gt;
+            &lt;button class="btn btn-success btn-lg" type="button"&gt;Проверить компоненты&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Автоматическое подключение JS скриптов Bootstrap 5 --&gt;
+    {% bootstrap_javascript %}
+&lt;/body&gt;
+&lt;/html&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+
+    <h4>Шаг 8. Миграции и запуск локального сервера</h4>
+    <p>В качестве базы данных по умолчанию используется легковесный файл <code>db.sqlite3</code>. Для его создания и работы права администратора системы не требуются.</p>
+<pre><code># Применяем стандартные миграции Django
+python3 manage.py migrate
+
+# Запускаем встроенный веб-сервер
+python3 manage.py runserver</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+    <p><strong>Готово!</strong> Открывайте установленный в РЕД ОС браузер (например, Chromium или Яндекс.Браузер) и переходите по адресу: <strong><a href="http://127.0.0.1:8000/" target="_blank" rel="noopener">http://127.0.0.1:8000/</a></strong>. Перед вами откроется адаптивная страница со стилями Bootstrap 5.</p>
+
+    <h4>Дополнение к шагам 6–7: автономный вариант с локальным Bootstrap 5 (index / login / register)</h4>
+    <p>Вариант выше использует библиотеку <code>django-bootstrap5</code>. Ниже — альтернативная схема для полностью автономного режима: проект работает мгновенно и без интернета, потому что официальный скомпилированный дистрибутив Bootstrap 5 скачивается один раз и лежит в статике проекта. Шаги нумерованы отдельно («Шаг 1…7»), чтобы их можно было выполнить независимо от основной инструкции.</p>
+
+    <h4>Шаг 1. Развертывание проекта в терминале РЕД ОС</h4>
+    <p>Поскольку работа ведется в пользовательском пространстве без прав администратора (sudo), создаем проект локально в домашней папке:</p>
+<pre><code># Создаем папку проекта и переходим в нее
+mkdir ~/fullstack-app &amp;&amp; cd ~/fullstack-app
+
+# Создаем и активируем виртуальное окружение
+python3 -m venv venv
+source venv/bin/activate
+
+# Устанавливаем Django через явный вызов интерпретатора
+python3 -m pip install --upgrade pip
+python3 -m pip install django
+
+# Инициализируем проект и приложение (обратите внимание на точку!)
+django-admin startproject config .
+python3 manage.py startapp webapp</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+
+    <h4>Шаг 2. Настройка config/settings.py в VS Code</h4>
+    <p>Откройте созданную папку <code>fullstack-app</code> в Visual Studio Code и отредактируйте файл настроек:</p>
+    <p>1. В список <code>INSTALLED_APPS</code> добавьте ваше приложение:</p>
+<pre><code>INSTALLED_APPS = [
+    # ... системные приложения ...
+    'webapp',
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+    <p>2. В самом низу файла убедитесь в наличии строки для статики:</p>
+<pre><code>STATIC_URL = 'static/'</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+
+    <h4>Шаг 3. Локальное подключение оригинального Bootstrap 5 (Автономный режим)</h4>
+    <p>Чтобы проект работал мгновенно и без интернета, мы скачаем и развернем официальный скомпилированный дистрибутив.</p>
+    <p>1. Создайте структуру папок для статических файлов и шаблонов в терминале:</p>
+<pre><code>mkdir -p webapp/static/webapp/css
+mkdir -p webapp/static/webapp/js
+mkdir -p webapp/templates/webapp</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+    <p>2. Скачайте официальный zip-архив скомпилированных файлов по ссылке:<br>
+    👉 <a href="https://github.com/twbs/bootstrap/releases/download/v5.1.3/bootstrap-5.1.3-dist.zip" target="_blank" rel="noopener">https://github.com/twbs/bootstrap/releases/download/v5.1.3/bootstrap-5.1.3-dist.zip</a></p>
+    <p>3. Распакуйте архив и перенесите из него два конкретных файла в папки вашего проекта:</p>
+    <ul>
+      <li>Из папки <code>css/</code> файл <code>bootstrap.min.css</code> положите в <code>webapp/static/webapp/css/bootstrap.min.css</code></li>
+      <li>Из папки <code>js/</code> файл <code>bootstrap.bundle.min.js</code> положите в <code>webapp/static/webapp/js/bootstrap.bundle.min.js</code></li>
+    </ul>
+
+    <h4>Шаг 4. Создание логики авторизации в webapp/views.py</h4>
+    <p>Откройте файл в VS Code и вставьте стандартный код для обработки страниц, входа и регистрации:</p>
+<pre><code>from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+
+def index(request):
+    return render(request, 'webapp/index.html')
+
+def register_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('index')
+    else:
+        form = UserCreationForm()
+    return render(request, 'webapp/register.html', {'form': form})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('index')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'webapp/login.html', {'form': form})</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+
+    <h4>Шаг 5. Настройка маршрутов (urls.py)</h4>
+    <p>1. Создайте файл <code>webapp/urls.py</code> в VSC:</p>
+<pre><code>from django.urls import path
+from django.contrib.auth.views import LogoutView
+from . import views
+
+urlpatterns = [
+    path('', views.index, name='index'),
+    path('register/', views.register_view, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', LogoutView.as_view(next_page='index'), name='logout'),
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+    <p>2. Подключите его в главном файле <code>config/urls.py</code>:</p>
+<pre><code>from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('webapp.urls')),
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+
+    <h4>Шаг 6. Создание оригинальных шаблонов из документации Bootstrap 5</h4>
+    <p>Создайте три HTML-файла в папке <code>webapp/templates/webapp/</code> через VS Code:</p>
+    <p><strong>1. Главная страница (index.html)</strong> — на основе компонентов Navbar и Card:</p>
+<pre><code>{% load static %}
+&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Главная страница&lt;/title&gt;
+    &lt;!-- Подключаем оригинальный локальный CSS --&gt;
+    &lt;link href="{% static 'webapp/css/bootstrap.min.css' %}" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body class="bg-light"&gt;
+
+    &lt;!-- Компонент Navbar с сайта Bootstrap 5 --&gt;
+    &lt;nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4"&gt;
+        &lt;div class="container-fluid"&gt;
+            &lt;a class="navbar-brand" href="#"&gt;РЕД ОС Fullstack&lt;/a&gt;
+            &lt;div class="d-flex"&gt;
+                {% if user.is_authenticated %}
+                    &lt;span class="navbar-text text-white me-3"&gt;Вы вошли как: &lt;strong&gt;{{ user.username }}&lt;/strong&gt;&lt;/span&gt;
+                    &lt;form action="{% url 'logout' %}" method="post" class="d-inline"&gt;
+                        {% csrf_token %}
+                        &lt;button type="submit" class="btn btn-outline-danger btn-sm"&gt;Выйти&lt;/button&gt;
+                    &lt;/form&gt;
+                {% else %}
+                    &lt;a class="btn btn-outline-light btn-sm me-2" href="{% url 'login' %}"&gt;Войти&lt;/a&gt;
+                    &lt;a class="btn btn-success btn-sm" href="{% url 'register' %}"&gt;Регистрация&lt;/a&gt;
+                {% endif %}
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/nav&gt;
+
+    &lt;!-- Блок Grid + Card с сайта Bootstrap 5 --&gt;
+    &lt;div class="container"&gt;
+        &lt;div class="card shadow-sm"&gt;
+            &lt;div class="card-body p-5 text-center"&gt;
+                {% if user.is_authenticated %}
+                    &lt;h1 class="card-title text-success fw-bold"&gt;Доступ разрешен!&lt;/h1&gt;
+                    &lt;p class="card-text text-muted fs-5"&gt;Вы успешно авторизовались в системе. Этот шаблон использует оригинальные классы разметки Bootstrap 5.&lt;/p&gt;
+                {% else %}
+                    &lt;h1 class="card-title text-secondary fw-bold"&gt;Добро пожаловать!&lt;/h1&gt;
+                    &lt;p class="card-text text-muted fs-5"&gt;Пожалуйста, войдите в свой аккаунт или пройдите регистрацию для продолжения работы.&lt;/p&gt;
+                {% endif %}
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Подключаем оригинальный локальный JS --&gt;
+    &lt;script src="{% static 'webapp/js/bootstrap.bundle.min.js' %}"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+    <p><strong>2. Форма входа (login.html)</strong> — на основе Forms -&gt; Form controls + Card:</p>
+<pre><code>{% load static %}
+&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Вход&lt;/title&gt;
+    &lt;link href="{% static 'webapp/css/bootstrap.min.css' %}" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body class="bg-light"&gt;
+
+    &lt;div class="container mt-5"&gt;
+        &lt;div class="row justify-content-center"&gt;
+            &lt;div class="col-md-4"&gt;
+                &lt;div class="card shadow-sm"&gt;
+                    &lt;div class="card-body p-4"&gt;
+                        &lt;h3 class="card-title text-center mb-4"&gt;Вход в систему&lt;/h3&gt;
+
+                        &lt;form method="post"&gt;
+                            {% csrf_token %}
+
+                            &lt;!-- Официальный макет полей ввода с сайта Bootstrap 5 --&gt;
+                            &lt;div class="mb-3"&gt;
+                                &lt;label for="id_username" class="form-label"&gt;Имя пользователя&lt;/label&gt;
+                                &lt;input type="text" name="username" class="form-control" id="id_username" required&gt;
+                            &lt;/div&gt;
+
+                            &lt;div class="mb-3"&gt;
+                                &lt;label for="id_password" class="form-label"&gt;Пароль&lt;/label&gt;
+                                &lt;input type="password" name="password" class="form-control" id="id_password" required&gt;
+                            &lt;/div&gt;
+
+                            &lt;button type="submit" class="btn btn-primary w-100 mt-2"&gt;Войти&lt;/button&gt;
+                        &lt;/form&gt;
+
+                        &lt;div class="text-center mt-3"&gt;
+                            &lt;a href="{% url 'register' %}" class="small"&gt;Создать аккаунт&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script src="{% static 'webapp/js/bootstrap.bundle.min.js' %}"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+    <p><strong>3. Форма регистрации (register.html)</strong> — на основе Forms -&gt; Overview:</p>
+<pre><code>{% load static %}
+&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Регистрация&lt;/title&gt;
+    &lt;link href="{% static 'webapp/css/bootstrap.min.css' %}" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body class="bg-light"&gt;
+
+    &lt;div class="container mt-5"&gt;
+        &lt;div class="row justify-content-center"&gt;
+            &lt;div class="col-md-5"&gt;
+                &lt;div class="card shadow-sm"&gt;
+                    &lt;div class="card-body p-4"&gt;
+                        &lt;h3 class="card-title text-center mb-4"&gt;Регистрация&lt;/h3&gt;
+
+                        &lt;form method="post"&gt;
+                            {% csrf_token %}
+
+                            &lt;!-- Цикл преобразует поля Django в оригинальные блоки с сайта Bootstrap --&gt;
+                            {% for field in form %}
+                                &lt;div class="mb-3"&gt;
+                                    &lt;label for="{{ field.id_for_label }}" class="form-label"&gt;{{ field.label }}&lt;/label&gt;
+                                    &lt;input type="{{ field.field.widget.input_type }}"
+                                           name="{{ field.html_name }}"
+                                           class="form-control"
+                                           id="{{ field.id_for_label }}"
+                                           required&gt;
+                                    {% if field.help_text %}
+                                        &lt;div class="form-text text-muted small"&gt;{{ field.help_text }}&lt;/div&gt;
+                                    {% endif %}
+                                &lt;/div&gt;
+                            {% endfor %}
+
+                            &lt;button type="submit" class="btn btn-success w-100 mt-2"&gt;Зарегистрироваться&lt;/button&gt;
+                        &lt;/form&gt;
+
+                        &lt;div class="text-center mt-3"&gt;
+                            &lt;a href="{% url 'login' %}" class="small"&gt;Уже есть профиль? Войти&lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script src="{% static 'webapp/js/bootstrap.bundle.min.js' %}"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+
+    <h4>Шаг 7. Применение миграций и запуск в РЕД ОС</h4>
+    <p>Выполните финальные команды в терминале:</p>
+<pre><code>python3 manage.py migrate
+python3 manage.py runserver</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <div class="callout warn"><p>Используйте код с осторожностью.</p></div>
+    <button type="button" class="mark-read" data-section="quickstart@part1-django.html">Отметить как изученное</button>
+
+    <!-- section:shop -->
+    <h3 id="shop" class="mark-read-anchor">6.6. Мини-интернет-магазин: товары, регистрация, вход и отзывы</h3>
+
+    <p>Соберём на базе проекта из раздела 6.5 (<code>config</code> + <code>webapp</code>) настоящий мини-магазин: на главной — карточки товаров с отзывами, незарегистрированный пользователь может только читать, а зарегистрированный — оставлять свои отзывы. По пути закроем частый вопрос новичков: <strong>что делать, если файлов <code>views.py</code> или <code>urls.py</code> «нет»</strong>.</p>
+
+    <h4>Шаг 1. Файлы views.py и urls.py — понятная схема</h4>
+    <p>В Django маршрутизация запроса идёт по цепочке:</p>
+<pre><code>Браузер (URL)
+   |
+   v
+config/urls.py          &lt;- главный диспетчер: решает, какому ПРИЛОЖЕНИЮ отдать запрос
+   |  path('', include('webapp.urls'))
+   v
+webapp/urls.py          &lt;- карта приложения: URL -&gt; функция-представление
+   |  path('product/&lt;int:pk&gt;/', views.product_detail)
+   v
+webapp/views.py         &lt;- логика: берёт данные из БД (models.py) и отдаёт шаблон (.html)</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">text</span></pre>
+    <ul>
+      <li><strong>urls.py</strong> — только сопоставление адреса и представления, логики здесь нет.</li>
+      <li><strong>views.py</strong> — функции-обработчики: получают <code>request</code>, обращаются к моделям, возвращают <code>render(...)</code> или <code>redirect(...)</code>.</li>
+      <li><strong>models.py</strong> — таблицы БД (товары, отзывы).</li>
+    </ul>
+    <div class="callout info"><p><strong>Если файла нет — создайте его вручную.</strong> <code>views.py</code> Django создаёт сам при <code>startapp</code>, а вот <code>urls.py</code> для приложения — никогда: именно поэтому в разделе 6.5 (шаг 6) вы создавали его руками. Проверить наличие можно командой <code>ls webapp/</code>; создать пустой файл — <code>touch webapp/urls.py</code>. Пустой <code>urls.py</code> обязан содержать хотя бы <code>urlpatterns = []</code>, иначе Django упадёт с ошибкой «module urlpatterns not found».</p></div>
+
+    <h4>Шаг 2. Модели: товары и отзывы (<code>webapp/models.py</code>)</h4>
+<pre><code>from django.db import models
+from django.contrib.auth.models import User
+from django.utils import timezone
+
+
+class Product(models.Model):
+    name = models.CharField('Название', max_length=200)
+    description = models.TextField('Описание')
+    price = models.DecimalField('Цена, руб.', max_digits=8, decimal_places=2)
+    image = models.URLField('Ссылка на картинку', blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Review(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,
+                                related_name='reviews', verbose_name='Товар')
+    author = models.ForeignKey(User, on_delete=models.CASCADE,
+                               verbose_name='Автор')
+    text = models.TextField('Текст отзыва', max_length=2000)
+    rating = models.PositiveSmallIntegerField('Оценка 1-5')
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'Отзыв {self.author} к «{self.product}»'</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <p><code>related_name='reviews'</code> позволяет из товара достать все его отзывы: <code>product.reviews.all()</code>. После изменения моделей не забудьте <code>makemigrations</code> и <code>migrate</code> (шаг 7).</p>
+
+    <h4>Шаг 3. Регистрация и вход — встроенные средства Django</h4>
+    <p>Регистрацию даём через готовый <code>UserCreationForm</code>, вход/выход — через стандартные view из <code>django.contrib.auth.views</code>. Форму положим в файл <code>webapp/forms.py</code> (его тоже создаём вручную: <code>touch webapp/forms.py</code>):</p>
+<pre><code>from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
+
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField(required=True, label='Электронная почта')
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <p>Полный набор маршрутов магазина — файл <code>webapp/urls.py</code>:</p>
+<pre><code>from django.urls import path
+from django.contrib.auth import views as auth_views
+from . import views
+
+app_name = 'webapp'
+
+urlpatterns = [
+    # главная: товары + отзывы
+    path('', views.index, name='index'),
+    path('product/&lt;int:pk&gt;/', views.product_detail, name='product'),
+    path('product/&lt;int:pk&gt;/review/new/', views.add_review, name='add-review'),
+
+    # аккаунт
+    path('register/', views.register, name='register'),
+    path('login/', auth_views.LoginView.as_view(template_name='webapp/login.html'),
+         name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <p>Логика представлений — файл <code>webapp/views.py</code> (замените в нём функцию <code>index</code> из раздела 6.5):</p>
+<pre><code>from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
+from .forms import RegisterForm
+from .models import Product, Review
+
+
+def index(request):
+    products = Product.objects.prefetch_related('reviews__author').all()
+    return render(request, 'webapp/index.html', {'products': products})
+
+
+def product_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    return render(request, 'webapp/product.html', {'product': product})
+
+
+@login_required
+def add_review(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        text = request.POST.get('text', '').strip()
+        try:
+            rating = int(request.POST.get('rating', 0))
+        except ValueError:
+            rating = 0
+        if text and 1 &lt;= rating &lt;= 5:
+            Review.objects.create(product=product, author=request.user,
+                                  text=text, rating=rating)
+        return redirect(reverse('webapp:product', args=[product.pk]))
+    return render(request, 'webapp/review_form.html', {'product': product})
+
+
+def register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()    # пароль будет хеширован автоматически
+            login(request, user)  # сразу заходим под новым аккаунтом
+            return redirect('webapp:index')
+    else:
+        form = RegisterForm()
+    return render(request, 'webapp/register.html', {'form': form})</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <div class="callout tip"><p><strong>Почему это безопасно без единой строчки про пароли:</strong> <code>UserCreationForm</code> проверяет сложность и совпадение двух полей пароля, <code>form.save()</code> хеширует пароль (pbkdf2/argon2/bcrypt — зависит от настроек), а декоратор <code>@login_required</code> не пустит анонима на страницу отзыва — вместо этого покажет форму входа (<code>LOGIN_URL</code> из шага 4). Выход из системы — только POST-запросом, чтобы сторонние сайты не могли «разлогинить» пользователя ссылкой-картинкой.</p></div>
+
+    <h4>Шаг 4. Настройки входа (<code>config/settings.py</code>)</h4>
+<pre><code># Куда редиректить после входа и куда вести ссылку "войдите, чтобы продолжить"
+LOGIN_REDIRECT_URL = 'webapp:index'
+LOGOUT_REDIRECT_URL = 'webapp:index'
+LOGIN_URL = 'webapp:login'</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+
+    <h4>Шаг 5. Шаблоны</h4>
+    <p>Все файлы кладём в <code>webapp/templates/webapp/</code>. Общий каркас с меню «вход/регистрация/выход» — <code>base.html</code>:</p>
+<pre><code>{% load django_bootstrap5 %}
+&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;{% block title %}Магазин на РЕД ОС{% endblock %}&lt;/title&gt;
+    {% bootstrap_css %}
+&lt;/head&gt;
+&lt;body class="bg-light"&gt;
+&lt;nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4"&gt;
+    &lt;div class="container-fluid"&gt;
+        &lt;a class="navbar-brand" href="{% url 'webapp:index' %}"&gt;MiniShop&lt;/a&gt;
+        &lt;div class="ms-auto d-flex gap-2 align-items-center"&gt;
+            {% if user.is_authenticated %}
+                &lt;span class="text-white-50"&gt;Привет, {{ user.username }}&lt;/span&gt;
+                &lt;form method="post" action="{% url 'webapp:logout' %}" class="d-inline"&gt;
+                    {% csrf_token %}
+                    &lt;button class="btn btn-outline-light btn-sm" type="submit"&gt;Выйти&lt;/button&gt;
+                &lt;/form&gt;
+            {% else %}
+                &lt;a class="btn btn-outline-light btn-sm" href="{% url 'webapp:login' %}"&gt;Вход&lt;/a&gt;
+                &lt;a class="btn btn-success btn-sm" href="{% url 'webapp:register' %}"&gt;Регистрация&lt;/a&gt;
+            {% endif %}
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/nav&gt;
+&lt;main class="container pb-5"&gt;{% block content %}{% endblock %}&lt;/main&gt;
+{% bootstrap_javascript %}
+&lt;/body&gt;
+&lt;/html&gt;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+    <p>Главная страница со списком товаров — <code>index.html</code>:</p>
+<pre><code>{% extends 'webapp/base.html' %}
+{% block title %}Товары — MiniShop{% endblock %}
+{% block content %}
+&lt;div class="row row-cols-1 row-cols-md-3 g-4"&gt;
+    {% for p in products %}
+    &lt;div class="col"&gt;
+        &lt;div class="card h-100 shadow-sm"&gt;
+            {% if p.image %}&lt;img src="{{ p.image }}" class="card-img-top" alt="{{ p.name }}"&gt;{% endif %}
+            &lt;div class="card-body"&gt;
+                &lt;h5 class="card-title"&gt;&lt;a href="{% url 'webapp:product' p.pk %}"&gt;{{ p.name }}&lt;/a&gt;&lt;/h5&gt;
+                &lt;p class="card-text text-muted"&gt;{{ p.description|truncatechars:80 }}&lt;/p&gt;
+                &lt;p class="fw-bold mb-0"&gt;{{ p.price }} ₽&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="card-footer text-muted"&gt;Отзывов: {{ p.reviews.count }}&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    {% empty %}
+    &lt;p&gt;Товаров пока нет — добавьте их в админке (раздел 5 и шаг 6 ниже).&lt;/p&gt;
+    {% endfor %}
+&lt;/div&gt;
+{% endblock %}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+    <p>Страница товара со списком отзывов и кнопкой написать отзыв — <code>product.html</code>:</p>
+<pre><code>{% extends 'webapp/base.html' %}
+{% block title %}{{ product.name }} — MiniShop{% endblock %}
+{% block content %}
+&lt;div class="p-4 bg-white rounded-3 border shadow-sm mb-4"&gt;
+    &lt;h1 class="h3"&gt;{{ product.name }}&lt;/h1&gt;
+    &lt;p&gt;{{ product.description }}&lt;/p&gt;
+    &lt;p class="fs-4 fw-bold text-success"&gt;{{ product.price }} ₽&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="d-flex justify-content-between align-items-center mb-3"&gt;
+    &lt;h2 class="h5 mb-0"&gt;Отзывы ({{ product.reviews.count }})&lt;/h2&gt;
+    {% if user.is_authenticated %}
+        &lt;a class="btn btn-success btn-sm" href="{% url 'webapp:add-review' product.pk %}"&gt;Написать отзыв&lt;/a&gt;
+    {% else %}
+        &lt;a class="btn btn-outline-secondary btn-sm"
+           href="{% url 'webapp:login' %}?next={% url 'webapp:add-review' product.pk %}"&gt;Войдите, чтобы оставить отзыв&lt;/a&gt;
+    {% endif %}
+&lt;/div&gt;
+
+{% for r in product.reviews.all %}
+&lt;div class="card mb-2"&gt;
+    &lt;div class="card-body py-2"&gt;
+        &lt;strong&gt;{{ r.author.username }}&lt;/strong&gt;
+        &lt;span class="text-warning"&gt;{% for i in r.rating|format_stars %}★{% endfor %}&lt;/span&gt;
+        &lt;small class="text-muted"&gt;{{ r.created_at|date:"d.m.Y H:i" }}&lt;/small&gt;
+        &lt;p class="mb-0 mt-1"&gt;{{ r.text }}&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+{% empty %}
+&lt;p class="text-muted"&gt;Отзывов ещё нет — станьте первым!&lt;/p&gt;
+{% endfor %}
+{% endblock %}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+    <p>Форма отзыва — <code>review_form.html</code> (доступна только залогиненным благодаря <code>@login_required</code>):</p>
+<pre><code>{% extends 'webapp/base.html' %}
+{% block content %}
+&lt;h1 class="h4"&gt;Новый отзыв о «{{ product.name }}»&lt;/h1&gt;
+&lt;form method="post" class="mt-3"&gt;
+    {% csrf_token %}
+    &lt;div class="mb-3"&gt;
+        &lt;label class="form-label"&gt;Оценка (1–5)&lt;/label&gt;
+        &lt;select name="rating" class="form-select" style="max-width:120px"&gt;
+            &lt;option value="5"&gt;5 — отлично&lt;/option&gt;
+            &lt;option value="4"&gt;4&lt;/option&gt;
+            &lt;option value="3"&gt;3&lt;/option&gt;
+            &lt;option value="2"&gt;2&lt;/option&gt;
+            &lt;option value="1"&gt;1 — плохо&lt;/option&gt;
+        &lt;/select&gt;
+    &lt;/div&gt;
+    &lt;div class="mb-3"&gt;
+        &lt;label class="form-label"&gt;Текст отзыва&lt;/label&gt;
+        &lt;textarea name="text" class="form-control" rows="4" required&gt;&lt;/textarea&gt;
+    &lt;/div&gt;
+    &lt;button type="submit" class="btn btn-success"&gt;Отправить&lt;/button&gt;
+&lt;/form&gt;
+{% endblock %}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+    <p>Формы входа и регистрации — <code>login.html</code> и <code>register.html</code> (библиотека <code>django-bootstrap5</code> сама отрисует поля):</p>
+<pre><code>&lt;!-- webapp/templates/webapp/login.html --&gt;
+{% extends 'webapp/base.html' %}
+{% load django_bootstrap5 %}
+{% block content %}
+&lt;h1 class="h4 mb-3"&gt;Вход&lt;/h1&gt;
+&lt;form method="post"&gt;
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    &lt;input type="hidden" name="next" value="{{ next }}"&gt;
+    &lt;button type="submit" class="btn btn-dark"&gt;Войти&lt;/button&gt;
+    &lt;a class="ms-2" href="{% url 'webapp:register' %}"&gt;Нет аккаунта? Зарегистрируйтесь&lt;/a&gt;
+&lt;/form&gt;
+{% endblock %}
+
+&lt;!-- webapp/templates/webapp/register.html --&gt;
+{% extends 'webapp/base.html' %}
+{% load django_bootstrap5 %}
+{% block content %}
+&lt;h1 class="h4 mb-3"&gt;Регистрация&lt;/h1&gt;
+&lt;form method="post"&gt;
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    &lt;button type="submit" class="btn btn-success"&gt;Создать аккаунт&lt;/button&gt;
+&lt;/form&gt;
+{% endblock %}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">html</span></pre>
+    <p>Фильтр <code>format_stars</code> для звёздочек рейтинга добавляем в <code>webapp/templatetags/shop_extras.py</code> (файл и пустой <code>__init__.py</code> в папке <code>templatetags</code> создаём вручную):</p>
+<pre><code>from django import template
+
+register = template.Library()
+
+
+@register.filter
+def format_stars(n):
+    return range(int(n or 0))</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <p>И подключаете библиотеку тегов в начале <code>product.html</code>: <code>{% load shop_extras %}</code>.</p>
+
+    <h4>Шаг 6. Товары через админку</h4>
+    <p>Регистрируем модели в <code>webapp/admin.py</code>, чтобы наполнять магазин из готовой админки (раздел 5):</p>
+<pre><code>from django.contrib import admin
+from .models import Product, Review
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price', 'reviews_count')
+
+    def reviews_count(self, obj):
+        return obj.reviews.count()
+    reviews_count.short_description = 'Отзывов'
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('product', 'author', 'rating', 'created_at')</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+
+    <h4>Шаг 7. Миграции и проверка цикла «регистрация → отзыв»</h4>
+<pre><code>source venv/bin/activate            # окружение из раздела 6.5
+python3 manage.py makemigrations webapp
+python3 manage.py migrate
+python3 manage.py createsuperuser   # админ: добавить пару товаров
+python3 manage.py runserver</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Проверьте себя как пользователь: откройте <code>http://127.0.0.1:8000/</code> → видите товары, кнопки «Написать отзыв» нет → «Регистрация» → создайте аккаунт (автоматически войдёте) → откройте товар → «Написать отзыв» → отправьте ★★★★★ → отзыв появился под именем вашего пользователя. Нажмите «Выйти» — текст отзыва виден по-прежнему, но кнопка сменилась на «Войдите, чтобы оставить отзыв». Именно так работает связка «модель Review → ForeignKey на User → @login_required».</p>
+    <div class="callout warn"><p>Используйте код с осторожностью. Для продакшена включите HTTPS, замените SQLite на PostgreSQL (раздел 26) и не забудьте <code>DEBUG = False</code> — правила из раздела деплоя (27).</p></div>
+    <button type="button" class="mark-read" data-section="shop@part1-django.html">Отметить как изученное</button>
+
+    <!-- section:api -->
+    <h3 id="api" class="mark-read-anchor">7. Модель, сериализатор, представления</h3>
+
+    <h4>7.1. Модель <code>api/models.py</code></h4>
+    <p>Модель — это Python-класс, который описывает таблицу в БД. Django сам создаёт SQL-таблицу на основе класса.</p>
+<pre><code>from django.db import models
+
+
+class Note(models.Model):
+    """Заметка пользователя."""
+    title = models.CharField(
+        max_length=200,
+        verbose_name='Заголовок',
+    )
+    content = models.TextField(
+        verbose_name='Содержание',
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Создано',
+    )
+    owner = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        related_name='notes',
+        verbose_name='Владелец',
+    )
+
+    class Meta:
+        verbose_name = 'Заметка'
+        verbose_name_plural = 'Заметки'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.title</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <div class="callout tip">
+      <p><code>ForeignKey</code> создаёт связь «многие к одному» — у одного пользователя много заметок. <code>on_delete=CASCADE</code> означает: при удалении пользователя удалятся его заметки. <code>related_name='notes'</code> позволяет обращаться к заметкам как <code>user.notes.all()</code>.</p>
+    </div>
+
+    <h4>7.2. Сериализатор <code>api/serializers.py</code></h4>
+    <p>Создайте файл <code>api/serializers.py</code>. Сериализатор конвертирует объекты Python ↔ JSON.</p>
+<pre><code>from rest_framework import serializers
+from .models import Note
+
+
+class NoteSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
+
+    class Meta:
+        model = Note
+        fields = ['id', 'title', 'content', 'created_at', 'owner']
+        read_only_fields = ['id', 'created_at', 'owner']</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <div class="callout tip">
+      <p><code>ReadOnlyField</code> для <code>owner</code> означает: клиент не может подделать владельца — он всегда берётся из <code>request.user</code> на сервере.</p>
+    </div>
+
+    <h4>7.3. Представления <code>api/views.py</code></h4>
+<pre><code>from rest_framework import generics, permissions
+from .models import Note
+from .serializers import NoteSerializer
+
+
+class NoteListCreateView(generics.ListCreateAPIView):
+    """GET /api/notes/  — список; POST /api/notes/ — создание."""
+    serializer_class = NoteSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        return Note.objects.all().order_by('-created_at')
+
+    def perform_create(self, serializer):
+        # Владелец всегда текущий пользователь — подделать нельзя
+        serializer.save(owner=self.request.user)
+
+
+class NoteDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """GET/PUT/PATCH/DELETE /api/notes/:id/."""
+    queryset = Note.objects.all()
+    serializer_class = NoteSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+
+    <h4>7.4. URL-маршруты <code>api/urls.py</code></h4>
+    <p>Создайте файл <code>api/urls.py</code>:</p>
+<pre><code>from django.urls import path
+from .views import NoteListCreateView, NoteDetailView
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+
+urlpatterns = [
+    # Заметки
+    path('notes/', NoteListCreateView.as_view(), name='note-list'),
+    path('notes/&lt;int:pk&gt;/', NoteDetailView.as_view(), name='note-detail'),
+    # JWT-аутентификация
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+
+    <h4>7.5. Подключите URL-ы в главном <code>backend/urls.py</code></h4>
+<pre><code>from django.contrib import admin
+from django.urls import path, include
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include('api.urls')),   # ← все маршруты api
+]</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+
+    <h4>7.6. Регистрация в админке <code>api/admin.py</code></h4>
+<pre><code>from django.contrib import admin
+from .models import Note
+
+
+@admin.register(Note)
+class NoteAdmin(admin.ModelAdmin):
+    list_display = ['id', 'title', 'owner', 'created_at']
+    list_filter = ['created_at', 'owner']
+    search_fields = ['title', 'content']</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+
+    <h4>7.7. Миграции и запуск</h4>
+<pre><code>python manage.py makemigrations api
+python manage.py migrate
+python manage.py runserver</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Откройте <code>http://127.0.0.1:8000/admin/</code> — под «API» появится раздел «Заметки».</p>
+    <div class="callout ok">
+      <p>Если админка работает и модель видна — значит, бэкенд настроен правильно. Переходим к тестированию API.</p>
+    </div>
+    <button type="button" class="mark-read" data-section="api@part1-django.html">Отметить как изученное</button>
+
+    <!-- section:test-api -->
+    <h3 id="test-api" class="mark-read-anchor">8. Тестирование API через curl</h3>
+    <p>Откройте <strong>второй терминал</strong> (не закрывая тот, где работает Django). Проверим все 5 операций CRUD.</p>
+
+    <h4>8.1. Получение JWT-токена</h4>
+<pre><code>curl -X POST http://127.0.0.1:8000/api/token/ \
+  -H "Content-Type: application/json" \
+  -d '{"username": "admin", "password": "ваш_пароль"}'</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Ответ:</p>
+<pre><code>{
+  "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">json</span></pre>
+    <p>Скопируйте <code>access</code> в переменную окружения, чтобы не повторять:</p>
+<pre><code>TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+echo $TOKEN</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+
+    <h4>8.2. Create — создание заметки</h4>
+<pre><code>curl -X POST http://127.0.0.1:8000/api/notes/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"title": "Первая заметка", "content": "Привет, мир!"}'</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Ответ — созданный объект с ID:</p>
+<pre><code>{"id": 1, "title": "Первая заметка", "content": "Привет, мир!",
+ "created_at": "2026-01-15T12:34:56Z", "owner": "admin"}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">json</span></pre>
+
+    <h4>8.3. Read — список заметок</h4>
+<pre><code>curl http://127.0.0.1:8000/api/notes/ \
+  -H "Authorization: Bearer $TOKEN"</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+
+    <h4>8.4. Read — одна заметка</h4>
+<pre><code>curl http://127.0.0.1:8000/api/notes/1/ \
+  -H "Authorization: Bearer $TOKEN"</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+
+    <h4>8.5. Update — редактирование</h4>
+<pre><code>curl -X PATCH http://127.0.0.1:8000/api/notes/1/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"title": "Обновлённый заголовок"}'</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+
+    <h4>8.6. Delete — удаление</h4>
+<pre><code>curl -X DELETE http://127.0.0.1:8000/api/notes/1/ \
+  -H "Authorization: Bearer $TOKEN"</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+
+    <h4>8.7. Проверка защиты</h4>
+    <p>Попробуйте создать заметку <strong>без токена</strong> — получите 401:</p>
+<pre><code>curl -X POST http://127.0.0.1:8000/api/notes/ \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Хакер", "content": "..."}'
+# {"detail":"Authentication credentials were not provided."}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <div class="callout ok">
+      <p><strong>Всё работает!</strong> Теперь у нас есть рабочий REST API. Переходим к знакомству с JSONPlaceholder и углублению в DRF.</p>
+    </div>
+    <button type="button" class="mark-read" data-section="test-api@part1-django.html">Отметить как изученное</button>
+
+    <!-- section:jsonplaceholder -->
+    <h3 id="jsonplaceholder" class="mark-read-anchor">9. JSONPlaceholder</h3>
+    <p><strong>JSONPlaceholder</strong> (<a href="https://jsonplaceholder.typicode.com/" target="_blank" rel="noopener">jsonplaceholder.typicode.com</a>) — бесплатный фейковый REST API для тестирования и прототипирования. Не требует регистрации и API-ключей.</p>
+
+    <h4>9.1. Основные эндпоинты</h4>
+<pre><code># Список постов (100 штук)
+curl https://jsonplaceholder.typicode.com/posts
+
+# Один пост
+curl https://jsonplaceholder.typicode.com/posts/1
+
+# Комментарии к посту
+curl https://jsonplaceholder.typicode.com/posts/1/comments
+
+# Пользователи
+curl https://jsonplaceholder.typicode.com/users
+
+# Пагинация через query-параметры
+curl "https://jsonplaceholder.typicode.com/posts?_limit=5&amp;_page=2"</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+
+    <h4>9.2. Таблица возможностей</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Метод</th><th>URL</th><th>Что делает</th><th>Сохраняет?</th></tr></thead>
+        <tbody>
+          <tr><td><code>GET</code></td><td><code>/posts</code></td><td>Список постов</td><td>—</td></tr>
+          <tr><td><code>GET</code></td><td><code>/posts/1</code></td><td>Один пост</td><td>—</td></tr>
+          <tr><td><code>GET</code></td><td><code>/posts/1/comments</code></td><td>Комментарии поста</td><td>—</td></tr>
+          <tr><td><code>GET</code></td><td><code>/users</code></td><td>Список пользователей</td><td>—</td></tr>
+          <tr><td><code>POST</code></td><td><code>/posts</code></td><td>Создать пост</td><td>❌ фейк</td></tr>
+          <tr><td><code>PUT</code></td><td><code>/posts/1</code></td><td>Обновить</td><td>❌ фейк</td></tr>
+          <tr><td><code>DELETE</code></td><td><code>/posts/1</code></td><td>Удалить</td><td>❌ фейк</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>9.3. Пример POST-запроса</h4>
+<pre><code>curl -X POST https://jsonplaceholder.typicode.com/posts \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Тест", "body": "Содержимое", "userId": 1}'
+
+# Ответ (сервер вернёт «успех», но не сохранит):
+# {"id": 101, "title": "Тест", "body": "Содержимое", "userId": 1}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+
+    <div class="callout tip">
+      <p><strong>Зачем это вам?</strong> Пока разрабатываете фронтенд, бэкенд может быть не готов. JSONPlaceholder даёт «заглушку», чтобы верстка и логика фронтенда работали уже сейчас.</p>
+    </div>
+    <div class="callout warn">
+      <p><strong>Важно:</strong> JSONPlaceholder <strong>не сохраняет</strong> изменения. POST/PUT/DELETE возвращают «успешный» ответ, но данные на сервере не меняются. Это чисто учебный/тестовый инструмент.</p>
+    </div>
+    <button type="button" class="mark-read" data-section="jsonplaceholder@part1-django.html">Отметить как изученное</button>
+
+    <!-- section:deeper -->
+    <h3 id="deeper" class="mark-read-anchor">10. Углубляемся: что такое DRF под капотом</h3>
+    <p>Разберёмся, что именно делают <code>generics.ListCreateAPIView</code> и <code>ModelSerializer</code> — вы будете видеть их постоянно.</p>
+
+    <h4>10.1. Что делает <code>ListCreateAPIView</code></h4>
+    <p>Он объединяет два класса: <code>ListModelMixin</code> (GET-список) и <code>CreateModelMixin</code> (POST). Когда приходит запрос:</p>
+    <ol>
+      <li>Срабатывает <code>get_queryset()</code> — возвращает объекты из БД</li>
+      <li><code>serializer_class</code> конвертирует их в JSON</li>
+      <li><code>permission_classes</code> проверяет права</li>
+      <li>Для POST вызывается <code>perform_create()</code> — там мы задаём <code>owner</code></li>
+    </ol>
+
+    <h4>10.2. Что делает <code>ModelSerializer</code></h4>
+    <p>Он автоматически:</p>
+    <ul>
+      <li>Читает поля из модели (title, content, created_at...)</li>
+      <li>Создаёт валидаторы (CharField → max_length=200)</li>
+      <li>Реализует <code>create()</code> и <code>update()</code></li>
+      <li>Валидирует данные по типам</li>
+    </ul>
+    <p>Ручной сериализатор для той же модели выглядел бы так (для сравнения):</p>
+<pre><code>class NoteSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    title = serializers.CharField(max_length=200)
+    content = serializers.CharField()
+    created_at = serializers.DateTimeField(read_only=True)
+    owner = serializers.CharField(source='owner.username', read_only=True)
+
+    def create(self, validated_data):
+        return Note.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title', instance.title)
+        instance.content = validated_data.get('content', instance.content)
+        instance.save()
+        return instance</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">python</span></pre>
+    <p>ModelSerializer делает то же самое за 5 строк вместо 15 — и это только для одной модели.</p>
+
+    <h4>10.3. Permission-классы</h4>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Класс</th><th>Кто может</th></tr></thead>
+        <tbody>
+          <tr><td><code>AllowAny</code></td><td>Все, даже без авторизации</td></tr>
+          <tr><td><code>IsAuthenticated</code></td><td>Только авторизованные</td></tr>
+          <tr><td><code>IsAuthenticatedOrReadOnly</code></td><td>Читать — все, писать — только авторизованные</td></tr>
+          <tr><td><code>IsAdminUser</code></td><td>Только staff-пользователи</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <button type="button" class="mark-read" data-section="deeper@part1-django.html">Отметить как изученное</button>
+    <p class="footer-note">🌸 Гайд создан для РЕД ОС • Django • DRF • React • JWT • JSONPlaceholder 🌸</p>
+  </main>
+</div>
+
+<button type="button" id="totop" title="Наверх" aria-label="Вернуться наверх">↑</button>
+
+<div id="studyBar" role="region" aria-label="Прогресс изучения">
+  <div class="icon" id="studyIcon"><span id="studyIconPct">0%</span></div>
+  <div class="label">Прогресс: <strong><span id="studyDone">0</span> из <span id="studyTotal">0</span></strong></div>
+  <div class="bar-track"><div class="bar-fill" id="studyFill"></div></div>
+  <div class="spacer"></div>
+  <button type="button" class="bar-btn" id="exportBtn" title="Скачать прогресс">📥 <span class="txt">Экспорт</span></button>
+  <button type="button" class="bar-btn danger" id="studyReset" title="Сбросить">🔄 <span class="txt">Сбросить</span></button>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<div class="modal-overlay" id="hotkeysModal" role="dialog" aria-modal="true" aria-label="Горячие клавиши">
+  <div class="modal">
+    <h2>Горячие клавиши</h2>
+    <div class="hotkey-row"><span>Поиск</span><kbd>Ctrl</kbd> + <kbd>K</kbd></div>
+    <div class="hotkey-row"><span>След/пред. совпадение</span><kbd>[</kbd> / <kbd>]</kbd></div>
+    <div class="hotkey-row"><span>Очистить поиск</span><kbd>Esc</kbd></div>
+    <div class="hotkey-row"><span>След/пред. секция</span><kbd>J</kbd> / <kbd>K</kbd></div>
+    <div class="hotkey-row"><span>Добавить раздел в закладки</span><kbd>B</kbd></div>
+    <div class="hotkey-row"><span>Показать это окно</span><kbd>?</kbd></div>
+    <div class="hotkey-row"><span>Печать / PDF</span><kbd>Ctrl</kbd> + <kbd>P</kbd></div>
+    <div class="hotkey-row"><span>Наверх страницы</span><kbd>Home</kbd></div>
+    <div class="hotkey-row"><span>В самый низ</span><kbd>End</kbd></div>
+    <button type="button" class="modal-close">Закрыть</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="fontModal" role="dialog" aria-modal="true" aria-label="Выбор шрифта">
+  <div class="modal">
+    <h2>Шрифт гайда</h2>
+    <p class="muted small" style="margin:0 0 8px">Выберите пресет — выбор сохранится в браузере.</p>
+    <div class="font-grid">
+      <button type="button" class="font-opt" data-font-opt="modern">
+        <div><div class="name">Modern</div><div class="sample">Plus Jakarta Sans + Inter</div></div>
+        <div class="check"></div>
+      </button>
+      <button type="button" class="font-opt" data-font-opt="geometric">
+        <div><div class="name">Geometric</div><div class="sample">Manrope + Inter</div></div>
+        <div class="check"></div>
+      </button>
+      <button type="button" class="font-opt" data-font-opt="classic">
+        <div><div class="name">Classic</div><div class="sample">Fraunces + Inter (с засечками)</div></div>
+        <div class="check"></div>
+      </button>
+      <button type="button" class="font-opt" data-font-opt="system">
+        <div><div class="name">System</div><div class="sample">Нативные системные шрифты</div></div>
+        <div class="check"></div>
+      </button>
+    </div>
+    <button type="button" class="modal-close">Закрыть</button>
+  </div>
+</div>
+
+<script src="js/idmap.js" defer></script>
+<script src="js/ui.js" defer></script>
+<script src="js/theme.js" defer></script>
+<script>window.GUIDE_SECTIONS=["intro-all","prerequisites","architecture","intro","no-sudo","python","django","django-admin","django-bootstrap5","quickstart","shop","api","test-api","jsonplaceholder","deeper","nvm","react","proxy","react-code","jwt","test","run-all","git-intro","extended-model","auth-register","tests","env-config","db-schema","auth-compare","db-python","postgresql","deploy","cors-deep","troubleshooting","glossary","faq","cheatsheet","summary","export"];</script>
+<script src="js/progress.js" defer></script>
+<script src="js/search.js" defer></script>
+<script src="js/toc.js" defer></script>
+<script src="js/bookmarks.js" defer></script>
+<script src="js/highlight.js" defer></script>
+<script src="js/main.js" defer></script>
+
+</body>
+</html>

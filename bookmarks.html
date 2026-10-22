@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="rose" data-font="modern">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Закладки гайда Django + DRF + React: разделы, сохранённые в этом браузере.">
+<meta name="theme-color" content="#fdf2f6" id="metaThemeColor">
+<title>⭐ Закладки — Full-Stack гайд Django + DRF + React</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Manrope:wght@500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/themes.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Перейти к содержимому</a>
+
+<div id="readingBar" aria-hidden="true"><div id="readingBarFill"></div></div>
+
+<header>
+  <div class="brand"><span>Django + DRF + React</span></div>
+  <input type="text" id="search" placeholder="Поиск... (Ctrl+K)" autocomplete="off" aria-label="Поиск по гайду">
+  <div class="header-btns">
+    <a class="icon-btn bm-page-link" href="bookmarks.html" title="Мои закладки"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 17.66l-5.9 3.11 1.13-6.57L2.45 9.54l6.6-.96L12 2.6z"/></svg><span class="bm-counter"></span></a>
+    <button type="button" class="icon-btn" id="fontBtn" title="Шрифт" aria-label="Выбрать шрифт">Aa</button>
+    <button type="button" class="icon-btn" id="hotkeysBtn" title="Горячие клавиши" aria-label="Показать горячие клавиши">⌨</button>
+    <div class="theme-switch" role="group" aria-label="Цветовая тема">
+      <button type="button" class="theme-btn" data-theme-btn="rose" title="Розовая" aria-label="Розовая тема">🌸</button>
+      <button type="button" class="theme-btn" data-theme-btn="rose-dark" title="Тёмно-розовая" aria-label="Тёмно-розовая тема">🌺</button>
+      <button type="button" class="theme-btn" data-theme-btn="light" title="Светлая" aria-label="Светлая тема">☀️</button>
+      <button type="button" class="theme-btn" data-theme-btn="dark" title="Тёмная" aria-label="Тёмная тема">🌙</button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- Оглавление как на главной: JS-ссылки на index.html#раздел + ☆-закладки.
+       Сайдбар обязателен для класса .layout (сетка 2 колонки). -->
+  <nav class="toc" aria-label="Содержание гайда">
+    <h3>Содержание</h3>
+    <ul id="bmToc"></ul>
+  </nav>
+
+  <main id="content">
+    <section class="hero">
+      <h1>⭐ Закладки</h1>
+      <p>Разделы гайда, которые вы отметили для быстрого возврата</p>
+      <div class="meta-info">
+        <span>💾 Хранятся в этом браузере</span>
+        <span>⌨ Ставятся клавишей <code>B</code> или ☆ в оглавлении</span>
+      </div>
+    </section>
+
+    <div class="bm-page-head">
+      <h2 id="bm-list-title" style="margin-top:0">Мои закладки <span class="bm-count-badge" id="bmPageCount"></span></h2>
+      <a class="btn-secondary" href="index.html">← Вернуться к гайду</a>
+    </div>
+
+    <!-- Список рендерит js/bookmarks-page.js из localStorage -->
+    <ul class="bm-page-list" id="bmPageList"></ul>
+
+    <!-- Пустое состояние: hidden управляется скриптом -->
+    <div class="callout tip" id="bmPageEmpty" hidden>
+      <p><strong>Пока пусто.</strong> Откройте <a href="index.html">гайд</a>, найдите нужный раздел
+      в оглавлении слева и нажмите на звёздочку <b>☆</b> рядом с его названием (или клавишу
+      <kbd>B</kbd>, когда раздел открыт) — он появится здесь.</p>
+    </div>
+
+    <div class="bm-page-actions">
+      <button type="button" class="mark-read danger" id="bmPageClear">🗑 Очистить все закладки</button>
+    </div>
+
+    <p class="footer-note">🌸 Гайд создан для РЕД ОС • Django • DRF • React • JWT • JSONPlaceholder 🌸</p>
+  </main>
+</div>
+
+<button type="button" id="totop" title="Наверх" aria-label="Вернуться наверх">↑</button>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<div class="modal-overlay" id="hotkeysModal" role="dialog" aria-modal="true" aria-label="Горячие клавиши">
+  <div class="modal">
+    <h2>Горячие клавиши</h2>
+    <div class="hotkey-row"><span>Поиск по странице</span><kbd>Ctrl</kbd> + <kbd>K</kbd></div>
+    <div class="hotkey-row"><span>Показать это окно</span><kbd>?</kbd></div>
+    <div class="hotkey-row"><span>Печать / PDF</span><kbd>Ctrl</kbd> + <kbd>P</kbd></div>
+    <div class="hotkey-row"><span>Наверх страницы</span><kbd>Home</kbd></div>
+    <div class="hotkey-row"><span>В самый низ</span><kbd>End</kbd></div>
+    <button type="button" class="modal-close">Закрыть</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="fontModal" role="dialog" aria-modal="true" aria-label="Выбор шрифта">
+  <div class="modal">
+    <h2>Шрифт гайда</h2>
+    <p class="muted small" style="margin:0 0 8px">Выберите пресет — выбор сохранится в браузере.</p>
+    <div class="font-grid">
+      <button type="button" class="font-opt" data-font-opt="modern">
+        <div><div class="name">Modern</div><div class="sample">Plus Jakarta Sans + Inter</div></div>
+        <div class="check"></div>
+      </button>
+      <button type="button" class="font-opt" data-font-opt="geometric">
+        <div><div class="name">Geometric</div><div class="sample">Manrope + Inter</div></div>
+        <div class="check"></div>
+      </button>
+      <button type="button" class="font-opt" data-font-opt="classic">
+        <div><div class="name">Classic</div><div class="sample">Fraunces + Inter (с засечками)</div></div>
+        <div class="check"></div>
+      </button>
+      <button type="button" class="font-opt" data-font-opt="system">
+        <div><div class="name">System</div><div class="sample">Нативные системные шрифты</div></div>
+        <div class="check"></div>
+      </button>
+    </div>
+    <button type="button" class="modal-close">Закрыть</button>
+  </div>
+</div>
+
+<script src="js/ui.js" defer></script>
+<script src="js/theme.js" defer></script>
+<script src="js/idmap.js" defer></script>
+<script>window.GUIDE_SECTIONS=["intro-all","prerequisites","architecture","intro","no-sudo","python","django","django-admin","django-bootstrap5","quickstart","shop","api","test-api","jsonplaceholder","deeper","nvm","react","proxy","react-code","jwt","test","run-all","git-intro","extended-model","auth-register","tests","env-config","db-schema","auth-compare","db-python","postgresql","deploy","cors-deep","troubleshooting","glossary","faq","cheatsheet","summary","export"];</script>
+<script src="js/progress.js" defer></script>
+<script src="js/search.js" defer></script>
+<script src="js/bookmarks-page.js" defer></script>
+<script src="js/main.js" defer></script>
+
+</body>
+</html>

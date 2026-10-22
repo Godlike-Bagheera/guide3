@@ -1,0 +1,561 @@
+<!--split-->
+<!DOCTYPE html>
+<html lang="ru" data-theme="rose" data-font="modern">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Troubleshooting, глоссарий, FAQ, cheat sheet, итог и экспорт гайда.">
+<meta name="theme-color" content="#fdf2f6" id="metaThemeColor">
+<title>Справочник — Full-Stack гайд Django + DRF + React</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Manrope:wght@500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/themes.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Перейти к содержимому</a>
+
+<div id="readingBar" aria-hidden="true"><div id="readingBarFill"></div></div>
+
+<header>
+  <div class="brand"><a href="index.html"><span>Django + DRF + React</span></a></div>
+  <input type="text" id="search" placeholder="Поиск... (Ctrl+K)" autocomplete="off" aria-label="Поиск по странице">
+  <div class="header-btns">
+    <a class="icon-btn bm-page-link" href="bookmarks.html" title="Мои закладки" aria-label="Страница закладок"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 17.66l-5.9 3.11 1.13-6.57L2.45 9.54l6.6-.96L12 2.6z"/></svg><span class="bm-counter"></span></a>
+    <button type="button" class="icon-btn" id="fontBtn" title="Шрифт" aria-label="Выбрать шрифт">Aa</button>
+    <button type="button" class="icon-btn" id="hotkeysBtn" title="Горячие клавиши" aria-label="Показать горячие клавиши">⌨</button>
+    <div class="theme-switch" role="group" aria-label="Цветовая тема">
+      <button type="button" class="theme-btn" data-theme-btn="rose" title="Розовая" aria-label="Розовая тема">🌸</button>
+      <button type="button" class="theme-btn" data-theme-btn="rose-dark" title="Тёмно-розовая" aria-label="Тёмно-розовая тема">🌺</button>
+      <button type="button" class="theme-btn" data-theme-btn="light" title="Светлая" aria-label="Светлая тема">☀️</button>
+      <button type="button" class="theme-btn" data-theme-btn="dark" title="Тёмная" aria-label="Тёмная тема">🌙</button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="toc" aria-label="Содержание страницы">
+    <h3>Содержание</h3>
+    <ul class="toc-site">
+      <li class="toc-group">
+        <a href="intro.html" class="toc-part">Введение</a>
+        <ul class="toc-sub">
+          <li><a data-star href="intro.html#intro-all">Введение</a></li>
+          <li><a data-star href="intro.html#prerequisites">Prerequisites — что нужно знать до старта</a></li>
+          <li><a data-star href="intro.html#architecture">Архитектура приложения</a></li>
+        </ul>
+      </li>
+      <li class="toc-group">
+        <a href="part1-django.html" class="toc-part">Часть 1. Бэкенд</a>
+        <ul class="toc-sub">
+          <li><a data-star href="part1-django.html#intro">1. Введение в бэкенд</a></li>
+          <li><a data-star href="part1-django.html#no-sudo">2. Почему без sudo и как это работает</a></li>
+          <li><a data-star href="part1-django.html#python">3. Проверка Python и создание виртуального окружения</a></li>
+          <li><a data-star href="part1-django.html#django">4. Создание Django-проекта</a></li>
+          <li><a data-star href="part1-django.html#django-admin">5. Django Admin — готовая админка из коробки</a></li>
+          <li><a data-star href="part1-django.html#django-bootstrap5">6. Django + Bootstrap 5 — django_bootstrap5</a></li>
+          <li><a data-star href="part1-django.html#quickstart">6.5. Быстрый старт: Django + Bootstrap 5 за 8 шагов</a></li>
+          <li><a data-star href="part1-django.html#shop">6.6. Мини-интернет-магазин: товары, регистрация, вход и отзывы</a></li>
+          <li><a data-star href="part1-django.html#api">7. Модель, сериализатор, представления</a></li>
+          <li><a data-star href="part1-django.html#test-api">8. Тестирование API через curl</a></li>
+          <li><a data-star href="part1-django.html#jsonplaceholder">9. JSONPlaceholder</a></li>
+          <li><a data-star href="part1-django.html#deeper">10. Углубляемся: что такое DRF под капотом</a></li>
+        </ul>
+      </li>
+      <li class="toc-group">
+        <a href="part2-react.html" class="toc-part">Часть 2. Фронтенд</a>
+        <ul class="toc-sub">
+          <li><a data-star href="part2-react.html#nvm">11. Установка Node.js через nvm (без sudo)</a></li>
+          <li><a data-star href="part2-react.html#react">12. Создание React-приложения</a></li>
+          <li><a data-star href="part2-react.html#proxy">13. Настройка прокси Vite к Django API</a></li>
+          <li><a data-star href="part2-react.html#react-code">14. Код React-приложения</a></li>
+          <li><a data-star href="part2-react.html#jwt">15. Что такое JWT — разбор на примере jwt.io</a></li>
+          <li><a data-star href="part2-react.html#test">16. Тестирование полного цикла</a></li>
+          <li><a data-star href="part2-react.html#run-all">17. Запуск одним скриптом</a></li>
+        </ul>
+      </li>
+      <li class="toc-group">
+        <a href="advanced.html" class="toc-part">Продвинутое</a>
+        <ul class="toc-sub">
+          <li><a data-star href="advanced.html#git-intro">18. Git с самого начала</a></li>
+          <li><a data-star href="advanced.html#extended-model">19. Расширенная модель: теги и категории</a></li>
+          <li><a data-star href="advanced.html#auth-register">20. Регистрация пользователей</a></li>
+          <li><a data-star href="advanced.html#tests">21. Тесты Django</a></li>
+          <li><a data-star href="advanced.html#env-config">22. Переменные окружения (.env)</a></li>
+          <li><a data-star href="advanced.html#db-schema">23. Схема БД и жизненный цикл запроса</a></li>
+          <li><a data-star href="advanced.html#auth-compare">24. Аутентификация: сравнение подходов</a></li>
+          <li><a data-star href="advanced.html#db-python">25. База данных «на Python»: модели и миграции</a></li>
+          <li><a data-star href="advanced.html#postgresql">26. PostgreSQL — серьёзная база данных для продакшена</a></li>
+          <li><a data-star href="advanced.html#deploy">27. Деплой: выкладываем сайт в интернет</a></li>
+          <li><a data-star href="advanced.html#cors-deep">28. CORS глубоко: как браузер решает, кому можно ходить на ваш API</a></li>
+        </ul>
+      </li>
+      <li class="toc-group toc-current">
+        <a href="reference.html" class="toc-part">Справочник <span class="cur-dot" aria-hidden="true"></span></a>
+        <ul class="toc-sub">
+          <li><a href="#troubleshooting" data-star>Troubleshooting: типичные ошибки</a></li>
+          <li><a href="#glossary" data-star>30. Глоссарий</a></li>
+          <li><a href="#faq" data-star>31. FAQ — частые вопросы</a></li>
+          <li><a href="#cheatsheet" data-star>32. Cheat sheet — все команды в одном месте</a></li>
+          <li><a href="#summary" data-star>33. Итог</a></li>
+          <li><a href="#export" data-star>34. Экспорт гайда</a></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="toc-bookmarks">
+      <a href="bookmarks.html" id="tocBookmarksLink">⭐ Закладки <span class="bm-badge" id="tocBmCount"></span></a>
+    </div>
+  </nav>
+
+  <main id="content" tabindex="-1">
+        <!-- section:troubleshooting -->
+    <h2 id="troubleshooting" class="mark-read-anchor">29. Troubleshooting: типичные ошибки</h2>
+    <p>Собрали все проблемы, с которыми вы столкнётесь при первом запуске. Если что-то не работает — сначала ищите здесь.</p>
+
+    <p>В колонке «Сторона» — где искать причину:</p>
+    <ul>
+      <li>🐍 <strong>Бэкенд</strong> — Django, DRF, настройки API</li>
+      <li>⚛️ <strong>Фронтенд</strong> — React, axios, Vite</li>
+      <li>🐧 <strong>Система</strong> — окружение, терминал, порты, процессы</li>
+    </ul>
+
+    <div class="table-wrap">
+      <table>
+        <caption class="sr-only">Типичные ошибки и их решения</caption>
+        <thead>
+          <tr>
+            <th>Симптом</th>
+            <th>Сторона</th>
+            <th>Причина</th>
+            <th>Решение</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>CORS policy blocked</code></td><td>🐍 Бэкенд</td><td><code>corsheaders</code> не первым в MIDDLEWARE</td><td>Поставьте <code>corsheaders.middleware.CorsMiddleware</code> первым</td></tr>
+          <tr><td><code>401 Unauthorized</code></td><td>⚛️ Фронтенд</td><td>Access-токен истёк или отсутствует</td><td>Проверьте localStorage, работает ли refresh-интерцептор</td></tr>
+          <tr><td><code>403 Forbidden</code></td><td>🐍 Бэкенд</td><td>Токен валиден, но permission не пропускает</td><td>Проверьте <code>permission_classes</code> во view и роль пользователя</td></tr>
+          <tr><td>React не видит <code>/api</code></td><td>⚛️ Фронтенд</td><td>Прокси не настроен или Vite не перезапущен</td><td>Перезапустите <code>npm run dev</code></td></tr>
+          <tr><td><code>ModuleNotFoundError: rest_framework</code></td><td>🐍 Бэкенд</td><td>venv не активирован</td><td><code>source venv/bin/activate</code></td></tr>
+          <tr><td><code>command not found: nvm</code></td><td>🐧 Система</td><td><code>~/.bashrc</code> не перезагружен</td><td><code>source ~/.bashrc</code> или новый терминал</td></tr>
+          <tr><td>Django видит запросы, но React — нет ответа</td><td>⚛️ Фронтенд</td><td>Запрос идёт на другой порт/URL</td><td>Проверьте Network tab в DevTools</td></tr>
+          <tr><td><code>relation "api_note" does not exist</code></td><td>🐍 Бэкенд</td><td>Миграции не применены</td><td><code>python manage.py migrate</code></td></tr>
+          <tr><td><code>no such table: auth_user</code></td><td>🐍 Бэкенд</td><td>База не создана</td><td><code>python manage.py migrate</code> в первый раз</td></tr>
+          <tr><td><code>DisallowedHost</code></td><td>🐍 Бэкенд</td><td>Домен не в <code>ALLOWED_HOSTS</code></td><td>Добавьте <code>127.0.0.1</code> и <code>localhost</code></td></tr>
+          <tr><td><code>Port 8000 already in use</code></td><td>🐧 Система</td><td>Старый процесс Django жив</td><td><code>python manage.py runserver 8001</code> или <code>pkill -f runserver</code></td></tr>
+          <tr><td><code>vite: command not found</code></td><td>⚛️ Фронтенд</td><td>npm-пакеты не установлены</td><td><code>npm install</code> в папке frontend</td></tr>
+          <tr><td>Токен не обновляется</td><td>⚛️ Фронтенд</td><td>Интерцептор настроен неправильно</td><td>Проверьте, что <code>_retry</code> не мешает повтору</td></tr>
+          <tr><td><code>CSRF verification failed</code></td><td>🐍 Бэкенд</td><td>Используете session auth вместе с JWT</td><td>Используйте только JWT, не смешивайте</td></tr>
+          <tr><td><code>refused to connect</code> в DevTools</td><td>🐧 Система</td><td>Django-сервер не запущен</td><td>Проверьте терминал 1 — там должен быть <code>Starting development server</code></td></tr>
+          <tr><td>Заметки видны всем пользователям</td><td>🐍 Бэкенд</td><td>Нет фильтра по owner в queryset</td><td>Добавьте <code>?mine=1</code> или <code>filter(owner=self.request.user)</code></td></tr>
+          <tr><td><code>Network Error</code> в браузере</td><td>🐧 Система</td><td>Сервер упал или не запущен</td><td>Проверьте оба терминала — Django и Vite должны быть живы</td></tr>
+          <tr><td><code>Method Not Allowed</code> (405)</td><td>🐍 Бэкенд</td><td>URL не поддерживает метод</td><td>Проверьте <code>urls.py</code> — POST должен быть на list-endpoint, а не detail</td></tr>
+          <tr><td>Данные не сохраняются в БД</td><td>🐍 Бэкенд</td><td>Нет <code>perform_create</code> или <code>serializer.save()</code></td><td>Проверьте <code>views.py</code>, что <code>serializer.save()</code> вызывается</td></tr>
+          <tr><td>Стили не подгружаются после сборки</td><td>⚛️ Фронтенд</td><td>Неправильный <code>base</code> в <code>vite.config.js</code></td><td>Для деплоя в подпапку — <code>base: '/myapp/'</code></td></tr>
+          <tr><td>Ошибка <code>Hydration failed</code> (Next.js)</td><td>⚛️ Фронтенд</td><td>Сервер и клиент рендерят разное</td><td>Не используйте <code>window</code>/<code>localStorage</code> при SSR-рендере</td></tr>
+          <tr><td><code>CORS: credentials not supported</code></td><td>🐍 Бэкенд</td><td>При <code>withCredentials: true</code> нельзя <code>Access-Control-Allow-Origin: *</code></td><td>Укажите конкретные origins + <code>CORS_ALLOW_CREDENTIALS = True</code></td></tr>
+          <tr><td>Прогресс изучения не сохраняется</td><td>⚛️ Фронтенд</td><td>localStorage заблокирован (приватный режим)</td><td>Откройте в обычном окне или разрешите cookies/localStorage</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout tip">
+      <p><strong>Как читать ошибки Django:</strong> когда Django падает с ошибкой, в консоли браузера и терминала вы увидите полный traceback — от строки с ошибкой до места, где она возникла. Читайте снизу вверх: сначала само сообщение, потом где именно в коде, потом цепочку вызовов.</p>
+    </div>
+    <button type="button" class="mark-read" data-section="troubleshooting@reference.html">Отметить как изученное</button>
+
+    <!-- section:glossary -->
+    <h2 id="glossary" class="mark-read-anchor">30. Глоссарий</h2>
+    <div class="card-grid">
+      <div class="card"><h4>venv</h4><p>Virtual Environment — изолированная папка с Python-зависимостями, не засоряет системный Python.</p></div>
+      <div class="card"><h4>nvm</h4><p>Node Version Manager — менеджер версий Node.js, устанавливается в <code>~/.nvm</code> без sudo.</p></div>
+      <div class="card"><h4>DRF</h4><p>Django REST Framework — библиотека для создания REST API. Даёт сериализаторы, viewsets, permissions.</p></div>
+      <div class="card"><h4>JWT</h4><p>JSON Web Token — самодостаточный токен с подписью. Состоит из header, payload, signature.</p></div>
+      <div class="card"><h4>CORS</h4><p>Cross-Origin Resource Sharing — правила, разрешающие браузеру делать запросы между доменами.</p></div>
+      <div class="card"><h4>SPA</h4><p>Single Page Application — одностраничное приложение. React загружает HTML один раз, дальше меняет DOM.</p></div>
+      <div class="card"><h4>Прокси</h4><p>Промежуточный сервер. Vite проксирует <code>/api</code> на Django — обход CORS в разработке.</p></div>
+      <div class="card"><h4>Middleware</h4><p>Прослойка обработки запроса в Django. Срабатывает до view и после.</p></div>
+      <div class="card"><h4>Serializer</h4><p>DRF-класс, конвертирующий объекты Python ↔ JSON. Также валидирует входящие данные.</p></div>
+      <div class="card"><h4>ViewSet / GenericView</h4><p>Классы представлений DRF. Generic — на каждое действие свой класс. ViewSet — всё в одном.</p></div>
+      <div class="card"><h4>CBV (Class-Based Views)</h4><p>Представления Django в виде классов. Дают наследование, миксины и переиспользование. В коде гайда: <code>ListCreateAPIView</code>, <code>RetrieveUpdateDestroyAPIView</code> — всё это CBV из DRF. Противоположность — <code>FBV</code> (function-based views), обычные функции.</p></div>
+      <div class="card"><h4>Интерцептор</h4><p>Функция axios, срабатывающая до или после каждого запроса. Мы используем для JWT.</p></div>
+      <div class="card"><h4>ORM</h4><p>Object-Relational Mapping. Django ORM превращает Python-классы в SQL-таблицы.</p></div>
+      <div class="card"><h4>Миграция</h4><p>Файл с описанием изменений схемы БД. Создаётся <code>makemigrations</code>, применяется <code>migrate</code>.</p></div>
+      <div class="card"><h4>Queryset</h4><p>Ленивый запрос к БД в Django. Не выполняется, пока не обратитесь к данным.</p></div>
+      <div class="card"><h4>Rootless Docker</h4><p>Docker, работающий без root. Можно запускать контейнеры без sudo на РЕД ОС.</p></div>
+      <div class="card"><h4>Хук (React Hook)</h4><p>Функция вроде <code>useState</code>, <code>useEffect</code> — добавляет состояние и жизненный цикл в функциональные компоненты.</p></div>
+      <div class="card"><h4>Bootstrap 5</h4><p>CSS-фреймворк с готовыми компонентами. Их можно копировать с официального сайта и вставлять в шаблоны Django — сайт собирается как конструктор.</p></div>
+      <div class="card"><h4>django_bootstrap5</h4><p>Python-пакет, который подключает Bootstrap 5 к Django-шаблонам тегами <code>{% bootstrap_css %}</code> и <code>{% bootstrap_javascript %}</code>. Ставится командой <code>pip install django-bootstrap5</code>.</p></div>
+      <div class="card"><h4>models.py</h4><p>Файл приложения Django с классами-моделями на Python. Каждый класс — таблица в базе данных; из него по командам <code>makemigrations</code> и <code>migrate</code> создаётся реальная БД.</p></div>
+      <div class="card"><h4>Django Admin</h4><p>Готовая панель управления (/admin/), которую Django генерирует из моделей. Включается <code>createsuperuser</code> + регистрация модели в <code>admin.py</code>.</p></div>
+      <div class="card"><h4>PostgreSQL</h4><p>Мощная открытая СУБД для продакшена. В Django подключается пакетом <code>psycopg</code> и 5 строками в <code>DATABASES</code> — код моделей не меняется.</p></div>
+      <div class="card"><h4>Gunicorn (WSGI)</h4><p>Продуктивный WSGI-сервер для Python-приложений. Заменяет учебный <code>runserver</code>; запускают обычно за nginx: <code>gunicorn backend.wsgi:application</code>.</p></div>
+      <div class="card"><h4>Reverse-proxy (nginx)</h4><p>Сервер-посредник перед приложением: принимает HTTP/HTTPS, раздаёт статику и проксирует динамические запросы на gunicorn.</p></div>
+      <div class="card"><h4>Preflight (OPTIONS)</h4><p>Служебный запрос браузера перед «непростым» CORS-запросом: спрашивает сервер, разрешены ли метод и заголовки.</p></div>
+    </div>
+    <button type="button" class="mark-read" data-section="glossary@reference.html">Отметить как изученное</button>
+
+    <!-- section:faq -->
+    <h2 id="faq" class="mark-read-anchor">31. FAQ — частые вопросы</h2>
+    <div class="faq">
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Нужны ли права sudo вообще?</button>
+        <div class="faq-a">Нет. Мы всё делаем в домашней папке. Единственное, что может потребоваться от админа — установить Python 3, если его нет. В РЕД ОС Python обычно уже предустановлен.</div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Можно ли использовать PostgreSQL вместо SQLite?</button>
+        <div class="faq-a">Да, но PostgreSQL обычно требует установки через dnf (sudo). Без sudo можно использовать SQLite (по умолчанию) или PostgreSQL в rootless Docker. Для продакшена рекомендуется PostgreSQL — там больше возможностей: параллельные транзакции, JSON-поля, полнотекстовый поиск.</div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Чем Vite лучше create-react-app?</button>
+        <div class="faq-a">Vite запускается в разы быстрее, HMR (hot module replacement) почти мгновенный, меньше конфигурации. create-react-app официально устарел и больше не поддерживается командой React с 2023 года.</div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Как деплоить без sudo?</button>
+        <div class="faq-a">Варианты: (1) rootless Docker — контейнеры без root; (2) PaaS типа Railway, Render, Fly.io — загружаете код, они хостят; (3) статика React на GitHub Pages + бэк на бесплатном хостинге. Полноценный VPS обычно требует sudo для настройки Nginx/Gunicorn.</div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Почему JSONPlaceholder не сохраняет мои данные?</button>
+        <div class="faq-a">Это фейковый API для тестов. POST/PUT/DELETE возвращают «успех», но данные не сохраняются на сервере. Для реального CRUD используйте свой Django API.</div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Куда сохраняются мои токены?</button>
+        <div class="faq-a">
+          <p>В localStorage браузера. Это просто, но не самый безопасный способ — он уязвим для XSS: атакующий внедряет свой JavaScript и ворует токен.</p>
+          <p><strong>Паттерн для продакшена (гибрид):</strong></p>
+          <ul>
+            <li><code>access_token</code> — в памяти JS (React state), живёт 5–15 мин</li>
+            <li><code>refresh_token</code> — в httpOnly Secure SameSite=Strict cookie, живёт 7 дней</li>
+            <li><code>csrf_token</code> — в обычной cookie, читается JS и отправляется в заголовке</li>
+          </ul>
+          <p>Что это даёт: XSS не доберётся до refresh, CSRF защищён double-submit токеном, access короткий — при утечке ущерб минимален.</p>
+          <p>Требует на бэкенде: <code>CORS_ALLOW_CREDENTIALS = True</code>, конкретные origins в <code>CORS_ALLOWED_ORIGINS</code> (звёздочку нельзя), и <code>axios.defaults.withCredentials = true</code> на фронте.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Как запустить всё одной командой?</button>
+        <div class="faq-a">Создайте <code>run-all.sh</code> (см. раздел 17), который запускает оба сервера параллельно с помощью фоновых процессов и trap для Ctrl+C.</div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Что делать, если забыл пароль суперпользователя?</button>
+        <div class="faq-a">В терминале: <code>python manage.py changepassword admin</code>. Введите новый пароль дважды. Если забыли логин — <code>python manage.py shell</code>, затем <code>from django.contrib.auth.models import User; User.objects.filter(is_superuser=True).values_list('username', flat=True)</code>.</div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Как добавить новую модель?</button>
+        <div class="faq-a">Создайте класс в <code>models.py</code> → <code>python manage.py makemigrations</code> → <code>python manage.py migrate</code> → создайте сериализатор и представление. Django сам создаст таблицу в БД.</div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Как включить автообновление токенов на всех запросах?</button>
+        <div class="faq-a">Оно уже включено — интерцептор axios в <code>client.js</code> сам ловит 401 и обновляет токен. Ничего дополнительно делать не нужно.</div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Почему мои заметки видны другим пользователям?</button>
+        <div class="faq-a">По умолчанию API возвращает все заметки. Добавьте фильтр по owner в <code>get_queryset</code>: <code>Note.objects.filter(owner=self.request.user)</code> или используйте параметр <code>?mine=1</code> из расширенного примера.</div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Можно ли использовать TypeScript вместо JavaScript?</button>
+        <div class="faq-a">Да. При создании проекта: <code>npm create vite@latest frontend -- --template react-ts</code>. Код будет тот же, но с аннотациями типов. Для новичка JavaScript проще, для прода — TypeScript надёжнее.</div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Как поменять порт Django?</button>
+        <div class="faq-a"><code>python manage.py runserver 0.0.0.0:8080</code> — вместо 8000 будет 8080. В <code>vite.config.js</code> нужно тоже поправить target прокси.</div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Как очистить базу данных?</button>
+        <div class="faq-a">Удалите <code>db.sqlite3</code> и выполните <code>python manage.py migrate</code> заново. Все данные пропадут. Суперпользователя создайте снова через <code>createsuperuser</code>.</div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Что делать, если npm install долго висит?</button>
+        <div class="faq-a">Скорее всего проблемы с сетью. Проверьте <code>npm config get registry</code> — должно быть <code>https://registry.npmjs.org/</code>. Можно ускорить через зеркало: <code>npm config set registry https://registry.npmmirror.com/</code> (китайское зеркало, быстрее).</div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Можно ли делать сайт на Django без React — и при этом красиво?</button>
+        <div class="faq-a">Да! Если не нужна SPA-логика, достаточно шаблонов Django + <strong>Bootstrap 5</strong> через пакет <code>django_bootstrap5</code> (<code>pip install django-bootstrap5</code>). Готовые блоки (навбары, карточки, формы) копируете прямо с сайта <a href="https://getbootstrap.com/docs/5.3/components/" target="_blank" rel="noopener">getbootstrap.com</a> в шаблоны — и сайт собирается как конструктор. См. раздел 6.</div>
+      </div>
+
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">Правда, что базу данных в Django можно создавать «питоновским кодом»?</button>
+        <div class="faq-a">Чистая правда. Вы описываете таблицы классами Python в файле <code>models.py</code> (не «modules» — частая ошибка в названии), затем двумя командами <code>python manage.py makemigrations</code> и <code>python manage.py migrate</code> Django сам создаёт реальную базу (по умолчанию — файл <code>db.sqlite3</code>). Подробно — раздел 25.</div>
+      </div>
+
+    </div>
+    <button type="button" class="mark-read" data-section="faq@reference.html">Отметить как изученное</button>
+
+    <!-- section:cheatsheet -->
+    <h2 id="cheatsheet" class="mark-read-anchor">32. Cheat sheet — все команды в одном месте</h2>
+    <p>Сохраните эту страницу в закладки — пригодится каждый день.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Команда</th><th>Что делает</th></tr></thead>
+        <tbody>
+          <tr><td colspan="2" class="table-group">🐍 Django</td></tr>
+          <tr><td><code>source venv/bin/activate</code></td><td>Активировать venv</td></tr>
+          <tr><td><code>deactivate</code></td><td>Выйти из venv</td></tr>
+          <tr><td><code>python manage.py runserver</code></td><td>Запустить dev-сервер на 8000</td></tr>
+          <tr><td><code>python manage.py runserver 8001</code></td><td>Запустить на другом порту</td></tr>
+          <tr><td><code>python manage.py migrate</code></td><td>Применить миграции</td></tr>
+          <tr><td><code>python manage.py makemigrations</code></td><td>Создать миграции из моделей</td></tr>
+          <tr><td><code>python manage.py createsuperuser</code></td><td>Создать админа</td></tr>
+          <tr><td><code>python manage.py changepassword admin</code></td><td>Сменить пароль</td></tr>
+          <tr><td><code>python manage.py shell</code></td><td>Python-REPL с настройками Django</td></tr>
+          <tr><td><code>python manage.py dumpdata</code></td><td>Дамп данных в JSON</td></tr>
+          <tr><td><code>python manage.py loaddata</code></td><td>Загрузить дамп</td></tr>
+          <tr><td><code>python manage.py collectstatic</code></td><td>Собрать статику (для прода)</td></tr>
+          <tr><td><code>pip install django-bootstrap5</code></td><td>Установить Bootstrap 5 для Django-шаблонов</td></tr>
+
+          <tr><td colspan="2" class="table-group">🎨 HTML-теги django_bootstrap5</td></tr>
+          <tr><td><code>{% load django_bootstrap5 %}</code></td><td>Загрузить библиотеку тегов в шаблон</td></tr>
+          <tr><td><code>{% bootstrap_css %}</code></td><td>Подключить CSS Bootstrap 5</td></tr>
+          <tr><td><code>{% bootstrap_javascript %}</code></td><td>Подключить JS Bootstrap (модалки, дропдауны)</td></tr>
+          <tr><td><code>{% bootstrap_form form %}</code></td><td>Отрендерить Django-форму в стиле Bootstrap</td></tr>
+
+          <tr><td colspan="2" class="table-group">⚛️ React / Vite</td></tr>
+          <tr><td><code>npm run dev</code></td><td>Запустить Vite dev-сервер</td></tr>
+          <tr><td><code>npm run build</code></td><td>Собрать прод-версию в dist/</td></tr>
+          <tr><td><code>npm run preview</code></td><td>Просмотр собранной версии</td></tr>
+          <tr><td><code>npm install &lt;pkg&gt;</code></td><td>Установить пакет</td></tr>
+          <tr><td><code>npm install &lt;pkg&gt; --save-dev</code></td><td>Установить как dev-зависимость</td></tr>
+          <tr><td><code>npm uninstall &lt;pkg&gt;</code></td><td>Удалить пакет</td></tr>
+          <tr><td><code>npm list --depth=0</code></td><td>Список установленных пакетов</td></tr>
+
+          <tr><td colspan="2" class="table-group">🔧 nvm / Node</td></tr>
+          <tr><td><code>nvm install --lts</code></td><td>Установить LTS Node</td></tr>
+          <tr><td><code>nvm install 18</code></td><td>Установить Node 18</td></tr>
+          <tr><td><code>nvm use 18</code></td><td>Переключиться на Node 18</td></tr>
+          <tr><td><code>nvm ls</code></td><td>Список установленных версий</td></tr>
+          <tr><td><code>nvm alias default 'lts/*'</code></td><td>Сделать LTS версией по умолчанию</td></tr>
+
+          <tr><td colspan="2" class="table-group">🌐 curl</td></tr>
+          <tr><td><code>curl -X GET &lt;url&gt;</code></td><td>GET-запрос</td></tr>
+          <tr><td><code>curl -X POST &lt;url&gt; -d '{...}' -H "Content-Type: application/json"</code></td><td>POST с JSON-телом</td></tr>
+          <tr><td><code>curl -X POST &lt;url&gt; -H "Authorization: Bearer $TOKEN"</code></td><td>POST с токеном</td></tr>
+          <tr><td><code>curl -X DELETE &lt;url&gt;</code></td><td>DELETE-запрос</td></tr>
+          <tr><td><code>curl -X PATCH &lt;url&gt; -d '{...}'</code></td><td>Частичное обновление</td></tr>
+          <tr><td><code>curl -I &lt;url&gt;</code></td><td>Только заголовки ответа</td></tr>
+          <tr><td><code>curl -v &lt;url&gt;</code></td><td>Полный вывод (с запросом и ответом)</td></tr>
+
+          <tr><td colspan="2" class="table-group">🔀 Git</td></tr>
+          <tr><td><code>git init</code></td><td>Инициализировать репозиторий</td></tr>
+          <tr><td><code>git status</code></td><td>Что изменилось</td></tr>
+          <tr><td><code>git add .</code></td><td>Добавить всё в индекс</td></tr>
+          <tr><td><code>git commit -m "..."</code></td><td>Закоммитить</td></tr>
+          <tr><td><code>git log --oneline</code></td><td>История одной строкой</td></tr>
+          <tr><td><code>git diff</code></td><td>Построчные изменения</td></tr>
+          <tr><td><code>git checkout -b branch-name</code></td><td>Создать и переключиться на ветку</td></tr>
+          <tr><td><code>git push origin main</code></td><td>Отправить в удалённый репо</td></tr>
+          <tr><td><code>git pull</code></td><td>Получить изменения</td></tr>
+
+          <tr><td colspan="2" class="table-group">🐘 PostgreSQL</td></tr>
+          <tr><td><code>sudo -u postgres psql</code></td><td>Консоль PostgreSQL от имени сервисного юзера</td></tr>
+          <tr><td><code>\dt</code> / <code>\l</code> / <code>\q</code></td><td>Таблицы / список баз / выход в psql</td></tr>
+          <tr><td><code>python manage.py dbshell</code></td><td>psql, привязанный к базе проекта</td></tr>
+          <tr><td><code>pg_dump mydb &gt; backup.sql</code></td><td>Резервная копия базы</td></tr>
+          <tr><td><code>psql -d mydb -f backup.sql</code></td><td>Восстановление из копии</td></tr>
+
+          <tr><td colspan="2" class="table-group">🚀 Деплой (прод)</td></tr>
+          <tr><td><code>gunicorn backend.wsgi:application --bind 127.0.0.1:8000 --workers 3</code></td><td>Запуск вместо runserver</td></tr>
+          <tr><td><code>python manage.py check --deploy</code></td><td>Аудит прод-настроек (DEBUG, hosts, секреты)</td></tr>
+          <tr><td><code>python manage.py collectstatic --noinput</code></td><td>Собрать статику в STATIC_ROOT для nginx</td></tr>
+          <tr><td><code>sudo systemctl enable --now myapp</code></td><td>Автозапуск сервиса (systemd)</td></tr>
+          <tr><td><code>sudo systemctl restart myapp</code></td><td>Перезапуск после git pull</td></tr>
+          <tr><td><code>journalctl -u myapp -f</code></td><td>Живые логи приложения</td></tr>
+          <tr><td><code>sudo nginx -t &amp;&amp; sudo systemctl reload nginx</code></td><td>Проверка и перезагрузка конфига nginx</td></tr>
+          <tr><td><code>sudo certbot --nginx -d домен.ru</code></td><td>Бесплатный HTTPS-сертификат</td></tr>
+
+          <tr><td colspan="2" class="table-group">🧪 Тесты</td></tr>
+          <tr><td><code>pytest</code></td><td>Все тесты</td></tr>
+          <tr><td><code>pytest -v</code></td><td>Подробный вывод</td></tr>
+          <tr><td><code>pytest -k register</code></td><td>Только тесты с "register" в имени</td></tr>
+          <tr><td><code>pytest --cov=api</code></td><td>С покрытием кода</td></tr>
+
+          <tr><td colspan="2" class="table-group">🐧 Полезное в РЕД ОС</td></tr>
+          <tr><td><code>pwd</code></td><td>Где я сейчас</td></tr>
+          <tr><td><code>ls -la</code></td><td>Файлы включая скрытые</td></tr>
+          <tr><td><code>cd ~/projects/fullstack-app</code></td><td>В папку проекта</td></tr>
+          <tr><td><code>cat filename</code></td><td>Показать содержимое</td></tr>
+          <tr><td><code>nano filename</code></td><td>Редактор в терминале</td></tr>
+          <tr><td><code>pkill -f runserver</code></td><td>Убить процесс Django</td></tr>
+          <tr><td><code>ps aux | grep python</code></td><td>Список python-процессов</td></tr>
+          <tr><td><code>df -h</code></td><td>Свободное место на дисках</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <button type="button" class="mark-read" data-section="cheatsheet@reference.html">Отметить как изученное</button>
+
+    <!-- section:summary -->
+    <h2 id="summary" class="mark-read-anchor">33. Итог</h2>
+    <p>Мы прошли путь от нуля до полноценного full-stack приложения <strong>без единой команды sudo</strong>:</p>
+    <ul>
+      <li>✅ Python-зависимости — через <code>venv</code></li>
+      <li>✅ Node.js — через <code>nvm</code></li>
+      <li>✅ Бэкенд на <strong>Django + DRF</strong> с JWT-аутентификацией</li>
+      <li>✅ Научились создавать <strong>базу данных Python-кодом</strong> — модели в <code>models.py</code> + миграции</li>
+      <li>✅ Подключили <strong>Bootstrap 5 через django_bootstrap5</strong> и собираем страницы из готовых кусков кода с сайта Bootstrap</li>
+      <li>✅ Фронтенд на <strong>React + Vite + axios</strong></li>
+      <li>✅ Интеграция через <strong>прокси Vite</strong> — без CORS-головной боли</li>
+      <li>✅ Познакомились с <strong>jwt.io</strong> для разбора токенов</li>
+      <li>✅ Научились использовать <strong>JSONPlaceholder</strong> как заглушку</li>
+      <li>✅ Разобрали <strong>интерцепторы axios</strong> для автообновления токенов</li>
+      <li>✅ Написали <strong>run-all.sh</strong> для запуска в одну команду</li>
+      <li>✅ Поняли, как работает <strong>Git</strong>, <strong>тесты</strong> и <strong>.env</strong></li>
+    </ul>
+
+    <h4>Куда двигаться дальше</h4>
+    <ul>
+      <li><strong>Регистрация пользователей</strong> — эндпоинт <code>/api/register/</code> и форма</li>
+      <li><strong>Редактирование заметок</strong> — используйте уже готовый <code>NoteDetailView</code></li>
+      <li><strong>Фильтрация «только мои заметки»</strong> — фильтр по <code>owner</code> в <code>get_queryset</code></li>
+      <li><strong>Пагинация</strong> — <code>PageNumberPagination</code> в DRF</li>
+      <li><strong>Поиск</strong> — <code>SearchFilter</code> из DRF</li>
+      <li><strong>Стили</strong> — Tailwind CSS, MUI, styled-components</li>
+      <li><strong>State management</strong> — Redux Toolkit, Zustand, React Query</li>
+      <li><strong>TypeScript</strong> — типизация фронтенда</li>
+      <li><strong>Тесты</strong> — pytest + Vitest + покрытие</li>
+      <li><strong>WebSocket</strong> — Django Channels + React для real-time</li>
+      <li><strong>Docker</strong> — упаковка проекта в контейнеры</li>
+      <li><strong>Деплой</strong> — rootless Docker или PaaS</li>
+    </ul>
+
+    <h4>Полезные ссылки</h4>
+    <ul>
+      <li><a href="https://docs.djangoproject.com/" target="_blank" rel="noopener">Django docs</a> — официальная документация</li>
+      <li><a href="https://www.django-rest-framework.org/" target="_blank" rel="noopener">Django REST Framework</a> — DRF</li>
+      <li><a href="https://django-rest-framework-simplejwt.readthedocs.io/" target="_blank" rel="noopener">Simple JWT</a> — JWT для DRF</li>
+      <li><a href="https://react.dev/" target="_blank" rel="noopener">React docs</a> — новый сайт с гайдами</li>
+      <li><a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a> — сборщик</li>
+      <li><a href="https://axios-http.com/" target="_blank" rel="noopener">Axios docs</a> — HTTP-клиент</li>
+      <li><a href="https://reactrouter.com/" target="_blank" rel="noopener">React Router</a> — роутинг в SPA</li>
+      <li><a href="https://www.jwt.io/" target="_blank" rel="noopener">jwt.io</a> — декодер JWT</li>
+      <li><a href="https://jsonplaceholder.typicode.com/" target="_blank" rel="noopener">JSONPlaceholder</a> — фейковый API</li>
+      <li><a href="https://getbootstrap.com/docs/5.3/components/" target="_blank" rel="noopener">Bootstrap 5 Components</a> — готовые куски кода: навбары, карточки, формы — копируй и вставляй в шаблоны Django</li>
+      <li><a href="https://getbootstrap.com/docs/5.3/examples/" target="_blank" rel="noopener">Bootstrap 5 Examples</a> — целые готовые страницы на Bootstrap</li>
+      <li><a href="https://django-bootstrap5.readthedocs.io/" target="_blank" rel="noopener">django_bootstrap5</a> — документация пакета Bootstrap для Django</li>
+      <li><a href="https://realpython.com/" target="_blank" rel="noopener">Real Python</a> — качественные туториалы</li>
+      <li><a href="https://docs.pytest.org/" target="_blank" rel="noopener">pytest</a> — тесты</li>
+    </ul>
+    <button type="button" class="mark-read" data-section="summary@reference.html">Отметить как изученное</button>
+
+    <!-- section:export -->
+    <h2 id="export" class="mark-read-anchor">34. Экспорт гайда</h2>
+    <p>Этот гайд можно сохранить в PDF или DOCX прямо из браузера — стили для печати уже встроены.</p>
+
+    <h4>PDF</h4>
+    <ol>
+      <li>Нажмите <code>Ctrl+P</code> (или ⌘+P на Mac)</li>
+      <li>В настройках печати выберите <strong>«Сохранить в PDF»</strong></li>
+      <li>Обязательно включите <strong>«Печать фона»</strong> (Background graphics) — иначе цвета и градиенты не сохранятся</li>
+      <li>Отключите колонтитулы, если не нужны URL и номер страницы</li>
+      <li>Нажмите «Сохранить»</li>
+    </ol>
+
+    <h4>Word / DOCX</h4>
+    <ol>
+      <li>Откройте HTML-файл в <strong>LibreOffice Writer</strong> (он обычно предустановлен в РЕД ОС)</li>
+      <li>Или в Microsoft Word: Файл → Открыть → выбрать HTML</li>
+      <li>Сохранить как → формат <code>.docx</code></li>
+    </ol>
+
+    <h4>Markdown</h4>
+    <p>Скопируйте текст гайда, откройте в редакторе и оформите в Markdown. Или используйте <a href="https://pandoc.org/" target="_blank" rel="noopener">pandoc</a> для конвертации HTML → Markdown.</p>
+
+    <div class="callout tip">
+      <p><strong>Совет для PDF:</strong> перед печатью переключитесь на светлую тему (☀️ в шапке) — PDF будет легче читать на бумаге и в e-reader. Тёмные темы тратят много краски.</p>
+    </div>
+    <button type="button" class="mark-read" data-section="export@reference.html">Отметить как изученное</button>
+    <p class="footer-note">🌸 Гайд создан для РЕД ОС • Django • DRF • React • JWT • JSONPlaceholder 🌸</p>
+  </main>
+</div>
+
+<button type="button" id="totop" title="Наверх" aria-label="Вернуться наверх">↑</button>
+
+<div id="studyBar" role="region" aria-label="Прогресс изучения">
+  <div class="icon" id="studyIcon"><span id="studyIconPct">0%</span></div>
+  <div class="label">Прогресс: <strong><span id="studyDone">0</span> из <span id="studyTotal">0</span></strong></div>
+  <div class="bar-track"><div class="bar-fill" id="studyFill"></div></div>
+  <div class="spacer"></div>
+  <button type="button" class="bar-btn" id="exportBtn" title="Скачать прогресс">📥 <span class="txt">Экспорт</span></button>
+  <button type="button" class="bar-btn danger" id="studyReset" title="Сбросить">🔄 <span class="txt">Сбросить</span></button>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<div class="modal-overlay" id="hotkeysModal" role="dialog" aria-modal="true" aria-label="Горячие клавиши">
+  <div class="modal">
+    <h2>Горячие клавиши</h2>
+    <div class="hotkey-row"><span>Поиск</span><kbd>Ctrl</kbd> + <kbd>K</kbd></div>
+    <div class="hotkey-row"><span>След/пред. совпадение</span><kbd>[</kbd> / <kbd>]</kbd></div>
+    <div class="hotkey-row"><span>Очистить поиск</span><kbd>Esc</kbd></div>
+    <div class="hotkey-row"><span>След/пред. секция</span><kbd>J</kbd> / <kbd>K</kbd></div>
+    <div class="hotkey-row"><span>Добавить раздел в закладки</span><kbd>B</kbd></div>
+    <div class="hotkey-row"><span>Показать это окно</span><kbd>?</kbd></div>
+    <div class="hotkey-row"><span>Печать / PDF</span><kbd>Ctrl</kbd> + <kbd>P</kbd></div>
+    <div class="hotkey-row"><span>Наверх страницы</span><kbd>Home</kbd></div>
+    <div class="hotkey-row"><span>В самый низ</span><kbd>End</kbd></div>
+    <button type="button" class="modal-close">Закрыть</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="fontModal" role="dialog" aria-modal="true" aria-label="Выбор шрифта">
+  <div class="modal">
+    <h2>Шрифт гайда</h2>
+    <p class="muted small" style="margin:0 0 8px">Выберите пресет — выбор сохранится в браузере.</p>
+    <div class="font-grid">
+      <button type="button" class="font-opt" data-font-opt="modern">
+        <div><div class="name">Modern</div><div class="sample">Plus Jakarta Sans + Inter</div></div>
+        <div class="check"></div>
+      </button>
+      <button type="button" class="font-opt" data-font-opt="geometric">
+        <div><div class="name">Geometric</div><div class="sample">Manrope + Inter</div></div>
+        <div class="check"></div>
+      </button>
+      <button type="button" class="font-opt" data-font-opt="classic">
+        <div><div class="name">Classic</div><div class="sample">Fraunces + Inter (с засечками)</div></div>
+        <div class="check"></div>
+      </button>
+      <button type="button" class="font-opt" data-font-opt="system">
+        <div><div class="name">System</div><div class="sample">Нативные системные шрифты</div></div>
+        <div class="check"></div>
+      </button>
+    </div>
+    <button type="button" class="modal-close">Закрыть</button>
+  </div>
+</div>
+
+<script src="js/idmap.js" defer></script>
+<script src="js/ui.js" defer></script>
+<script src="js/theme.js" defer></script>
+<script>window.GUIDE_SECTIONS=["intro-all","prerequisites","architecture","intro","no-sudo","python","django","django-admin","django-bootstrap5","quickstart","shop","api","test-api","jsonplaceholder","deeper","nvm","react","proxy","react-code","jwt","test","run-all","git-intro","extended-model","auth-register","tests","env-config","db-schema","auth-compare","db-python","postgresql","deploy","cors-deep","troubleshooting","glossary","faq","cheatsheet","summary","export"];</script>
+<script src="js/progress.js" defer></script>
+<script src="js/search.js" defer></script>
+<script src="js/toc.js" defer></script>
+<script src="js/bookmarks.js" defer></script>
+<script src="js/highlight.js" defer></script>
+<script src="js/main.js" defer></script>
+
+</body>
+</html>

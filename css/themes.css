@@ -1,0 +1,214 @@
+/* ═══════════════════════════════════════════════════════════════
+   ФИЛОСОФИЯ
+   ─────────────────────────────────────────────────────────────
+   • ОДИН акцент — не три.
+   • Фон однотонный.
+   • Тени нейтральные, многослойные.
+   • Розовая тема — реально розовая, не бежевая.
+   ═══════════════════════════════════════════════════════════════ */
+
+
+/* ═══════════════ ROSE (light, default) ═══════════════ */
+:root, html[data-theme="rose"] {
+  --bg: #fdf2f6;
+  --bg-alt: #ffffff;
+  --bg-elev: #ffffff;
+  --bg-code: #17110f;
+  --bg-code-2: #211917;
+  --fg: #1c1218;
+  --fg-muted: #7a5f6b;
+  --fg-code: #ede5e2;
+
+  --accent:        #b81c5c;
+  --accent-2:      #8c1244;
+  --accent-3:      #d8548a;
+  --accent-grad:   #b81c5c;
+  --accent-grad-h: #8c1244;
+  --accent-soft:   #fbe1ea;
+  --accent-glow:   rgba(28, 18, 24, .06);
+
+  --border:        #f2dfe8;
+  --border-strong: #e2c5d4;
+  --border-glow:   rgba(28, 18, 24, .08);
+
+  --shadow-sm: 0 1px 2px rgba(28,18,24,.04);
+  --shadow:    0 1px 2px rgba(28,18,24,.04),
+               0 6px 20px rgba(28,18,24,.05);
+  --shadow-lg: 0 2px 4px rgba(28,18,24,.04),
+               0 14px 40px rgba(28,18,24,.08),
+               0 32px 64px rgba(28,18,24,.05);
+  --shadow-inset: inset 0 1px 0 rgba(255,255,255,.9);
+
+  --note-bg:   #fdeef4;  --note-border:   #b81c5c;
+  --warn-bg:   #fbf6ea;  --warn-border:   #b8862a;
+  --ok-bg:     #eef8f2;  --ok-border:     #2f8e63;
+  --danger-bg: #fdf3f4;  --danger-border: #c24a56;
+  --info-bg:   #eef3fb;  --info-border:   #3b6cb3;
+
+  --card-bg: #ffffff;
+
+  --aurora-1: transparent;
+  --aurora-2: transparent;
+  --aurora-3: transparent;
+
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  --transition: .18s cubic-bezier(.22,1,.36,1);
+
+  color-scheme: light;
+}
+
+
+/* ═══════════════ ROSE DARK ═══════════════ */
+html[data-theme="rose-dark"] {
+  --bg: #14060d;
+  --bg-alt: #1c0a14;
+  --bg-elev: #24101b;
+  --bg-code: #050203;
+  --bg-code-2: #100609;
+  --fg: #f7e9f0;
+  --fg-muted: #b48ba1;
+  --fg-code: #f7e9f0;
+
+  --accent:        #ff8ab8;
+  --accent-2:      #ffb0cc;
+  --accent-3:      #d95a8f;
+  --accent-grad:   #ff8ab8;
+  --accent-grad-h: #ffb0cc;
+  --accent-soft:   #2e0f1e;
+  --accent-glow:   rgba(0,0,0,.4);
+
+  --border:        #2a0f1c;
+  --border-strong: #45192d;
+  --border-glow:   rgba(0,0,0,.5);
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+  --shadow:    0 1px 2px rgba(0,0,0,.4),
+               0 10px 30px rgba(0,0,0,.45);
+  --shadow-lg: 0 4px 8px rgba(0,0,0,.4),
+               0 20px 56px rgba(0,0,0,.55),
+               0 48px 88px rgba(0,0,0,.35);
+  --shadow-inset: inset 0 1px 0 rgba(255,255,255,.04);
+
+  --note-bg:   #24101b;  --note-border:   #ff8ab8;
+  --warn-bg:   #22190c;  --warn-border:   #e0b062;
+  --ok-bg:     #0e1f18;  --ok-border:     #58c191;
+  --danger-bg: #241016;  --danger-border: #ef7d92;
+  --info-bg:   #101a2c;  --info-border:   #7ca8ff;
+
+  --card-bg: #1c0a14;
+
+  --aurora-1: transparent;
+  --aurora-2: transparent;
+  --aurora-3: transparent;
+
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  --transition: .18s cubic-bezier(.22,1,.36,1);
+
+  color-scheme: dark;
+}
+
+
+/* ═══════════════ LIGHT ═══════════════ */
+html[data-theme="light"] {
+  --bg: #f8f9fb;
+  --bg-alt: #ffffff;
+  --bg-elev: #ffffff;
+  --bg-code: #0e1420;
+  --bg-code-2: #1a2030;
+  --fg: #0f1117;
+  --fg-muted: #5c6373;
+  --fg-code: #e6ebf3;
+
+  --accent:        #1f4ed8;
+  --accent-2:      #1738a8;
+  --accent-3:      #4a76f0;
+  --accent-grad:   #1f4ed8;
+  --accent-grad-h: #1738a8;
+  --accent-soft:   #eaf0ff;
+  --accent-glow:   rgba(15,17,23,.06);
+
+  --border:        #e5e8ee;
+  --border-strong: #cfd4de;
+  --border-glow:   rgba(15,17,23,.08);
+
+  --shadow-sm: 0 1px 2px rgba(15,17,23,.04);
+  --shadow:    0 1px 2px rgba(15,17,23,.04),
+               0 6px 20px rgba(15,17,23,.05);
+  --shadow-lg: 0 2px 4px rgba(15,17,23,.04),
+               0 14px 40px rgba(15,17,23,.08),
+               0 32px 64px rgba(15,17,23,.05);
+  --shadow-inset: inset 0 1px 0 rgba(255,255,255,.9);
+
+  --note-bg:   #f0f5ff;  --note-border:   #1f4ed8;
+  --warn-bg:   #fbf6ea;  --warn-border:   #b8862a;
+  --ok-bg:     #eef8f2;  --ok-border:     #2f8e63;
+  --danger-bg: #fdf3f4;  --danger-border: #c24a56;
+  --info-bg:   #eef3fb;  --info-border:   #3b6cb3;
+
+  --card-bg: #ffffff;
+  --aurora-1: transparent;
+  --aurora-2: transparent;
+  --aurora-3: transparent;
+
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  --transition: .18s cubic-bezier(.22,1,.36,1);
+
+  color-scheme: light;
+}
+
+
+/* ═══════════════ DARK ═══════════════ */
+html[data-theme="dark"] {
+  --bg: #0a0c10;
+  --bg-alt: #12151b;
+  --bg-elev: #1a1e26;
+  --bg-code: #04060a;
+  --bg-code-2: #0f1218;
+  --fg: #eceff5;
+  --fg-muted: #8b91a0;
+  --fg-code: #eceff5;
+
+  --accent:        #79a2ff;
+  --accent-2:      #a4c2ff;
+  --accent-3:      #5c8ce8;
+  --accent-grad:   #79a2ff;
+  --accent-grad-h: #a4c2ff;
+  --accent-soft:   #1a2138;
+  --accent-glow:   rgba(0,0,0,.4);
+
+  --border:        #1f232c;
+  --border-strong: #333a48;
+  --border-glow:   rgba(0,0,0,.5);
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+  --shadow:    0 1px 2px rgba(0,0,0,.4),
+               0 10px 30px rgba(0,0,0,.45);
+  --shadow-lg: 0 4px 8px rgba(0,0,0,.4),
+               0 20px 56px rgba(0,0,0,.55),
+               0 48px 88px rgba(0,0,0,.35);
+  --shadow-inset: inset 0 1px 0 rgba(255,255,255,.04);
+
+  --note-bg:   #121a2c;  --note-border:   #79a2ff;
+  --warn-bg:   #22190c;  --warn-border:   #e0b062;
+  --ok-bg:     #0e1f18;  --ok-border:     #58c191;
+  --danger-bg: #241016;  --danger-border: #ef7d92;
+  --info-bg:   #101a2c;  --info-border:   #79a2ff;
+
+  --card-bg: #12151b;
+  --aurora-1: transparent;
+  --aurora-2: transparent;
+  --aurora-3: transparent;
+
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  --transition: .18s cubic-bezier(.22,1,.36,1);
+
+  color-scheme: dark;
+}

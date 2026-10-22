@@ -1,0 +1,50 @@
+/* Карта: id раздела -> файл страницы (после разбивки гайда на страницы). */
+
+window.GUIDE_ID_MAP = {
+  // --- intro.html ---
+  'intro-all': 'intro.html',
+  'prerequisites': 'intro.html',
+  'architecture': 'intro.html',
+  // --- part1-django.html ---
+  'part1': 'part1-django.html',
+  'intro': 'part1-django.html',
+  'no-sudo': 'part1-django.html',
+  'python': 'part1-django.html',
+  'django': 'part1-django.html',
+  'django-admin': 'part1-django.html',
+  'django-bootstrap5': 'part1-django.html',
+  'quickstart': 'part1-django.html',
+  'shop': 'part1-django.html',
+  'api': 'part1-django.html',
+  'test-api': 'part1-django.html',
+  'jsonplaceholder': 'part1-django.html',
+  'deeper': 'part1-django.html',
+  // --- part2-react.html ---
+  'part2': 'part2-react.html',
+  'nvm': 'part2-react.html',
+  'react': 'part2-react.html',
+  'proxy': 'part2-react.html',
+  'react-code': 'part2-react.html',
+  'jwt': 'part2-react.html',
+  'test': 'part2-react.html',
+  'run-all': 'part2-react.html',
+  // --- advanced.html ---
+  'git-intro': 'advanced.html',
+  'extended-model': 'advanced.html',
+  'auth-register': 'advanced.html',
+  'tests': 'advanced.html',
+  'env-config': 'advanced.html',
+  'db-schema': 'advanced.html',
+  'auth-compare': 'advanced.html',
+  'db-python': 'advanced.html',
+  'postgresql': 'advanced.html',
+  'deploy': 'advanced.html',
+  'cors-deep': 'advanced.html',
+  // --- reference.html ---
+  'troubleshooting': 'reference.html',
+  'glossary': 'reference.html',
+  'faq': 'reference.html',
+  'cheatsheet': 'reference.html',
+  'summary': 'reference.html',
+  'export': 'reference.html',
+};

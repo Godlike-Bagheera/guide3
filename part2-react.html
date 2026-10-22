@@ -1,0 +1,653 @@
+<!--split-->
+<!DOCTYPE html>
+<html lang="ru" data-theme="rose" data-font="modern">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Node.js через nvm, Vite + React, прокси к API, JWT и тестирование полного цикла.">
+<meta name="theme-color" content="#fdf2f6" id="metaThemeColor">
+<title>Часть 2 · Фронтенд на React — Full-Stack гайд Django + DRF + React</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Manrope:wght@500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/themes.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Перейти к содержимому</a>
+
+<div id="readingBar" aria-hidden="true"><div id="readingBarFill"></div></div>
+
+<header>
+  <div class="brand"><a href="index.html"><span>Django + DRF + React</span></a></div>
+  <input type="text" id="search" placeholder="Поиск... (Ctrl+K)" autocomplete="off" aria-label="Поиск по странице">
+  <div class="header-btns">
+    <a class="icon-btn bm-page-link" href="bookmarks.html" title="Мои закладки" aria-label="Страница закладок"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 17.66l-5.9 3.11 1.13-6.57L2.45 9.54l6.6-.96L12 2.6z"/></svg><span class="bm-counter"></span></a>
+    <button type="button" class="icon-btn" id="fontBtn" title="Шрифт" aria-label="Выбрать шрифт">Aa</button>
+    <button type="button" class="icon-btn" id="hotkeysBtn" title="Горячие клавиши" aria-label="Показать горячие клавиши">⌨</button>
+    <div class="theme-switch" role="group" aria-label="Цветовая тема">
+      <button type="button" class="theme-btn" data-theme-btn="rose" title="Розовая" aria-label="Розовая тема">🌸</button>
+      <button type="button" class="theme-btn" data-theme-btn="rose-dark" title="Тёмно-розовая" aria-label="Тёмно-розовая тема">🌺</button>
+      <button type="button" class="theme-btn" data-theme-btn="light" title="Светлая" aria-label="Светлая тема">☀️</button>
+      <button type="button" class="theme-btn" data-theme-btn="dark" title="Тёмная" aria-label="Тёмная тема">🌙</button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="toc" aria-label="Содержание страницы">
+    <h3>Содержание</h3>
+    <ul class="toc-site">
+      <li class="toc-group">
+        <a href="intro.html" class="toc-part">Введение</a>
+        <ul class="toc-sub">
+          <li><a data-star href="intro.html#intro-all">Введение</a></li>
+          <li><a data-star href="intro.html#prerequisites">Prerequisites — что нужно знать до старта</a></li>
+          <li><a data-star href="intro.html#architecture">Архитектура приложения</a></li>
+        </ul>
+      </li>
+      <li class="toc-group">
+        <a href="part1-django.html" class="toc-part">Часть 1. Бэкенд</a>
+        <ul class="toc-sub">
+          <li><a data-star href="part1-django.html#intro">1. Введение в бэкенд</a></li>
+          <li><a data-star href="part1-django.html#no-sudo">2. Почему без sudo и как это работает</a></li>
+          <li><a data-star href="part1-django.html#python">3. Проверка Python и создание виртуального окружения</a></li>
+          <li><a data-star href="part1-django.html#django">4. Создание Django-проекта</a></li>
+          <li><a data-star href="part1-django.html#django-admin">5. Django Admin — готовая админка из коробки</a></li>
+          <li><a data-star href="part1-django.html#django-bootstrap5">6. Django + Bootstrap 5 — django_bootstrap5</a></li>
+          <li><a data-star href="part1-django.html#quickstart">6.5. Быстрый старт: Django + Bootstrap 5 за 8 шагов</a></li>
+          <li><a data-star href="part1-django.html#shop">6.6. Мини-интернет-магазин: товары, регистрация, вход и отзывы</a></li>
+          <li><a data-star href="part1-django.html#api">7. Модель, сериализатор, представления</a></li>
+          <li><a data-star href="part1-django.html#test-api">8. Тестирование API через curl</a></li>
+          <li><a data-star href="part1-django.html#jsonplaceholder">9. JSONPlaceholder</a></li>
+          <li><a data-star href="part1-django.html#deeper">10. Углубляемся: что такое DRF под капотом</a></li>
+        </ul>
+      </li>
+      <li class="toc-group toc-current">
+        <a href="part2-react.html" class="toc-part">Часть 2. Фронтенд <span class="cur-dot" aria-hidden="true"></span></a>
+        <ul class="toc-sub">
+          <li><a href="#part2" data-star>Часть 2. Фронтенд на React</a></li>
+          <li><a href="#nvm" data-star>11. Установка Node.js через nvm (без sudo)</a></li>
+          <li><a href="#react" data-star>12. Создание React-приложения</a></li>
+          <li><a href="#proxy" data-star>13. Настройка прокси Vite к Django API</a></li>
+          <li><a href="#react-code" data-star>14. Код React-приложения</a></li>
+          <li><a href="#jwt" data-star>15. Что такое JWT — разбор на примере jwt.io</a></li>
+          <li><a href="#test" data-star>16. Тестирование полного цикла</a></li>
+          <li><a href="#run-all" data-star>17. Запуск одним скриптом</a></li>
+        </ul>
+      </li>
+      <li class="toc-group">
+        <a href="advanced.html" class="toc-part">Продвинутое</a>
+        <ul class="toc-sub">
+          <li><a data-star href="advanced.html#git-intro">18. Git с самого начала</a></li>
+          <li><a data-star href="advanced.html#extended-model">19. Расширенная модель: теги и категории</a></li>
+          <li><a data-star href="advanced.html#auth-register">20. Регистрация пользователей</a></li>
+          <li><a data-star href="advanced.html#tests">21. Тесты Django</a></li>
+          <li><a data-star href="advanced.html#env-config">22. Переменные окружения (.env)</a></li>
+          <li><a data-star href="advanced.html#db-schema">23. Схема БД и жизненный цикл запроса</a></li>
+          <li><a data-star href="advanced.html#auth-compare">24. Аутентификация: сравнение подходов</a></li>
+          <li><a data-star href="advanced.html#db-python">25. База данных «на Python»: модели и миграции</a></li>
+          <li><a data-star href="advanced.html#postgresql">26. PostgreSQL — серьёзная база данных для продакшена</a></li>
+          <li><a data-star href="advanced.html#deploy">27. Деплой: выкладываем сайт в интернет</a></li>
+          <li><a data-star href="advanced.html#cors-deep">28. CORS глубоко: как браузер решает, кому можно ходить на ваш API</a></li>
+        </ul>
+      </li>
+      <li class="toc-group">
+        <a href="reference.html" class="toc-part">Справочник</a>
+        <ul class="toc-sub">
+          <li><a data-star href="reference.html#troubleshooting">29. Troubleshooting: типичные ошибки</a></li>
+          <li><a data-star href="reference.html#glossary">30. Глоссарий</a></li>
+          <li><a data-star href="reference.html#faq">31. FAQ — частые вопросы</a></li>
+          <li><a data-star href="reference.html#cheatsheet">32. Cheat sheet — все команды в одном месте</a></li>
+          <li><a data-star href="reference.html#summary">33. Итог</a></li>
+          <li><a data-star href="reference.html#export">34. Экспорт гайда</a></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="toc-bookmarks">
+      <a href="bookmarks.html" id="tocBookmarksLink">⭐ Закладки <span class="bm-badge" id="tocBmCount"></span></a>
+    </div>
+  </nav>
+
+  <main id="content" tabindex="-1">
+        <!-- section:part2 -->
+    <h2 id="part2" class="mark-read-anchor">Часть 2. Фронтенд на React</h2>
+
+    <!-- section:nvm -->
+    <h3 id="nvm" class="mark-read-anchor">11. Установка Node.js через nvm (без sudo)</h3>
+    <p>Системный Node.js в РЕД ОС ставится через <code>dnf</code> — а это требует sudo. Используем <strong>nvm (Node Version Manager)</strong> — устанавливается в <code>~/.nvm</code>, позволяет держать несколько версий Node одновременно.</p>
+
+    <h4>11.1. Проверьте, нет ли Node</h4>
+<pre><code>node --version
+npm --version</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+
+    <h4>11.2. Установите nvm</h4>
+<pre><code>curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Если curl не установлен — попробуйте <code>wget -qO- ...</code>. Скрипт добавит строки в <code>~/.bashrc</code>. Активируйте их:</p>
+<pre><code>source ~/.bashrc
+nvm --version   # 0.40.1</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+
+    <h4>11.3. Установите LTS Node</h4>
+<pre><code>nvm install --lts
+nvm use --lts
+nvm alias default 'lts/*'
+
+node --version   # v20.x или v22.x
+npm --version    # 10.x или выше</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <div class="callout ok">
+      <p><strong>Плюс nvm:</strong> всё лежит в <code>~/.nvm</code>, никакого sudo. Хотите другую версию Node — <code>nvm install 18</code> и <code>nvm use 18</code>.</p>
+    </div>
+    <button type="button" class="mark-read" data-section="nvm@part2-react.html">Отметить как изученное</button>
+
+    <!-- section:react -->
+    <h3 id="react" class="mark-read-anchor">12. Создание React-приложения</h3>
+
+    <h4>12.1. Возвращайтесь в папку проекта</h4>
+<pre><code>cd ~/projects/fullstack-app</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+
+    <h4>12.2. Создайте проект через Vite</h4>
+<pre><code>npm create vite@latest frontend -- --template react
+cd frontend
+npm install</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Vite быстрее и современнее, чем <code>create-react-app</code> (последний официально устарел в 2023).</p>
+
+    <h4>12.3. Дополнительные библиотеки</h4>
+<pre><code>npm install axios react-router-dom</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <ul>
+      <li><code>axios</code> — HTTP-клиент с интерцепторами (удобнее fetch)</li>
+      <li><code>react-router-dom</code> — маршрутизация SPA</li>
+    </ul>
+
+    <h4>12.4. Запустите dev-сервер</h4>
+<pre><code>npm run dev</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Откройте <code>http://localhost:5173/</code> — увидите страницу с логотипами Vite + React.</p>
+    <div class="callout tip">
+      <p><strong>Оставьте терминал открытым.</strong> У вас теперь три терминала: Django, React dev-сервер и свободный.</p>
+    </div>
+    <button type="button" class="mark-read" data-section="react@part2-react.html">Отметить как изученное</button>
+
+    <!-- section:proxy -->
+    <h3 id="proxy" class="mark-read-anchor">13. Настройка прокси Vite к Django API</h3>
+    <p>Чтобы React (порт 5173) мог обращаться к Django (порт 8000) без CORS-проблем, настроим прокси в Vite.</p>
+    <p>Откройте <code>frontend/vite.config.js</code>:</p>
+<pre><code>import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:8000',
+        changeOrigin: true,
+      },
+    },
+  },
+})</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">javascript</span></pre>
+    <p>Теперь из React можно писать <code>axios.get('/api/notes/')</code> — Vite переправит на Django.</p>
+    <div class="callout warn">
+      <p>🔁 <strong>Перезапустите</strong> <code>npm run dev</code> после изменения <code>vite.config.js</code> — конфиг читается только при старте.</p>
+    </div>
+    <button type="button" class="mark-read" data-section="proxy@part2-react.html">Отметить как изученное</button>
+
+    <!-- section:react-code -->
+    <h3 id="react-code" class="mark-read-anchor">14. Код React-приложения</h3>
+    <p>Структура файлов, которую мы создадим:</p>
+<pre><code>frontend/src/
+├── api/
+│   └── client.js           # axios с интерцепторами JWT
+├── context/
+│   └── AuthContext.jsx     # состояние авторизации
+├── components/
+│   └── PrivateRoute.jsx    # защита приватных роутов
+├── pages/
+│   ├── Login.jsx           # страница входа
+│   └── Notes.jsx           # страница заметок
+├── App.jsx                 # роутинг
+├── main.jsx                # точка входа
+└── index.css               # глобальные стили</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">text</span></pre>
+
+    <h4>14.1. axios-клиент с интерцепторами <code>src/api/client.js</code></h4>
+<pre><code>import axios from 'axios';
+
+const api = axios.create({
+  baseURL: '/api',
+});
+
+// ────────────────────────────────────────────
+// REQUEST-интерцептор: добавляем Bearer-токен
+// ────────────────────────────────────────────
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('access_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// ────────────────────────────────────────────
+// RESPONSE-интерцептор: обновляем access при 401
+// ────────────────────────────────────────────
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const original = error.config;
+
+    // Если 401 и мы ещё не пробовали обновить
+    if (error.response?.status === 401 &amp;&amp; !original._retry) {
+      original._retry = true;
+      const refresh = localStorage.getItem('refresh_token');
+
+      if (refresh) {
+        try {
+          const { data } = await axios.post('/api/token/refresh/', { refresh });
+          localStorage.setItem('access_token', data.access);
+          original.headers.Authorization = `Bearer ${data.access}`;
+          return api(original);   // ← повторяем исходный запрос
+        } catch (e) {
+          // refresh тоже протух — разлогиниваем
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('refresh_token');
+          window.location.href = '/login';
+        }
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default api;</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">javascript</span></pre>
+    <div class="callout tip">
+      <p><strong>Как это работает:</strong> интерцепторы — это middleware для axios. Request-интерцептор выполняется <em>до</em> каждого запроса, response-интерцептор — <em>после</em> каждого ответа. Мы используем их, чтобы не дублировать логику работы с токенами в каждом компоненте.</p>
+    </div>
+
+    <h4>14.2. Контекст аутентификации <code>src/context/AuthContext.jsx</code></h4>
+<pre><code>import { createContext, useContext, useState } from 'react';
+import api from '../api/client';
+
+const AuthContext = createContext(null);
+
+export function AuthProvider({ children }) {
+  const [token, setToken] = useState(
+    localStorage.getItem('access_token')
+  );
+
+  const login = async (username, password) => {
+    const { data } = await api.post('/token/', { username, password });
+    localStorage.setItem('access_token', data.access);
+    localStorage.setItem('refresh_token', data.refresh);
+    setToken(data.access);
+  };
+
+  const logout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    setToken(null);
+  };
+
+  return (
+    &lt;AuthContext.Provider value={{ token, login, logout }}&gt;
+      {children}
+    &lt;/AuthContext.Provider&gt;
+  );
+}
+
+export const useAuth = () => useContext(AuthContext);</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">jsx</span></pre>
+
+    <h4>14.3. Приватный маршрут <code>src/components/PrivateRoute.jsx</code></h4>
+<pre><code>import { Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+
+export default function PrivateRoute({ children }) {
+  const { token } = useAuth();
+  return token ? children : &lt;Navigate to="/login" replace /&gt;;
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">jsx</span></pre>
+
+    <h4>14.4. Страница входа <code>src/pages/Login.jsx</code></h4>
+<pre><code>import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+
+export default function Login() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    try {
+      await login(username, password);
+      navigate('/notes');
+    } catch (err) {
+      setError('Неверный логин или пароль');
+    }
+  };
+
+  return (
+    &lt;div style={{ maxWidth: 400, margin: '50px auto', padding: 20 }}&gt;
+      &lt;h1&gt;Вход&lt;/h1&gt;
+      &lt;form onSubmit={handleSubmit}&gt;
+        &lt;input
+          placeholder="Логин"
+          value={username}
+          onChange={(e) =&gt; setUsername(e.target.value)}
+          style={{ display: 'block', width: '100%', marginBottom: 8, padding: 10 }}
+        /&gt;
+        &lt;input
+          type="password"
+          placeholder="Пароль"
+          value={password}
+          onChange={(e) =&gt; setPassword(e.target.value)}
+          style={{ display: 'block', width: '100%', marginBottom: 8, padding: 10 }}
+        /&gt;
+        &lt;button type="submit" style={{ padding: '10px 20px' }}&gt;
+          Войти
+        &lt;/button&gt;
+      &lt;/form&gt;
+      {error &amp;&amp; &lt;p style={{ color: 'red' }}&gt;{error}&lt;/p&gt;}
+    &lt;/div&gt;
+  );
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">jsx</span></pre>
+
+    <h4>14.5. Страница заметок <code>src/pages/Notes.jsx</code></h4>
+<pre><code>import { useEffect, useState } from 'react';
+import api from '../api/client';
+import { useAuth } from '../context/AuthContext';
+
+export default function Notes() {
+  const [notes, setNotes] = useState([]);
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const { logout } = useAuth();
+
+  const load = async () => {
+    try {
+      const { data } = await api.get('/notes/');
+      setNotes(data);
+    } catch (e) {
+      console.error('Не удалось загрузить заметки', e);
+    }
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const create = async (e) => {
+    e.preventDefault();
+    if (!title || !content) return;
+    await api.post('/notes/', { title, content });
+    setTitle('');
+    setContent('');
+    load();
+  };
+
+  const remove = async (id) => {
+    if (!confirm('Удалить заметку?')) return;
+    await api.delete(`/notes/${id}/`);
+    load();
+  };
+
+  return (
+    &lt;div style={{ maxWidth: 700, margin: '30px auto', padding: 20 }}&gt;
+      &lt;div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}&gt;
+        &lt;h1&gt;Мои заметки&lt;/h1&gt;
+        &lt;button onClick={logout}&gt;Выйти&lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;form onSubmit={create} style={{ marginBottom: 20 }}&gt;
+        &lt;input
+          placeholder="Заголовок"
+          value={title}
+          onChange={(e) =&gt; setTitle(e.target.value)}
+          style={{ display: 'block', width: '100%', marginBottom: 8, padding: 10 }}
+        /&gt;
+        &lt;textarea
+          placeholder="Содержание"
+          value={content}
+          onChange={(e) =&gt; setContent(e.target.value)}
+          rows={4}
+          style={{ display: 'block', width: '100%', marginBottom: 8, padding: 10 }}
+        /&gt;
+        &lt;button type="submit"&gt;Добавить&lt;/button&gt;
+      &lt;/form&gt;
+
+      &lt;ul style={{ listStyle: 'none', padding: 0 }}&gt;
+        {notes.map((n) =&gt; (
+          &lt;li key={n.id} style={{ border: '1px solid #ddd', padding: 16,
+                                    marginBottom: 12, borderRadius: 8 }}&gt;
+            &lt;strong&gt;{n.title}&lt;/strong&gt; &lt;em&gt;({n.owner})&lt;/em&gt;
+            &lt;p&gt;{n.content}&lt;/p&gt;
+            &lt;button onClick={() =&gt; remove(n.id)}&gt;Удалить&lt;/button&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">jsx</span></pre>
+
+    <h4>14.6. App.jsx — роутинг</h4>
+<pre><code>import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './components/PrivateRoute';
+import Login from './pages/Login';
+import Notes from './pages/Notes';
+
+export default function App() {
+  return (
+    &lt;AuthProvider&gt;
+      &lt;BrowserRouter&gt;
+        &lt;Routes&gt;
+          &lt;Route path="/login" element={&lt;Login /&gt;} /&gt;
+          &lt;Route
+            path="/notes"
+            element={
+              &lt;PrivateRoute&gt;
+                &lt;Notes /&gt;
+              &lt;/PrivateRoute&gt;
+            }
+          /&gt;
+          &lt;Route path="*" element={&lt;Navigate to="/notes" replace /&gt;} /&gt;
+        &lt;/Routes&gt;
+      &lt;/BrowserRouter&gt;
+    &lt;/AuthProvider&gt;
+  );
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">jsx</span></pre>
+
+    <h4>14.7. main.jsx — точка входа</h4>
+<pre><code>import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  &lt;React.StrictMode&gt;
+    &lt;App /&gt;
+  &lt;/React.StrictMode&gt;
+);</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">jsx</span></pre>
+
+    <p>После сохранения файлов Vite перезагрузит браузер автоматически. Откройте <code>http://localhost:5173/</code> — вас перекинет на <code>/login</code>.</p>
+    <button type="button" class="mark-read" data-section="react-code@part2-react.html">Отметить как изученное</button>
+
+    <!-- section:jwt -->
+    <h3 id="jwt" class="mark-read-anchor">15. Что такое JWT — разбор на примере jwt.io</h3>
+    <p>Откройте <a href="https://www.jwt.io/" target="_blank" rel="noopener">jwt.io</a> — это официальный сайт со встроенным <strong>декодером JWT</strong>.</p>
+
+    <h4>15.1. Скопируйте свой access-токен</h4>
+    <p>После логина откройте DevTools (F12) → Application → Local Storage → скопируйте значение <code>access_token</code>. Или через <code>curl</code>:</p>
+<pre><code>curl -X POST http://127.0.0.1:8000/api/token/ \
+  -H "Content-Type: application/json" \
+  -d '{"username": "ваш_логин", "password": "ваш_пароль"}'</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+
+    <h4>15.2. Вставьте токен в jwt.io</h4>
+    <p>Вы увидите три части, разделённые точками:</p>
+<pre><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9 . eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM4... . SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+       HEADER                                        PAYLOAD                              SIGNATURE</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">text</span></pre>
+
+    <ul>
+      <li><strong>Header</strong> — алгоритм подписи (HS256) и тип токена (JWT)</li>
+      <li><strong>Payload</strong> — данные: <code>user_id</code>, <code>exp</code>, <code>iat</code>, <code>token_type</code></li>
+      <li><strong>Signature</strong> — подпись. Если поменять хоть один символ в payload — подпись станет невалидной</li>
+    </ul>
+
+    <h4>15.3. Что внутри</h4>
+    <p><strong>Header:</strong></p>
+<pre><code>{
+  "alg": "HS256",
+  "typ": "JWT"
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">json</span></pre>
+
+    <p><strong>Payload</strong> (у SimpleJWT по умолчанию):</p>
+<pre><code>{
+  "token_type": "access",
+  "exp": 1738617600,
+  "iat": 1738614000,
+  "jti": "abc123...",
+  "user_id": 1
+}</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">json</span></pre>
+
+    <div class="callout warn">
+      <p><strong>Не храните в JWT секретные данные</strong> — payload легко декодируется любым человеком (сайт jwt.io это демонстрирует). Подпись лишь гарантирует, что токен выдан вашим сервером и не был изменён.</p>
+    </div>
+    <button type="button" class="mark-read" data-section="jwt@part2-react.html">Отметить как изученное</button>
+
+    <!-- section:test -->
+    <h3 id="test" class="mark-read-anchor">16. Тестирование полного цикла</h3>
+    <p>У вас работают три терминала. Пройдите сценарий:</p>
+    <ol>
+      <li><strong>Терминал 1</strong>: Django на <code>http://127.0.0.1:8000</code></li>
+      <li><strong>Терминал 2</strong>: React на <code>http://localhost:5173</code></li>
+      <li><strong>Терминал 3</strong>: свободен для curl/git</li>
+    </ol>
+    <p>Откройте браузер:</p>
+    <ol>
+      <li>Переход на <code>http://localhost:5173/</code> → редирект на <code>/login</code></li>
+      <li>Вводите логин/пароль суперпользователя из Django</li>
+      <li>Успех → попадаете на <code>/notes</code>, видите пустой список</li>
+      <li>Создаёте заметку — она появляется в списке</li>
+      <li>Удаляете — исчезает</li>
+      <li>Откройте DevTools (F12) → Network — увидите реальные HTTP-запросы</li>
+      <li>Откройте DevTools → Application → Local Storage — там токены</li>
+    </ol>
+    <div class="callout ok">
+      <p>Если всё работает — <strong>поздравляем, у вас готовый full-stack!</strong> Дальше — только улучшения.</p>
+    </div>
+    <button type="button" class="mark-read" data-section="test@part2-react.html">Отметить как изученное</button>
+
+    <!-- section:run-all -->
+    <h3 id="run-all" class="mark-read-anchor">17. Запуск одним скриптом</h3>
+    <p>Создайте файл <code>~/projects/fullstack-app/run-all.sh</code>:</p>
+<pre><code>#!/bin/bash
+# Запуск Django и React одновременно в текущем терминале
+
+set -e
+cd "$(dirname "$0")"
+
+echo "🚀 Запускаем Django-бэкенд..."
+cd backend
+source ../venv/bin/activate
+python manage.py runserver &amp;
+DJANGO_PID=$!
+cd ..
+
+echo "⚛️  Запускаем React-фронтенд..."
+cd frontend
+npm run dev &amp;
+REACT_PID=$!
+cd ..
+
+echo ""
+echo "✅ Оба сервера запущены!"
+echo "   Backend:  http://127.0.0.1:8000"
+echo "   Frontend: http://localhost:5173"
+echo ""
+echo "Нажмите Ctrl+C для остановки обоих."
+
+# При Ctrl+C убиваем оба процесса
+trap "kill $DJANGO_PID $REACT_PID 2&gt;/dev/null; exit" INT TERM
+wait</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <p>Сделайте его исполняемым и запустите:</p>
+<pre><code>chmod +x run-all.sh
+./run-all.sh</code><button type="button" class="copy-btn">Копировать</button><span class="lang-tag">bash</span></pre>
+    <button type="button" class="mark-read" data-section="run-all@part2-react.html">Отметить как изученное</button>
+    <p class="footer-note">🌸 Гайд создан для РЕД ОС • Django • DRF • React • JWT • JSONPlaceholder 🌸</p>
+  </main>
+</div>
+
+<button type="button" id="totop" title="Наверх" aria-label="Вернуться наверх">↑</button>
+
+<div id="studyBar" role="region" aria-label="Прогресс изучения">
+  <div class="icon" id="studyIcon"><span id="studyIconPct">0%</span></div>
+  <div class="label">Прогресс: <strong><span id="studyDone">0</span> из <span id="studyTotal">0</span></strong></div>
+  <div class="bar-track"><div class="bar-fill" id="studyFill"></div></div>
+  <div class="spacer"></div>
+  <button type="button" class="bar-btn" id="exportBtn" title="Скачать прогресс">📥 <span class="txt">Экспорт</span></button>
+  <button type="button" class="bar-btn danger" id="studyReset" title="Сбросить">🔄 <span class="txt">Сбросить</span></button>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<div class="modal-overlay" id="hotkeysModal" role="dialog" aria-modal="true" aria-label="Горячие клавиши">
+  <div class="modal">
+    <h2>Горячие клавиши</h2>
+    <div class="hotkey-row"><span>Поиск</span><kbd>Ctrl</kbd> + <kbd>K</kbd></div>
+    <div class="hotkey-row"><span>След/пред. совпадение</span><kbd>[</kbd> / <kbd>]</kbd></div>
+    <div class="hotkey-row"><span>Очистить поиск</span><kbd>Esc</kbd></div>
+    <div class="hotkey-row"><span>След/пред. секция</span><kbd>J</kbd> / <kbd>K</kbd></div>
+    <div class="hotkey-row"><span>Добавить раздел в закладки</span><kbd>B</kbd></div>
+    <div class="hotkey-row"><span>Показать это окно</span><kbd>?</kbd></div>
+    <div class="hotkey-row"><span>Печать / PDF</span><kbd>Ctrl</kbd> + <kbd>P</kbd></div>
+    <div class="hotkey-row"><span>Наверх страницы</span><kbd>Home</kbd></div>
+    <div class="hotkey-row"><span>В самый низ</span><kbd>End</kbd></div>
+    <button type="button" class="modal-close">Закрыть</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="fontModal" role="dialog" aria-modal="true" aria-label="Выбор шрифта">
+  <div class="modal">
+    <h2>Шрифт гайда</h2>
+    <p class="muted small" style="margin:0 0 8px">Выберите пресет — выбор сохранится в браузере.</p>
+    <div class="font-grid">
+      <button type="button" class="font-opt" data-font-opt="modern">
+        <div><div class="name">Modern</div><div class="sample">Plus Jakarta Sans + Inter</div></div>
+        <div class="check"></div>
+      </button>
+      <button type="button" class="font-opt" data-font-opt="geometric">
+        <div><div class="name">Geometric</div><div class="sample">Manrope + Inter</div></div>
+        <div class="check"></div>
+      </button>
+      <button type="button" class="font-opt" data-font-opt="classic">
+        <div><div class="name">Classic</div><div class="sample">Fraunces + Inter (с засечками)</div></div>
+        <div class="check"></div>
+      </button>
+      <button type="button" class="font-opt" data-font-opt="system">
+        <div><div class="name">System</div><div class="sample">Нативные системные шрифты</div></div>
+        <div class="check"></div>
+      </button>
+    </div>
+    <button type="button" class="modal-close">Закрыть</button>
+  </div>
+</div>
+
+<script src="js/idmap.js" defer></script>
+<script src="js/ui.js" defer></script>
+<script src="js/theme.js" defer></script>
+<script>window.GUIDE_SECTIONS=["intro-all","prerequisites","architecture","intro","no-sudo","python","django","django-admin","django-bootstrap5","quickstart","shop","api","test-api","jsonplaceholder","deeper","nvm","react","proxy","react-code","jwt","test","run-all","git-intro","extended-model","auth-register","tests","env-config","db-schema","auth-compare","db-python","postgresql","deploy","cors-deep","troubleshooting","glossary","faq","cheatsheet","summary","export"];</script>
+<script src="js/progress.js" defer></script>
+<script src="js/search.js" defer></script>
+<script src="js/toc.js" defer></script>
+<script src="js/bookmarks.js" defer></script>
+<script src="js/highlight.js" defer></script>
+<script src="js/main.js" defer></script>
+
+</body>
+</html>

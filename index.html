@@ -1,0 +1,311 @@
+<!--split-->
+<!DOCTYPE html>
+<html lang="ru" data-theme="rose" data-font="modern">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Полный гайд: Django + DRF + React на РЕД ОС без sudo">
+<meta name="theme-color" content="#fdf2f6" id="metaThemeColor">
+<title>Full-Stack гайд: Django + DRF + React на РЕД ОС</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Manrope:wght@500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/themes.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<a href="#content" class="skip-link">Перейти к содержимому</a>
+
+<div id="readingBar" aria-hidden="true"><div id="readingBarFill"></div></div>
+
+<header>
+  <div class="brand"><span>Django + DRF + React</span></div>
+  <input type="text" id="search" placeholder="Поиск... (Ctrl+K)" autocomplete="off" aria-label="Поиск по гайду">
+  <div class="header-btns">
+    <a class="icon-btn bm-page-link" href="bookmarks.html" title="Мои закладки" aria-label="Страница закладок"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 17.66l-5.9 3.11 1.13-6.57L2.45 9.54l6.6-.96L12 2.6z"/></svg><span class="bm-counter"></span></a>
+    <button type="button" class="icon-btn" id="fontBtn" title="Шрифт" aria-label="Выбрать шрифт">Aa</button>
+    <button type="button" class="icon-btn" id="hotkeysBtn" title="Горячие клавиши" aria-label="Показать горячие клавиши">⌨</button>
+    <div class="theme-switch" role="group" aria-label="Цветовая тема">
+      <button type="button" class="theme-btn" data-theme-btn="rose" title="Розовая" aria-label="Розовая тема">🌸</button>
+      <button type="button" class="theme-btn" data-theme-btn="rose-dark" title="Тёмно-розовая" aria-label="Тёмно-розовая тема">🌺</button>
+      <button type="button" class="theme-btn" data-theme-btn="light" title="Светлая" aria-label="Светлая тема">☀️</button>
+      <button type="button" class="theme-btn" data-theme-btn="dark" title="Тёмная" aria-label="Тёмная тема">🌙</button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="toc" aria-label="Содержание гайда">
+    <h3>Содержание</h3>
+    <ul class="toc-site">
+      <li class="toc-group">
+        <a href="intro.html" class="toc-part">Введение</a>
+        <ul class="toc-sub">
+          <li><a data-star href="intro.html#intro-all">Введение</a></li>
+          <li><a data-star href="intro.html#prerequisites">Prerequisites — что нужно знать до старта</a></li>
+          <li><a data-star href="intro.html#architecture">Архитектура приложения</a></li>
+        </ul>
+      </li>
+      <li class="toc-group">
+        <a href="part1-django.html" class="toc-part">Часть 1. Бэкенд</a>
+        <ul class="toc-sub">
+          <li><a data-star href="part1-django.html#intro">1. Введение в бэкенд</a></li>
+          <li><a data-star href="part1-django.html#no-sudo">2. Почему без sudo и как это работает</a></li>
+          <li><a data-star href="part1-django.html#python">3. Проверка Python и создание виртуального окружения</a></li>
+          <li><a data-star href="part1-django.html#django">4. Создание Django-проекта</a></li>
+          <li><a data-star href="part1-django.html#django-admin">5. Django Admin — готовая админка из коробки</a></li>
+          <li><a data-star href="part1-django.html#django-bootstrap5">6. Django + Bootstrap 5 — django_bootstrap5</a></li>
+          <li><a data-star href="part1-django.html#quickstart">6.5. Быстрый старт: Django + Bootstrap 5 за 8 шагов</a></li>
+          <li><a data-star href="part1-django.html#shop">6.6. Мини-интернет-магазин: товары, регистрация, вход и отзывы</a></li>
+          <li><a data-star href="part1-django.html#api">7. Модель, сериализатор, представления</a></li>
+          <li><a data-star href="part1-django.html#test-api">8. Тестирование API через curl</a></li>
+          <li><a data-star href="part1-django.html#jsonplaceholder">9. JSONPlaceholder</a></li>
+          <li><a data-star href="part1-django.html#deeper">10. Углубляемся: что такое DRF под капотом</a></li>
+        </ul>
+      </li>
+      <li class="toc-group">
+        <a href="part2-react.html" class="toc-part">Часть 2. Фронтенд</a>
+        <ul class="toc-sub">
+          <li><a data-star href="part2-react.html#nvm">11. Установка Node.js через nvm (без sudo)</a></li>
+          <li><a data-star href="part2-react.html#react">12. Создание React-приложения</a></li>
+          <li><a data-star href="part2-react.html#proxy">13. Настройка прокси Vite к Django API</a></li>
+          <li><a data-star href="part2-react.html#react-code">14. Код React-приложения</a></li>
+          <li><a data-star href="part2-react.html#jwt">15. Что такое JWT — разбор на примере jwt.io</a></li>
+          <li><a data-star href="part2-react.html#test">16. Тестирование полного цикла</a></li>
+          <li><a data-star href="part2-react.html#run-all">17. Запуск одним скриптом</a></li>
+        </ul>
+      </li>
+      <li class="toc-group">
+        <a href="advanced.html" class="toc-part">Продвинутое</a>
+        <ul class="toc-sub">
+          <li><a data-star href="advanced.html#git-intro">18. Git с самого начала</a></li>
+          <li><a data-star href="advanced.html#extended-model">19. Расширенная модель: теги и категории</a></li>
+          <li><a data-star href="advanced.html#auth-register">20. Регистрация пользователей</a></li>
+          <li><a data-star href="advanced.html#tests">21. Тесты Django</a></li>
+          <li><a data-star href="advanced.html#env-config">22. Переменные окружения (.env)</a></li>
+          <li><a data-star href="advanced.html#db-schema">23. Схема БД и жизненный цикл запроса</a></li>
+          <li><a data-star href="advanced.html#auth-compare">24. Аутентификация: сравнение подходов</a></li>
+          <li><a data-star href="advanced.html#db-python">25. База данных «на Python»: модели и миграции</a></li>
+          <li><a data-star href="advanced.html#postgresql">26. PostgreSQL — серьёзная база данных для продакшена</a></li>
+          <li><a data-star href="advanced.html#deploy">27. Деплой: выкладываем сайт в интернет</a></li>
+          <li><a data-star href="advanced.html#cors-deep">28. CORS глубоко: как браузер решает, кому можно ходить на ваш API</a></li>
+        </ul>
+      </li>
+      <li class="toc-group">
+        <a href="reference.html" class="toc-part">Справочник</a>
+        <ul class="toc-sub">
+          <li><a data-star href="reference.html#troubleshooting">29. Troubleshooting: типичные ошибки</a></li>
+          <li><a data-star href="reference.html#glossary">30. Глоссарий</a></li>
+          <li><a data-star href="reference.html#faq">31. FAQ — частые вопросы</a></li>
+          <li><a data-star href="reference.html#cheatsheet">32. Cheat sheet — все команды в одном месте</a></li>
+          <li><a data-star href="reference.html#summary">33. Итог</a></li>
+          <li><a data-star href="reference.html#export">34. Экспорт гайда</a></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="toc-bookmarks">
+      <a href="bookmarks.html" id="tocBookmarksLink">⭐ Закладки <span class="bm-badge" id="tocBmCount"></span></a>
+    </div>
+  </nav>
+
+  <main id="content" tabindex="-1">
+    <section class="hero">
+      <h1>Django + DRF + React на РЕД ОС</h1>
+      <p>Полный гайд: от нуля до работающего full-stack приложения без sudo</p>
+      <div class="meta-info">
+        <span>🎯 Для новичка</span>
+        <span>🛠️ 3 терминала</span>
+        <span>🔓 0 команд sudo</span>
+        <span>📄 ~2000 строк кода</span>
+      </div>
+      <div class="badges">
+        <span class="badge">🐍 Django</span>
+        <span class="badge">🔌 DRF</span>
+        <span class="badge">⚛️ React</span>
+        <span class="badge">🔐 JWT</span>
+        <span class="badge">🚀 Vite</span>
+        <span class="badge">🐧 РЕД ОС</span>
+        <span class="badge">🌐 JSONPlaceholder</span>
+      </div>
+    </section>
+
+
+
+    <div class="welcome">
+      <h3><span class="h-icon" aria-hidden="true">👋</span>Как пользоваться гайдом</h3>
+      <div class="welcome-grid">
+        <div class="welcome-item"><b>📖 Читайте сверху вниз</b>Разделы идут по порядку — от установки Python до готового приложения.</div>
+        <div class="welcome-item"><b>✅ Отмечайте изученное</b>В конце каждого раздела — кнопка «Отметить как изученное».</div>
+        <div class="welcome-item"><b>🔍 Ищите по гайду</b>Нажмите <code>Ctrl+K</code> — откроется поиск по всем разделам.</div>
+        <div class="welcome-item"><b>📋 Копируйте код</b>Наведите на блок кода — появится кнопка «Копировать».</div>
+        <div class="welcome-item"><b>🎨 Меняйте тему</b>🌸 розовая, 🌺 тёмно-розовая, ☀️ светлая, 🌙 тёмная.</div>
+        <div class="welcome-item"><b>🔤 Меняйте шрифт</b>Кнопка <code>Aa</code> в шапке — 4 пресета на выбор.</div>
+        <div class="welcome-item"><b>⌨️ Горячие клавиши</b>Нажмите <code>?</code> — увидите все шорткаты.</div>
+        <div class="welcome-item"><b>⭐ Держите закладки</b>Нажмите <code>B</code> или ☆ в меню слева — раздел попадёт на страницу «Закладки».</div>
+        <div class="welcome-item"><b>📥 Экспорт прогресса</b>Кнопка внизу — скачать прогресс в JSON.</div>
+      </div>
+    </div>
+
+    <h2 id="pages-title">Страницы гайда</h2>
+    <div class="page-card-list">
+        <article class="page-card">
+          <div class="page-card-icon" aria-hidden="true">🧭</div>
+          <h3><a href="intro.html">Введение</a></h3>
+          <p>Знакомство с гайдом: зачем он, что нужно знать до старта и какую архитектуру мы строим.</p>
+          <ul class="page-card-sections">
+          <li><a href="intro.html#intro-all">Введение</a></li>
+          <li><a href="intro.html#prerequisites">Prerequisites — что нужно знать до старта</a></li>
+          <li><a href="intro.html#architecture">Архитектура приложения</a></li>
+            </ul>
+          <a class="btn-primary page-card-open" href="intro.html">Открыть страницу →</a>
+        </article>
+        <article class="page-card">
+          <div class="page-card-icon" aria-hidden="true">🐍</div>
+          <h3><a href="part1-django.html">Часть 1 · Бэкенд на Django</a></h3>
+          <p>От установки Python в venv без sudo до полноценного API на Django REST Framework.</p>
+          <ul class="page-card-sections">
+          <li><a href="part1-django.html#part1">Часть 1. Бэкенд на Django</a></li>
+          <li><a href="part1-django.html#intro">1. Введение в бэкенд</a></li>
+          <li><a href="part1-django.html#no-sudo">2. Почему без sudo и как это работает</a></li>
+          <li><a href="part1-django.html#python">3. Проверка Python и создание виртуального окружения</a></li>
+          <li><a href="part1-django.html#django">4. Создание Django-проекта</a></li>
+          <li><a href="part1-django.html#django-admin">5. Django Admin — готовая админка из коробки</a></li>
+          <li><a href="part1-django.html#django-bootstrap5">6. Django + Bootstrap 5 — django_bootstrap5</a></li>
+          <li><a href="part1-django.html#api">7. Модель, сериализатор, представления</a></li>
+          <li><a href="part1-django.html#test-api">8. Тестирование API через curl</a></li>
+          <li><a href="part1-django.html#jsonplaceholder">9. JSONPlaceholder</a></li>
+          <li><a href="part1-django.html#deeper">10. Углубляемся: что такое DRF под капотом</a></li>
+            </ul>
+          <a class="btn-primary page-card-open" href="part1-django.html">Открыть страницу →</a>
+        </article>
+        <article class="page-card">
+          <div class="page-card-icon" aria-hidden="true">⚛️</div>
+          <h3><a href="part2-react.html">Часть 2 · Фронтенд на React</a></h3>
+          <p>Node.js через nvm, Vite + React, прокси к API, JWT и тестирование полного цикла.</p>
+          <ul class="page-card-sections">
+          <li><a href="part2-react.html#part2">Часть 2. Фронтенд на React</a></li>
+          <li><a href="part2-react.html#nvm">11. Установка Node.js через nvm (без sudo)</a></li>
+          <li><a href="part2-react.html#react">12. Создание React-приложения</a></li>
+          <li><a href="part2-react.html#proxy">13. Настройка прокси Vite к Django API</a></li>
+          <li><a href="part2-react.html#react-code">14. Код React-приложения</a></li>
+          <li><a href="part2-react.html#jwt">15. Что такое JWT — разбор на примере jwt.io</a></li>
+          <li><a href="part2-react.html#test">16. Тестирование полного цикла</a></li>
+          <li><a href="part2-react.html#run-all">17. Запуск одним скриптом</a></li>
+            </ul>
+          <a class="btn-primary page-card-open" href="part2-react.html">Открыть страницу →</a>
+        </article>
+        <article class="page-card">
+          <div class="page-card-icon" aria-hidden="true">🚀</div>
+          <h3><a href="advanced.html">Продвинутый уровень</a></h3>
+          <p>Git, теги и категории, регистрация, тесты, .env, схема БД, PostgreSQL, деплой, CORS глубоко.</p>
+          <ul class="page-card-sections">
+          <li><a href="advanced.html#git-intro">18. Git с самого начала</a></li>
+          <li><a href="advanced.html#extended-model">19. Расширенная модель: теги и категории</a></li>
+          <li><a href="advanced.html#auth-register">20. Регистрация пользователей</a></li>
+          <li><a href="advanced.html#tests">21. Тесты Django</a></li>
+          <li><a href="advanced.html#env-config">22. Переменные окружения (.env)</a></li>
+          <li><a href="advanced.html#db-schema">23. Схема БД и жизненный цикл запроса</a></li>
+          <li><a href="advanced.html#auth-compare">24. Аутентификация: сравнение подходов</a></li>
+          <li><a href="advanced.html#db-python">25. База данных «на Python»: модели и миграции</a></li>
+          <li><a href="advanced.html#postgresql">26. PostgreSQL — серьёзная база данных для продакшена</a></li>
+          <li><a href="advanced.html#deploy">27. Деплой: выкладываем сайт в интернет</a></li>
+          <li><a href="advanced.html#cors-deep">28. CORS глубоко: как браузер решает, кому можно ходить на ваш API</a></li>
+            </ul>
+          <a class="btn-primary page-card-open" href="advanced.html">Открыть страницу →</a>
+        </article>
+        <article class="page-card">
+          <div class="page-card-icon" aria-hidden="true">📚</div>
+          <h3><a href="reference.html">Справочник</a></h3>
+          <p>Troubleshooting, глоссарий, FAQ, cheat sheet, итог и экспорт гайда.</p>
+          <ul class="page-card-sections">
+          <li><a href="reference.html#troubleshooting">29. Troubleshooting: типичные ошибки</a></li>
+          <li><a href="reference.html#glossary">30. Глоссарий</a></li>
+          <li><a href="reference.html#faq">31. FAQ — частые вопросы</a></li>
+          <li><a href="reference.html#cheatsheet">32. Cheat sheet — все команды в одном месте</a></li>
+          <li><a href="reference.html#summary">33. Итог</a></li>
+          <li><a href="reference.html#export">34. Экспорт гайда</a></li>
+            </ul>
+          <a class="btn-primary page-card-open" href="reference.html">Открыть страницу →</a>
+        </article>
+    </div>
+
+    <p class="footer-note">🌸 Гайд создан для РЕД ОС • Django • DRF • React • JWT • JSONPlaceholder 🌸</p>
+  </main>
+</div>
+
+<button type="button" id="totop" title="Наверх" aria-label="Вернуться наверх">↑</button>
+
+<div id="studyBar" role="region" aria-label="Прогресс изучения">
+  <div class="icon" id="studyIcon"><span id="studyIconPct">0%</span></div>
+  <div class="label">Прогресс: <strong><span id="studyDone">0</span> из <span id="studyTotal">0</span></strong></div>
+  <div class="bar-track"><div class="bar-fill" id="studyFill"></div></div>
+  <div class="spacer"></div>
+  <button type="button" class="bar-btn" id="exportBtn" title="Скачать прогресс">📥 <span class="txt">Экспорт</span></button>
+  <button type="button" class="bar-btn danger" id="studyReset" title="Сбросить">🔄 <span class="txt">Сбросить</span></button>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<div class="modal-overlay" id="hotkeysModal" role="dialog" aria-modal="true" aria-label="Горячие клавиши">
+  <div class="modal">
+    <h2>Горячие клавиши</h2>
+    <div class="hotkey-row"><span>Поиск</span><kbd>Ctrl</kbd> + <kbd>K</kbd></div>
+    <div class="hotkey-row"><span>След/пред. совпадение</span><kbd>[</kbd> / <kbd>]</kbd></div>
+    <div class="hotkey-row"><span>Очистить поиск</span><kbd>Esc</kbd></div>
+    <div class="hotkey-row"><span>След/пред. секция</span><kbd>J</kbd> / <kbd>K</kbd></div>
+    <div class="hotkey-row"><span>Добавить раздел в закладки</span><kbd>B</kbd></div>
+    <div class="hotkey-row"><span>Показать это окно</span><kbd>?</kbd></div>
+    <div class="hotkey-row"><span>Печать / PDF</span><kbd>Ctrl</kbd> + <kbd>P</kbd></div>
+    <div class="hotkey-row"><span>Наверх страницы</span><kbd>Home</kbd></div>
+    <div class="hotkey-row"><span>В самый низ</span><kbd>End</kbd></div>
+    <button type="button" class="modal-close">Закрыть</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="fontModal" role="dialog" aria-modal="true" aria-label="Выбор шрифта">
+  <div class="modal">
+    <h2>Шрифт гайда</h2>
+    <p class="muted small" style="margin:0 0 8px">Выберите пресет — выбор сохранится в браузере.</p>
+    <div class="font-grid">
+      <button type="button" class="font-opt" data-font-opt="modern">
+        <div><div class="name">Modern</div><div class="sample">Plus Jakarta Sans + Inter</div></div>
+        <div class="check"></div>
+      </button>
+      <button type="button" class="font-opt" data-font-opt="geometric">
+        <div><div class="name">Geometric</div><div class="sample">Manrope + Inter</div></div>
+        <div class="check"></div>
+      </button>
+      <button type="button" class="font-opt" data-font-opt="classic">
+        <div><div class="name">Classic</div><div class="sample">Fraunces + Inter (с засечками)</div></div>
+        <div class="check"></div>
+      </button>
+      <button type="button" class="font-opt" data-font-opt="system">
+        <div><div class="name">System</div><div class="sample">Нативные системные шрифты</div></div>
+        <div class="check"></div>
+      </button>
+    </div>
+    <button type="button" class="modal-close">Закрыть</button>
+  </div>
+</div>
+
+<script src="js/idmap.js" defer></script>
+<script src="js/ui.js" defer></script>
+<script src="js/theme.js" defer></script>
+<script>window.GUIDE_SECTIONS=["intro-all","prerequisites","architecture","intro","no-sudo","python","django","django-admin","django-bootstrap5","quickstart","shop","api","test-api","jsonplaceholder","deeper","nvm","react","proxy","react-code","jwt","test","run-all","git-intro","extended-model","auth-register","tests","env-config","db-schema","auth-compare","db-python","postgresql","deploy","cors-deep","troubleshooting","glossary","faq","cheatsheet","summary","export"];</script>
+<script src="js/progress.js" defer></script>
+<script src="js/search.js" defer></script>
+<script src="js/toc.js" defer></script>
+<script src="js/bookmarks.js" defer></script>
+<script src="js/highlight.js" defer></script>
+<script src="js/main.js" defer></script>
+
+</body>
+</html>
